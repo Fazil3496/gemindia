@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ place.name }} - GemIndia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --green: #1a6b3c; --green-light: #a8e6c1; --green-dark: #0d4a28; --amber: #f9a825; --bg: #f5f5f0; --white: #ffffff; --text: #1a1a1a; --muted: #666; --border: #e0e0e0; }
+        body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+        .navbar { background: var(--green); padding: 0 24px; }
+        .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 16px; height: 60px; }
+        .back-btn { color: rgba(255,255,255,0.8); font-size: 13px; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+        .back-btn:hover { color: #fff; }
+        .logo { font-size: 18px; font-weight: 700; color: #fff; margin-left: auto; }
+        .logo span { color: var(--green-light); }
+
+        .hero { background: var(--green); padding: 40px 24px 48px; }
+        .hero-inner { max-width: 1100px; margin: 0 auto; }
+        .place-type-badge { display: inline-block; background: rgba(255,255,255,0.2); color: #fff; font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 20px; margin-bottom: 12px; }
+        .place-hero-name { font-size: 40px; font-weight: 700; color: #fff; letter-spacing: -1px; margin-bottom: 6px; }
+        .place-hero-district { font-size: 15px; color: var(--green-light); margin-bottom: 16px; }
+        .place-hero-desc { font-size: 14px; color: rgba(255,255,255,0.8); max-width: 600px; line-height: 1.7; margin-bottom: 20px; }
+        .place-hero-bottom { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .rating-big { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); border-radius: 10px; padding: 8px 16px; }
+        .rating-num { font-size: 20px; font-weight: 700; color: #fff; }
+        .rating-label { font-size: 11px; color: rgba(255,255,255,0.7); }
+        .hero-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .hero-tag { background: rgba(255,255,255,0.15); color: #fff; font-size: 11px; padding: 4px 12px; border-radius: 20px; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-bottom: 32px; }
+        .info-card { background: var(--white); border-radius: 14px; padding: 20px; border: 1px solid var(--border); }
+        .info-card-icon { font-size: 24px; margin-bottom: 10px; }
+        .info-card-title { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .info-card-value { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.5; }
+        .info-card-value.green { color: var(--green); font-size: 16px; font-weight: 700; }
+
+        .section-title { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 16px; }
+
+        .essential-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 32px; }
+        .essential-item { background: var(--white); border-radius: 12px; padding: 16px; border: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+        .essential-emoji { font-size: 24px; flex-shrink: 0; }
+        .essential-text { font-size: 13px; color: var(--text); font-weight: 500; }
+
+        .ai-tip-section { background: #e8f5e9; border-radius: 16px; padding: 24px; margin-bottom: 32px; border: 1px solid #c8e6c9; }
+        .ai-tip-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .ai-tip-icon { width: 36px; height: 36px; background: var(--green); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fff; }
+        .ai-tip-title { font-size: 15px; font-weight: 600; color: var(--green-dark); }
+        .ai-tip-text { font-size: 13px; color: #2d6a4f; line-height: 1.7; }
+        .ask-ai-btn { margin-top: 12px; background: var(--green); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 13px; font-family: 'Sora', sans-serif; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+        .ask-ai-btn:hover { background: var(--green-dark); }
+        .ai-answer { margin-top: 12px; background: #fff; border-radius: 10px; padding: 14px; font-size: 13px; color: var(--text); line-height: 1.7; display: none; }
+        .ai-loading { display: none; align-items: center; gap: 8px; margin-top: 12px; font-size: 13px; color: var(--muted); }
+        .ai-loading span { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: bounce 1.2s infinite; }
+        .ai-loading span:nth-child(2) { animation-delay: 0.2s; }
+        .ai-loading span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce { 0%,80%,100%{transform:translateY(0);opacity:0.4} 40%{transform:translateY(-4px);opacity:1} }
+
+        .back-home { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; text-decoration: none; border-radius: 10px; padding: 12px 24px; font-size: 13px; font-weight: 500; transition: background 0.2s; margin-bottom: 32px; }
+        .back-home:hover { background: var(--green-dark); }
+
+        .footer { background: var(--green-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 24px; font-size: 12px; margin-top: 40px; }
+        .footer span { color: var(--green-light); font-weight: 600; }
+
+        @media (max-width: 600px) { .place-hero-name { font-size: 28px; } .info-grid { grid-template-columns: 1fr 1fr; } }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="/" class="back-btn">← Back to all places</a>
+        <div class="logo">Gem<span>India</span> 🌿</div>
+    </div>
+</nav>
+
+<div class="hero">
+    <div class="hero-inner">
+        <div class="place-type-badge">{{ place.type }}</div>
+        <div class="place-hero-name">{{ place.name }}</div>
+        <div class="place-hero-district">📍 {{ place.district }}, Karnataka</div>
+        <div class="place-hero-desc">{{ place.description }}</div>
+        <div class="place-hero-bottom">
+            <div class="rating-big">
+                <div>
+                    <div class="rating-num">⭐ {{ place.rating }}</div>
+                    <div class="rating-label">Rating</div>
+                </div>
+            </div>
+            <div class="hero-tags">
+                {% for tag in place.tags %}
+                <span class="hero-tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+
+    <div class="info-grid">
+        <div class="info-card">
+            <div class="info-card-icon">💰</div>
+            <div class="info-card-title">Budget per day</div>
+            <div class="info-card-value green">{{ place.budget }}</div>
+        </div>
+        <div class="info-card">
+            <div class="info-card-icon">🏨</div>
+            <div class="info-card-title">Where to stay</div>
+            <div class="info-card-value">{{ place.stay }}</div>
+        </div>
+        <div class="info-card">
+            <div class="info-card-icon">🍛</div>
+            <div class="info-card-title">Local food</div>
+            <div class="info-card-value">{{ place.food }}</div>
+        </div>
+        <div class="info-card">
+            <div class="info-card-icon">📅</div>
+            <div class="info-card-title">Best season to visit</div>
+            <div class="info-card-value">{{ place.best_season }}</div>
+        </div>
+    </div>
+
+    <div class="section-title">What to carry</div>
+    <div class="essential-grid">
+        {% for item in place.carry.split(',') %}
+        <div class="essential-item">
+            <div class="essential-emoji">🎒</div>
+            <div class="essential-text">{{ item.strip() }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="ai-tip-section">
+        <div class="ai-tip-header">
+            <div class="ai-tip-icon">✦</div>
+            <div class="ai-tip-title">Ask AI about {{ place.name }}</div>
+        </div>
+        <div class="ai-tip-text">Want to know more? Ask our AI for personalized tips, best routes, nearby places and more!</div>
+        <button class="ask-ai-btn" onclick="askAI()">Get AI Travel Tips for {{ place.name }}</button>
+        <div class="ai-loading" id="ai-loading"><span></span><span></span><span></span> Getting tips for you...</div>
+        <div class="ai-answer" id="ai-answer"></div>
+    </div>
+
+    <a href="/" class="back-home">← Explore more hidden gems</a>
+
+</div>
+
+<div class="footer">Made with love for Karnataka travellers by <span>GemIndia</span> 🌿</div>
+
+<script>
+    async function askAI() {
+        document.getElementById('ai-loading').style.display = 'flex';
+        document.getElementById('ai-answer').style.display = 'none';
+        try {
+            const res = await fetch('/ai-recommend', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: 'Give me detailed travel tips for visiting {{ place.name }} in {{ place.district }}, Karnataka. Include best routes, nearby attractions, and local tips.' })
+            });
+            const data = await res.json();
+            document.getElementById('ai-answer').textContent = data.reply;
+            document.getElementById('ai-answer').style.display = 'block';
+        } catch(e) {
+            document.getElementById('ai-answer').textContent = 'Sorry, something went wrong. Please try again.';
+            document.getElementById('ai-answer').style.display = 'block';
+        }
+        document.getElementById('ai-loading').style.display = 'none';
+    }
+</script>
+</body>
+</html>
