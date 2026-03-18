@@ -194,6 +194,32 @@ def search():
     if tag:
         results = [p for p in results if tag in p["tags"]]
     return jsonify(results)
+@app.route("/upload", methods=["POST"])
+def upload():
+    import json, uuid
+    from datetime import datetime
+    from werkzeug.utils import secure_filename
+    name = request.form.get("name", "Anonymous")
+    place_id = int(request.form.get("place_id", 0))
+    story = request.form.get("story", "")
+    image_path = None
+    os.makedirs('static/uploads', exist_ok=True)
+    if 'image' in request.files:
+        file = request.files['image']
+        if file and file.filename:
+            filename = str(uuid.uuid4()) + '_' + secure_filename(file.filename)
+            file.save(os.path.join('static/uploads', filename))
+            image_path = 'uploads/' + filename
+    experience = {"id": str(uuid.uuid4()), "place_id": place_id, "name": name, "story": story, "image": image_path, "date": datetime.now().strftime("%d %b %Y")}
+    experiences = []
+    if os.path.exists('experiences.json'):
+        with open('experiences.json', 'r') as f:
+            experiences = json.load(f)
+    experiences.append(experience)
+    with open('experiences.json', 'w') as f:
+        json.dump(experiences, f)
+    from flask import redirect, url_for
+    return redirect(url_for('place_detail', place_id=place_id))
 
 if __name__ == "__main__":
     app.run(debug=True)
