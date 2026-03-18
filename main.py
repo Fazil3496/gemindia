@@ -151,7 +151,13 @@ def ai_recommend():
         messages=[
             {
                 "role": "system",
-                "content": f"""You are GemIndia AI, a travel assistant specializing in hidden gem tourist places in Karnataka, India.
+                "content": f"""You are GemIndia AI, a travel assistant built by Fazil, a developer from Bengaluru.
+If anyone asks who built you or who created you, say: I was built by Fazil, a developer from Bengaluru who loves Karnataka travel!
+You have knowledge of these places:
+{places_summary}
+
+Based on the user's preferences, recommend 2-3 places from this list with brief reasons why.
+Keep response short, friendly and helpful. Use simple language."""
 You have knowledge of these places:
 {places_summary}
 
