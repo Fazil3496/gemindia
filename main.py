@@ -15,14 +15,16 @@ places = [
         "district": "Shivamogga",
         "type": "Rainforest",
         "description": "Known as the Cherrapunji of the South, Agumbe is a stunning rainforest village with breathtaking sunsets and rich biodiversity.",
-        "budget": "₹1500-2000/day",
-        "stay": "Forest Homestay ₹800-1200/night",
+        "budget": "1500-2000/day",
+        "stay": "Forest Homestay 800-1200/night",
         "food": "Malnad cuisine, fish curry, akki roti",
         "carry": "Raincoat, trekking shoes, mosquito repellent",
         "best_season": "October - February",
         "rating": 4.7,
         "image": "https://images.unsplash.com/photo-1588416936097-41850ab3d86d?w=400",
-        "tags": ["Trekking", "Nature", "Waterfalls"]
+        "tags": ["Trekking", "Nature", "Waterfalls"],
+        "lat": 13.5024,
+        "lng": 75.0952
     },
     {
         "id": 2,
@@ -30,14 +32,16 @@ places = [
         "district": "Uttara Kannada",
         "type": "Rock Formation",
         "description": "Mysterious black crystalline rock formations rising from the forest floor. A geological wonder and trekking paradise.",
-        "budget": "₹1000-1500/day",
-        "stay": "Budget hotels ₹500-800/night",
+        "budget": "1000-1500/day",
+        "stay": "Budget hotels 500-800/night",
         "food": "Local Karnataka thali, coconut based dishes",
         "carry": "Trekking shoes, water bottle, sunscreen",
         "best_season": "November - March",
         "rating": 4.6,
         "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400",
-        "tags": ["Trekking", "Heritage", "Nature"]
+        "tags": ["Trekking", "Heritage", "Nature"],
+        "lat": 14.6269,
+        "lng": 74.5647
     },
     {
         "id": 3,
@@ -45,29 +49,33 @@ places = [
         "district": "Hassan",
         "type": "Heritage",
         "description": "A hauntingly beautiful submerged church that rises from the Hemavathi reservoir during summer. Called the Floating Church of Karnataka.",
-        "budget": "₹800-1200/day",
-        "stay": "Homestays ₹600-900/night",
+        "budget": "800-1200/day",
+        "stay": "Homestays 600-900/night",
         "food": "Hassan local food, ragi mudde, sambar",
         "carry": "Camera, comfortable shoes, sunhat",
         "best_season": "June - October (submerged), November - May (visible)",
         "rating": 4.5,
         "image": "https://images.unsplash.com/photo-1548013146-72479768bada?w=400",
-        "tags": ["Heritage", "Photography", "Unique"]
+        "tags": ["Heritage", "Photography", "Unique"],
+        "lat": 13.0550,
+        "lng": 76.0364
     },
     {
         "id": 4,
-        "name": "St Mary's Island",
+        "name": "St Marys Island",
         "district": "Udupi",
         "type": "Beach",
         "description": "Unique hexagonal basalt rock formations on a pristine island. Accessible only by boat, making it a true hidden gem.",
-        "budget": "₹1200-1800/day",
-        "stay": "Udupi hotels ₹800-1500/night",
+        "budget": "1200-1800/day",
+        "stay": "Udupi hotels 800-1500/night",
         "food": "Fresh seafood, Mangalorean fish curry, neer dosa",
         "carry": "Sunscreen, swimwear, waterproof bag",
         "best_season": "October - May",
         "rating": 4.6,
         "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400",
-        "tags": ["Beach", "Nature", "Island"]
+        "tags": ["Beach", "Nature", "Island"],
+        "lat": 13.3561,
+        "lng": 74.6535
     },
     {
         "id": 5,
@@ -75,14 +83,16 @@ places = [
         "district": "Chikmagalur",
         "type": "Trek",
         "description": "The highest peak in Karnataka at 1930m. A thrilling trek through coffee plantations with panoramic views of the Western Ghats.",
-        "budget": "₹1500-2500/day",
-        "stay": "Chikmagalur resorts ₹1000-2000/night",
+        "budget": "1500-2500/day",
+        "stay": "Chikmagalur resorts 1000-2000/night",
         "food": "Coffee, local Karnataka food, bread omelette",
         "carry": "Warm clothes, trekking shoes, torch, first aid",
         "best_season": "September - March",
         "rating": 4.8,
         "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400",
-        "tags": ["Trekking", "Hills", "Nature"]
+        "tags": ["Trekking", "Hills", "Nature"],
+        "lat": 13.3986,
+        "lng": 75.7139
     },
     {
         "id": 6,
@@ -90,14 +100,16 @@ places = [
         "district": "Uttara Kannada",
         "type": "Wildlife",
         "description": "A hidden adventure paradise with white water rafting, jungle safaris and rich wildlife including black panthers.",
-        "budget": "₹2000-3000/day",
-        "stay": "Jungle camps ₹1500-2500/night",
+        "budget": "2000-3000/day",
+        "stay": "Jungle camps 1500-2500/night",
         "food": "Forest camp food, local Karnataka cuisine",
         "carry": "Light clothes, insect repellent, binoculars",
         "best_season": "October - May",
         "rating": 4.7,
         "image": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400",
-        "tags": ["Wildlife", "Adventure", "Trekking"]
+        "tags": ["Wildlife", "Adventure", "Trekking"],
+        "lat": 15.2667,
+        "lng": 74.6167
     },
     {
         "id": 7,
@@ -105,14 +117,16 @@ places = [
         "district": "Tumkur",
         "type": "Trek",
         "description": "A rocky hill fortress just 70km from Bengaluru. Perfect weekend getaway with ancient temples and stunning rock formations.",
-        "budget": "₹800-1200/day",
-        "stay": "Tumkur hotels ₹500-1000/night",
+        "budget": "800-1200/day",
+        "stay": "Tumkur hotels 500-1000/night",
         "food": "Darshini food, idli vada, local Karnataka meals",
         "carry": "Trekking shoes, water, snacks, camera",
         "best_season": "October - February",
         "rating": 4.4,
         "image": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400",
-        "tags": ["Trekking", "Heritage", "Bengaluru Nearby"]
+        "tags": ["Trekking", "Heritage", "Bengaluru Nearby"],
+        "lat": 13.3833,
+        "lng": 77.0833
     },
     {
         "id": 8,
@@ -120,14 +134,16 @@ places = [
         "district": "Hassan",
         "type": "Hills",
         "description": "A misty hill station surrounded by coffee and tea plantations. Less crowded than Coorg but equally beautiful.",
-        "budget": "₹1500-2500/day",
-        "stay": "Plantation stays ₹1200-2000/night",
+        "budget": "1500-2500/day",
+        "stay": "Plantation stays 1200-2000/night",
         "food": "South Indian breakfast, coffee, local thali",
         "carry": "Light woolens, raincoat, trekking shoes",
         "best_season": "September - March",
         "rating": 4.5,
         "image": "https://images.unsplash.com/photo-1455156218388-5e61b526818b?w=400",
-        "tags": ["Hills", "Nature", "Plantation"]
+        "tags": ["Hills", "Nature", "Plantation"],
+        "lat": 12.9452,
+        "lng": 75.7862
     }
 ]
 
@@ -151,11 +167,12 @@ def ai_recommend():
         messages=[
             {
                 "role": "system",
-                "content": f"""You are GemIndia AI, a travel assistant specializing in hidden gem tourist places in Karnataka, India.
+                "content": f"""You are GemIndia AI, a travel assistant built by Fazil, a developer from Bengaluru.
+If anyone asks who built you or who created you, say: I was built by Fazil, a developer from Bengaluru who loves Karnataka travel!
 You have knowledge of these places:
 {places_summary}
 
-Based on the user's preferences, recommend 2-3 places from this list with brief reasons why.
+Based on the users preferences, recommend 2-3 places from this list with brief reasons why.
 Keep response short, friendly and helpful. Use simple language."""
             },
             {"role": "user", "content": user_input}
