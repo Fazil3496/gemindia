@@ -23,6 +23,10 @@ JSONBIN_API_KEY = os.getenv("JSONBIN_API_KEY")
 JSONBIN_BIN_ID = os.getenv("JSONBIN_BIN_ID")
 JSONBIN_URL = f"https://api.jsonbin.io/v3/b/{JSONBIN_BIN_ID}"
 
+# ✅ NEW: Community Gems Bin
+GEMS_BIN_ID = os.getenv("GEMS_BIN_ID")
+GEMS_BIN_URL = f"https://api.jsonbin.io/v3/b/{GEMS_BIN_ID}"
+
 def load_experiences():
     try:
         res = http_requests.get(
@@ -40,6 +44,32 @@ def save_experiences(experiences):
         http_requests.put(
             JSONBIN_URL,
             json={"experiences": experiences},
+            headers={
+                "Content-Type": "application/json",
+                "X-Master-Key": JSONBIN_API_KEY
+            }
+        )
+    except:
+        pass
+
+# ✅ NEW: Load & Save Community Gems
+def load_gems():
+    try:
+        res = http_requests.get(
+            GEMS_BIN_URL + "/latest",
+            headers={"X-Master-Key": JSONBIN_API_KEY}
+        )
+        data = res.json()
+        record = data.get("record", {})
+        return record.get("gems", [])
+    except:
+        return []
+
+def save_gems(gems):
+    try:
+        http_requests.put(
+            GEMS_BIN_URL,
+            json={"gems": gems},
             headers={
                 "Content-Type": "application/json",
                 "X-Master-Key": JSONBIN_API_KEY
@@ -135,6 +165,50 @@ def search():
     if tag:
         results = [p for p in results if tag in p["tags"]]
     return jsonify(results)
+
+# ✅ NEW: Community Gems Routes
+
+@app.route("/community")
+def community():
+    gems = load_gems()
+    return render_template("community.html", gems=gems)
+
+@app.route("/submit-gem", methods=["GET"])
+def submit_gem():
+    return render_template("submit_gem.html")
+
+@app.route("/submit-gem", methods=["POST"])
+def submit_gem_post():
+    name = request.form.get("name", "Anonymous")
+    place_name = request.form.get("place_name", "")
+    district = request.form.get("district", "")
+    description = request.form.get("description", "")
+    tip = request.form.get("tip", "")
+    image_path = None
+
+    if 'image' in request.files:
+        file = request.files['image']
+        if file and file.filename and allowed_file(file.filename):
+            filename = str(uuid.uuid4()) + '_' + secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            image_path = 'uploads/' + filename
+
+    gem = {
+        "id": str(uuid.uuid4()),
+        "name": name,
+        "place_name": place_name,
+        "district": district,
+        "description": description,
+        "tip": tip,
+        "image": image_path,
+        "date": datetime.now().strftime("%d %b %Y")
+    }
+
+    gems = load_gems()
+    gems.append(gem)
+    save_gems(gems)
+
+    return redirect(url_for('community'))
 
 if __name__ == "__main__":
     app.run(debug=True)
