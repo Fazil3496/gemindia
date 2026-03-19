@@ -16,6 +16,11 @@
         .nav-search { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 8px 16px; width: 300px; }
         .nav-search input { background: transparent; border: none; outline: none; color: #fff; font-size: 13px; font-family: 'Sora', sans-serif; width: 100%; }
         .nav-search input::placeholder { color: rgba(255,255,255,0.6); }
+        .nav-links { display: flex; align-items: center; gap: 8px; }
+        .nav-link { color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 500; text-decoration: none; padding: 6px 14px; border-radius: 20px; transition: all 0.2s; }
+        .nav-link:hover { background: rgba(255,255,255,0.15); color: #fff; }
+        .nav-link.community-btn { background: var(--amber); color: #1a1a1a; font-weight: 600; }
+        .nav-link.community-btn:hover { background: #fbb72c; }
         .hero { background: var(--green); padding: 48px 24px 60px; text-align: center; }
         .hero h1 { font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 12px; }
         .hero h1 span { color: var(--green-light); }
@@ -71,6 +76,10 @@
         <div class="logo">Gem<span>India</span> 🌿</div>
         <div class="nav-search">
             <input type="text" id="nav-search" placeholder="Search places, districts..." oninput="filterPlaces()">
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/community" class="nav-link community-btn">💎 Community Gems</a>
         </div>
     </div>
 </nav>
