@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Gems - GemIndia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --green: #1a6b3c; --green-light: #a8e6c1; --green-dark: #0d4a28; --amber: #f9a825; --bg: #f5f5f0; --white: #ffffff; --text: #1a1a1a; --muted: #666; --border: #e0e0e0; }
+        body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+        .navbar { background: var(--green); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
+        .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+        .logo { font-size: 20px; font-weight: 700; color: #fff; }
+        .logo span { color: var(--green-light); }
+        .nav-links { display: flex; gap: 16px; }
+        .nav-link { color: rgba(255,255,255,0.8); font-size: 13px; text-decoration: none; }
+        .nav-link:hover { color: #fff; }
+        .hero { background: var(--green); padding: 48px 24px 60px; text-align: center; }
+        .hero h1 { font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+        .hero h1 span { color: var(--green-light); }
+        .hero p { font-size: 15px; color: rgba(255,255,255,0.75); max-width: 500px; margin: 0 auto 28px; line-height: 1.7; }
+        .submit-hero-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--amber); color: #1a1a1a; border: none; border-radius: 12px; padding: 14px 28px; font-size: 14px; font-family: 'Sora', sans-serif; font-weight: 700; cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
+        .submit-hero-btn:hover { opacity: 0.9; }
+        .main { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+        .section-title { font-size: 20px; font-weight: 600; }
+        .section-count { font-size: 13px; color: var(--muted); }
+        .gems-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .gem-card { background: var(--white); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: transform 0.2s; }
+        .gem-card:hover { transform: translateY(-4px); }
+        .gem-img { width: 100%; height: 180px; object-fit: cover; }
+        .gem-img-placeholder { width: 100%; height: 180px; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); display: flex; align-items: center; justify-content: center; font-size: 56px; }
+        .gem-body { padding: 16px; }
+        .gem-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+        .gem-name { font-size: 16px; font-weight: 600; }
+        .gem-type { background: #e8f5e9; color: var(--green); font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 10px; }
+        .gem-district { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+        .gem-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .gem-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+        .tag { background: #e8f5e9; color: #1a6b3c; font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 10px; }
+        .gem-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border); }
+        .gem-submitted-by { font-size: 11px; color: var(--muted); }
+        .gem-submitted-by strong { color: var(--text); }
+        .gem-budget { font-size: 12px; font-weight: 600; color: var(--green); }
+        .empty-state { text-align: center; padding: 60px 24px; background: var(--white); border-radius: 16px; border: 1px solid var(--border); }
+        .empty-icon { font-size: 56px; margin-bottom: 16px; }
+        .empty-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+        .empty-sub { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+        .empty-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; border-radius: 12px; padding: 12px 24px; font-size: 13px; font-weight: 600; text-decoration: none; }
+        .footer { background: var(--green-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 24px; font-size: 12px; margin-top: 60px; }
+        .footer span { color: var(--green-light); font-weight: 600; }
+        @media (max-width: 600px) { .hero h1 { font-size: 26px; } .gems-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <div class="logo">Gem<span>India</span> 🌿</div>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/community" class="nav-link">Community</a>
+        </div>
+    </div>
+</nav>
+
+<div class="hero">
+    <h1>Community <span>Hidden Gems</span> 💎</h1>
+    <p>Places discovered and shared by fellow Karnataka travellers just like you!</p>
+    <a href="/submit-gem" class="submit-hero-btn">+ Submit Your Hidden Gem</a>
+</div>
+
+<div class="main">
+    <div class="section-header">
+        <div class="section-title">🌿 Traveller Discoveries</div>
+        <div class="section-count">{{ gems|length }} gems submitted</div>
+    </div>
+
+    {% if gems %}
+    <div class="gems-grid">
+        {% for gem in gems %}
+        <div class="gem-card">
+            {% if gem.image %}
+            <img class="gem-img" src="/static/{{ gem.image }}" alt="{{ gem.name }}">
+            {% else %}
+            <div class="gem-img-placeholder">💎</div>
+            {% endif %}
+            <div class="gem-body">
+                <div class="gem-top">
+                    <div class="gem-name">{{ gem.name }}</div>
+                    <div class="gem-type">{{ gem.type }}</div>
+                </div>
+                <div class="gem-district">📍 {{ gem.district }}, Karnataka</div>
+                <div class="gem-desc">{{ gem.description }}</div>
+                {% if gem.tags %}
+                <div class="gem-tags">
+                    {% for tag in gem.tags %}
+                    <span class="tag">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="gem-footer">
+                    <div class="gem-submitted-by">Shared by <strong>{{ gem.submitted_by }}</strong><br>{{ gem.date }}</div>
+                    {% if gem.budget %}
+                    <div class="gem-budget">{{ gem.budget }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">💎</div>
+        <div class="empty-title">No gems submitted yet!</div>
+        <div class="empty-sub">Be the first to share a hidden gem in Karnataka!</div>
+        <a href="/submit-gem" class="empty-btn">+ Submit First Gem</a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="footer">Made with love for Karnataka travellers by <span>GemIndia</span> 🌿</div>
+
+</body>
+</html>

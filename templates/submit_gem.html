@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit a Hidden Gem - GemIndia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --green: #1a6b3c; --green-light: #a8e6c1; --green-dark: #0d4a28; --amber: #f9a825; --bg: #f5f5f0; --white: #ffffff; --text: #1a1a1a; --muted: #666; --border: #e0e0e0; }
+        body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+        .navbar { background: var(--green); padding: 0 24px; }
+        .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 16px; height: 60px; }
+        .back-btn { color: rgba(255,255,255,0.8); font-size: 13px; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+        .back-btn:hover { color: #fff; }
+        .logo { font-size: 18px; font-weight: 700; color: #fff; margin-left: auto; }
+        .logo span { color: var(--green-light); }
+        .hero { background: var(--green); padding: 40px 24px; text-align: center; }
+        .hero h1 { font-size: 32px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+        .hero h1 span { color: var(--green-light); }
+        .hero p { font-size: 14px; color: rgba(255,255,255,0.75); max-width: 500px; margin: 0 auto; line-height: 1.7; }
+        .content { max-width: 700px; margin: 0 auto; padding: 32px 24px; }
+        .form-card { background: var(--white); border-radius: 16px; padding: 28px; border: 1px solid var(--border); margin-bottom: 24px; }
+        .form-section-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .form-group { margin-bottom: 16px; }
+        .form-label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block; }
+        .form-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; font-size: 13px; font-family: 'Sora', sans-serif; outline: none; transition: border 0.2s; }
+        .form-input:focus { border-color: var(--green); }
+        .form-textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; font-size: 13px; font-family: 'Sora', sans-serif; outline: none; min-height: 100px; resize: vertical; transition: border 0.2s; }
+        .form-textarea:focus { border-color: var(--green); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-select { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; font-size: 13px; font-family: 'Sora', sans-serif; outline: none; cursor: pointer; }
+        .file-upload { background: var(--bg); border: 2px dashed var(--border); border-radius: 10px; padding: 24px; text-align: center; cursor: pointer; transition: border 0.2s; }
+        .file-upload:hover { border-color: var(--green); }
+        .file-upload input { display: none; }
+        .file-upload-icon { font-size: 32px; margin-bottom: 8px; }
+        .file-upload-text { font-size: 13px; color: var(--muted); }
+        .file-upload-text span { color: var(--green); font-weight: 600; }
+        #map-pick { height: 280px; border-radius: 10px; margin-top: 8px; }
+        .map-hint { font-size: 12px; color: var(--muted); margin-top: 8px; }
+        .coords-display { background: #e8f5e9; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--green-dark); margin-top: 8px; display: none; }
+        .tags-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .tag-btn { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 12px; font-family: 'Sora', sans-serif; cursor: pointer; transition: all 0.2s; }
+        .tag-btn.selected { background: var(--green); border-color: var(--green); color: #fff; }
+        .submit-btn { width: 100%; background: var(--green); color: #fff; border: none; border-radius: 12px; padding: 16px; font-size: 15px; font-family: 'Sora', sans-serif; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .submit-btn:hover { background: var(--green-dark); }
+        .footer { background: var(--green-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 24px; font-size: 12px; margin-top: 40px; }
+        .footer span { color: var(--green-light); font-weight: 600; }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } .hero h1 { font-size: 24px; } }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="/" class="back-btn">← Back to all places</a>
+        <div class="logo">Gem<span>India</span> 🌿</div>
+    </div>
+</nav>
+
+<div class="hero">
+    <h1>Submit a <span>Hidden Gem</span> 💎</h1>
+    <p>Know a place that the world doesn't know about? Share it with fellow Karnataka travellers!</p>
+</div>
+
+<div class="content">
+    <form action="/submit-gem" method="POST" enctype="multipart/form-data">
+
+        <!-- Basic Info -->
+        <div class="form-card">
+            <div class="form-section-title">📍 Basic Information</div>
+            <div class="form-group">
+                <label class="form-label">Your Name</label>
+                <input class="form-input" type="text" name="submitted_by" placeholder="e.g. Rahul from Bengaluru" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Place Name</label>
+                    <input class="form-input" type="text" name="name" placeholder="e.g. Kavaledurga Fort" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">District</label>
+                    <input class="form-input" type="text" name="district" placeholder="e.g. Shivamogga" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Type of Place</label>
+                <select class="form-select" name="type" required>
+                    <option value="">Select type...</option>
+                    <option value="Trekking">Trekking</option>
+                    <option value="Beach">Beach</option>
+                    <option value="Waterfall">Waterfall</option>
+                    <option value="Heritage">Heritage</option>
+                    <option value="Wildlife">Wildlife</option>
+                    <option value="Hills">Hills</option>
+                    <option value="Rainforest">Rainforest</option>
+                    <option value="Temple">Temple</option>
+                    <option value="Lake">Lake</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" name="description" placeholder="Tell us what makes this place special..." required></textarea>
+            </div>
+        </div>
+
+        <!-- Travel Info -->
+        <div class="form-card">
+            <div class="form-section-title">💰 Travel Information</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Budget per day</label>
+                    <input class="form-input" type="text" name="budget" placeholder="e.g. 500-1000/day">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Best Season</label>
+                    <input class="form-input" type="text" name="best_season" placeholder="e.g. October - March">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Tags</label>
+                <div class="tags-wrap" id="tags-wrap">
+                    <button type="button" class="tag-btn" onclick="toggleTag(this, 'Trekking')">Trekking</button>
+                    <button type="button" class="tag-btn" onclick="toggleTag(this, 'Nature')">Nature</button>
+                    <button type="button" class="tag-btn" onclick="toggleTag(this, 'Waterfalls')">Waterfalls</button>
+                    <button type="button" class="tag-btn" onclick="toggleTag(this, 'Heritage')">Heritage</button>
+                    <button type="button" class="tag-btn" onclick="toggleTag(this, 'Beach')">Beach</button>
+                    <button type="button" class="tag-btn" onclick="toggleTag(this, 'Wildlife')">Wildlife</button>
+                    <button type="button" class="tag-btn" onclick="toggleTag(this, 'Hills')">Hills</button>
+                    <button type="button" class="tag-btn" onclick="toggleTag(this, 'Photography')">Photography</button>
+                    <button type="button" class="tag-btn" onclick="toggleTag(this, 'Adventure')">Adventure</button>
+                    <button type="button" class="tag-btn" onclick="toggleTag(this, 'Bengaluru Nearby')">Bengaluru Nearby</button>
+                </div>
+                <input type="hidden" name="tags" id="tags-input">
+            </div>
+        </div>
+
+        <!-- Photo Upload -->
+        <div class="form-card">
+            <div class="form-section-title">📸 Upload Photo</div>
+            <label class="file-upload" id="file-label">
+                <div class="file-upload-icon">📷</div>
+                <div class="file-upload-text">Click to upload a photo of this place<br><span>JPG, PNG, WEBP supported</span></div>
+                <input type="file" name="image" accept="image/*" onchange="updateFileLabel(this)">
+            </label>
+        </div>
+
+        <!-- Map Location -->
+        <div class="form-card">
+            <div class="form-section-title">🗺️ Pin the Location</div>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:8px;">Click on the map to mark the exact location of this hidden gem!</p>
+            <div id="map-pick"></div>
+            <div class="map-hint">📍 Click anywhere on the map to drop a pin</div>
+            <div class="coords-display" id="coords-display">📍 Location selected!</div>
+            <input type="hidden" name="lat" id="lat-input" value="15.3173">
+            <input type="hidden" name="lng" id="lng-input" value="75.7139">
+        </div>
+
+        <button type="submit" class="submit-btn">🌿 Submit My Hidden Gem</button>
+    </form>
+</div>
+
+<div class="footer">Made with love for Karnataka travellers by <span>GemIndia</span> 🌿</div>
+
+<script>
+    // Map for picking location
+    var pickMap = L.map('map-pick').setView([14.5, 75.7], 7);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(pickMap);
+
+    var marker = null;
+    pickMap.on('click', function(e) {
+        var lat = e.latlng.lat.toFixed(6);
+        var lng = e.latlng.lng.toFixed(6);
+        document.getElementById('lat-input').value = lat;
+        document.getElementById('lng-input').value = lng;
+        document.getElementById('coords-display').style.display = 'block';
+        document.getElementById('coords-display').textContent = '📍 Location selected: ' + lat + ', ' + lng;
+        if (marker) pickMap.removeLayer(marker);
+        marker = L.marker([lat, lng]).addTo(pickMap);
+    });
+
+    // Tags
+    var selectedTags = [];
+    function toggleTag(btn, tag) {
+        btn.classList.toggle('selected');
+        if (selectedTags.includes(tag)) {
+            selectedTags = selectedTags.filter(t => t !== tag);
+        } else {
+            selectedTags.push(tag);
+        }
+        document.getElementById('tags-input').value = selectedTags.join(',');
+    }
+
+    // File label
+    function updateFileLabel(input) {
+        if (input.files[0]) {
+            document.getElementById('file-label').innerHTML = '<div class="file-upload-icon">✅</div><div class="file-upload-text">' + input.files[0].name + '</div>';
+        }
+    }
+</script>
+</body>
+</html>
