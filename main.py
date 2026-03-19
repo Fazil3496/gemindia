@@ -210,5 +210,16 @@ def submit_gem_post():
 
     return redirect(url_for('community'))
 
+@app.route("/debug-gems")
+def debug_gems():
+    try:
+        res = http_requests.get(
+            GEMS_BIN_URL + "/latest",
+            headers={"X-Master-Key": JSONBIN_API_KEY}
+        )
+        return jsonify({"status": res.status_code, "data": res.json()})
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
 if __name__ == "__main__":
     app.run(debug=True)
