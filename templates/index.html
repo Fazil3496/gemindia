@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GemIndia - Hidden Gems of Karnataka</title>
+    <meta name="description" content="Discover 70 hidden gems of Karnataka — underrated trekking, beaches, heritage and wildlife destinations. Real budgets, real experiences.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://gemindia.onrender.com/" />
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,6 +31,8 @@
         .hero-stats { display: flex; justify-content: center; gap: 40px; }
         .stat-num { font-size: 24px; font-weight: 700; color: var(--green-light); }
         .stat-label { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+        .submit-hero-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--amber); color: #1a1a1a; border-radius: 12px; padding: 14px 28px; font-size: 14px; font-family: 'Sora', sans-serif; font-weight: 700; text-decoration: none; margin-top: 28px; transition: opacity 0.2s; }
+        .submit-hero-btn:hover { opacity: 0.9; }
         .filters-wrap { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 24px; position: sticky; top: 60px; z-index: 90; }
         .filters { max-width: 1100px; margin: 0 auto; display: flex; gap: 8px; padding: 12px 0; overflow-x: auto; }
         .filters::-webkit-scrollbar { display: none; }
@@ -76,6 +81,7 @@
     </style>
 </head>
 <body>
+
 <nav class="navbar">
     <div class="nav-inner">
         <div class="logo">Gem<span>India</span> 🌿</div>
@@ -88,6 +94,7 @@
         </div>
     </div>
 </nav>
+
 <div class="hero">
     <h1>Discover <span>Hidden Gems</span> of Karnataka</h1>
     <p>Explore underrated tourist places that most people don't know about. Real experiences, real budgets, real Karnataka.</p>
@@ -96,7 +103,9 @@
         <div class="stat"><div class="stat-num">{{ community_gems|length + places|length }}</div><div class="stat-label">Total Places</div></div>
         <div class="stat"><div class="stat-num">AI</div><div class="stat-label">Powered</div></div>
     </div>
+    <a href="/submit-gem" class="submit-hero-btn">💎 Submit Your Hidden Gem</a>
 </div>
+
 <div class="filters-wrap">
     <div class="filters">
         <button class="filter-btn active" onclick="setFilter('', this)">All Places</button>
@@ -111,6 +120,7 @@
         <button class="filter-btn" onclick="setFilter('community', this)">💎 Community</button>
     </div>
 </div>
+
 <div class="main">
     <div class="ai-section">
         <div class="ai-header">
@@ -127,8 +137,10 @@
         <div class="ai-loading" id="ai-loading"><span></span><span></span><span></span> Finding the best hidden gems for you...</div>
         <div class="ai-response" id="ai-response"></div>
     </div>
+
     <div class="section-title" id="section-title">All Hidden Gems in Karnataka</div>
     <div class="places-grid" id="places-grid">
+
         {% for place in places %}
         <div class="place-card" data-tags="{{ place.tags|join(',') }}" data-name="{{ place.name }}" data-district="{{ place.district }}" data-type="official">
             {% if place.image %}
@@ -161,7 +173,7 @@
         {% for gem in community_gems %}
         <div class="place-card community-card" data-tags="community" data-name="{{ gem.place_name }}" data-district="{{ gem.district }}" data-type="community">
             {% if gem.image %}
-            <img class="place-img" src="/static/{{ gem.image }}" alt="{{ gem.place_name }}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <img class="place-img" src="{{ gem.image }}" alt="{{ gem.place_name }}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div class="place-img-placeholder" style="display:none;">💎</div>
             {% else %}
             <div class="place-img-placeholder">💎</div>
@@ -183,9 +195,12 @@
             </div>
         </div>
         {% endfor %}
+
     </div>
 </div>
+
 <div class="footer">Made with love for Karnataka travellers by <span>GemIndia</span> 🌿</div>
+
 <script>
     let activeTag = '';
     function setFilter(tag, btn) {
@@ -213,7 +228,6 @@
         const input = document.getElementById('ai-input');
         const message = input.value.trim();
         if (!message) return;
-        // ✅ Clear input immediately after asking
         input.value = '';
         document.getElementById('ai-loading').style.display = 'flex';
         document.getElementById('ai-response').style.display = 'none';
@@ -230,5 +244,6 @@
     }
     document.getElementById('ai-input').addEventListener('keypress', function(e) { if (e.key === 'Enter') getAIRecommendation(); });
 </script>
+
 </body>
 </html>

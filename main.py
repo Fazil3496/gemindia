@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, Response
 from groq import Groq
 from dotenv import load_dotenv
 import os
 import uuid
+import base64
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import requests as http_requests
@@ -211,19 +212,38 @@ def submit_gem_post():
     name = request.form.get("name", "Anonymous")
     place_name = request.form.get("place_name", "")
     district = request.form.get("district", "")
+    place_type = request.form.get("type", "Other")
     description = request.form.get("description", "")
+    budget = request.form.get("budget", "")
+    best_season = request.form.get("best_season", "")
+    tags = request.form.getlist("tags")
     tip = request.form.get("tip", "")
-    image_path = None
+
+    image_data = None
     if 'image' in request.files:
         file = request.files['image']
         if file and file.filename and allowed_file(file.filename):
-            filename = str(uuid.uuid4()) + '_' + secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            image_path = 'uploads/' + filename
+            ext = file.filename.rsplit('.', 1)[1].lower()
+            mime = {'jpg': 'image/jpeg', 'jpeg': 'image/jpeg',
+                    'png': 'image/png', 'gif': 'image/gif',
+                    'webp': 'image/webp'}.get(ext, 'image/jpeg')
+            file_bytes = file.read()
+            b64 = base64.b64encode(file_bytes).decode('utf-8')
+            image_data = f"data:{mime};base64,{b64}"
+
     gem = {
-        "id": str(uuid.uuid4()), "name": name, "place_name": place_name,
-        "district": district, "description": description, "tip": tip,
-        "image": image_path, "date": datetime.now().strftime("%d %b %Y")
+        "id": str(uuid.uuid4()),
+        "name": name,
+        "place_name": place_name,
+        "district": district,
+        "type": place_type,
+        "description": description,
+        "budget": budget,
+        "best_season": best_season,
+        "tags": tags,
+        "tip": tip,
+        "image": image_data,
+        "date": datetime.now().strftime("%d %b %Y")
     }
     gems = load_gems()
     gems.append(gem)
@@ -248,13 +268,23 @@ def admin_upload_image():
         filename = f"place_{place_id}_" + secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         image_url = '/static/uploads/' + filename
-        # Update place image in memory
         for p in places:
             if p["id"] == place_id:
                 p["image"] = image_url
                 break
         return jsonify({"success": True, "image_url": image_url, "place_id": place_id})
     return jsonify({"error": "Invalid file"}), 400
+
+@app.route("/sitemap.xml")
+def sitemap():
+    urls = ['https://gemindia.onrender.com/']
+    for p in places:
+        urls.append(f'https://gemindia.onrender.com/place/{p["id"]}')
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    for url in urls:
+        xml += f'  <url><loc>{url}</loc></url>\n'
+    xml += '</urlset>'
+    return Response(xml, mimetype='application/xml')
 
 @app.route("/debug-gems")
 def debug_gems():
