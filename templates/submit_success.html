@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gem Submitted! - GemIndia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --green: #1a6b3c; --green-light: #a8e6c1; --green-dark: #0d4a28; --amber: #f9a825; --bg: #f5f5f0; }
+        body { font-family: 'Sora', sans-serif; background: var(--bg); min-height: 100vh; display: flex; flex-direction: column; }
+        .navbar { background: var(--green); padding: 0 24px; }
+        .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+        .logo { font-size: 20px; font-weight: 700; color: #fff; text-decoration: none; }
+        .logo span { color: var(--green-light); }
+        .success-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
+        .success-card { background: #fff; border-radius: 24px; padding: 48px 40px; text-align: center; max-width: 480px; width: 100%; box-shadow: 0 8px 40px rgba(0,0,0,0.08); }
+        .success-icon { font-size: 72px; margin-bottom: 20px; animation: pop 0.5s ease; }
+        @keyframes pop { 0%{transform:scale(0)} 70%{transform:scale(1.2)} 100%{transform:scale(1)} }
+        .success-title { font-size: 26px; font-weight: 700; color: var(--green); margin-bottom: 12px; }
+        .success-msg { font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 32px; }
+        .btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 12px 24px; border-radius: 12px; font-size: 14px; font-family: 'Sora', sans-serif; font-weight: 600; cursor: pointer; text-decoration: none; border: none; transition: all 0.2s; }
+        .btn-green { background: var(--green); color: #fff; }
+        .btn-green:hover { background: #0d4a28; }
+        .btn-amber { background: var(--amber); color: #1a1a1a; }
+        .btn-amber:hover { background: #fbb72c; }
+        .confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 999; }
+        .confetti-piece { position: absolute; width: 10px; height: 10px; top: -10px; opacity: 0; animation: fall linear forwards; border-radius: 2px; }
+        @keyframes fall { 0%{top:-10px;opacity:1;transform:rotate(0deg)} 100%{top:100vh;opacity:0;transform:rotate(720deg)} }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="/" class="logo">Gem<span>India</span> 🌿</a>
+    </div>
+</nav>
+<div class="confetti" id="confetti"></div>
+<div class="success-wrap">
+    <div class="success-card">
+        <div class="success-icon">🎉</div>
+        <div class="success-title">Gem Submitted!</div>
+        <div class="success-msg">
+            Thank you for sharing your hidden gem with Karnataka travellers! 🌿<br><br>
+            Your discovery is now live on the Community Gems page and visible to travellers worldwide!
+        </div>
+        <div class="btn-group">
+            <a href="/community" class="btn btn-amber">💎 View Community Gems</a>
+            <a href="/" class="btn btn-green">🏠 Back to Home</a>
+        </div>
+    </div>
+</div>
+<script>
+    // Confetti animation
+    const colors = ['#1a6b3c','#f9a825','#a8e6c1','#ff6b6b','#4ecdc4','#45b7d1'];
+    const confetti = document.getElementById('confetti');
+    for (let i = 0; i < 80; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        piece.style.animationDelay = (Math.random() * 2) + 's';
+        piece.style.width = (Math.random() * 8 + 6) + 'px';
+        piece.style.height = (Math.random() * 8 + 6) + 'px';
+        confetti.appendChild(piece);
+    }
+</script>
+</body>
+</html>

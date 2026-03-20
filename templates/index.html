@@ -13,7 +13,7 @@
         .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
         .logo { font-size: 20px; font-weight: 700; color: #fff; }
         .logo span { color: var(--green-light); }
-        .nav-search { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 8px 16px; width: 300px; }
+        .nav-search { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 8px 16px; width: 280px; }
         .nav-search input { background: transparent; border: none; outline: none; color: #fff; font-size: 13px; font-family: 'Sora', sans-serif; width: 100%; }
         .nav-search input::placeholder { color: rgba(255,255,255,0.6); }
         .nav-links { display: flex; align-items: center; gap: 8px; }
@@ -42,29 +42,34 @@
         .ai-input-row { display: flex; gap: 10px; }
         .ai-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; font-size: 13px; font-family: 'Sora', sans-serif; outline: none; }
         .ai-btn { background: var(--green); border: none; border-radius: 10px; padding: 12px 20px; color: #fff; font-size: 13px; font-family: 'Sora', sans-serif; font-weight: 500; cursor: pointer; white-space: nowrap; }
-        .ai-response { margin-top: 14px; background: #e8f5e9; border-radius: 10px; padding: 14px 16px; font-size: 13px; line-height: 1.7; display: none; }
+        .ai-response { margin-top: 14px; background: #e8f5e9; border-radius: 10px; padding: 14px 16px; font-size: 13px; line-height: 1.7; display: none; white-space: pre-wrap; }
         .ai-loading { display: none; align-items: center; gap: 8px; margin-top: 14px; font-size: 13px; color: var(--muted); }
         .ai-loading span { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: bounce 1.2s infinite; }
         .ai-loading span:nth-child(2) { animation-delay: 0.2s; }
         .ai-loading span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes bounce { 0%,80%,100%{transform:translateY(0);opacity:0.4} 40%{transform:translateY(-4px);opacity:1} }
         .section-title { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
+        .community-badge { background: var(--amber); color: #1a1a1a; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 8px; margin-left: 6px; vertical-align: middle; }
         .places-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
         .place-card { background: var(--white); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: transform 0.2s; cursor: pointer; }
         .place-card:hover { transform: translateY(-4px); }
+        .place-card.community-card { border: 2px solid var(--amber); }
+        .place-img { width: 100%; height: 180px; object-fit: cover; display: block; }
         .place-img-placeholder { width: 100%; height: 180px; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); display: flex; align-items: center; justify-content: center; font-size: 56px; }
         .place-body { padding: 16px; }
-        .place-top { display: flex; justify-content: space-between; margin-bottom: 6px; }
+        .place-top { display: flex; justify-content: space-between; margin-bottom: 6px; align-items: flex-start; }
         .place-name { font-size: 16px; font-weight: 600; }
-        .place-rating { font-size: 13px; font-weight: 600; color: var(--amber); }
+        .place-rating { font-size: 13px; font-weight: 600; color: var(--amber); white-space: nowrap; }
         .place-district { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
         .place-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .place-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
         .tag { background: #e8f5e9; color: #1a6b3c; font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 10px; }
+        .tag.community-tag { background: #fff8e1; color: #b8860b; }
         .place-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border); }
         .place-budget { font-size: 12px; font-weight: 600; color: var(--green); }
         .place-season { font-size: 11px; color: var(--muted); }
         .view-btn { background: var(--green); color: #fff; border: none; border-radius: 8px; padding: 6px 14px; font-size: 12px; font-family: 'Sora', sans-serif; font-weight: 500; cursor: pointer; }
+        .community-submitter { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
         .footer { background: var(--green-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 24px; font-size: 12px; margin-top: 60px; }
         .footer span { color: var(--green-light); font-weight: 600; }
         @media (max-width: 600px) { .hero h1 { font-size: 26px; } .nav-search { display: none; } .places-grid { grid-template-columns: 1fr; } }
@@ -88,7 +93,7 @@
     <p>Explore underrated tourist places that most people don't know about. Real experiences, real budgets, real Karnataka.</p>
     <div class="hero-stats">
         <div class="stat"><div class="stat-num">{{ places|length }}</div><div class="stat-label">Hidden Gems</div></div>
-        <div class="stat"><div class="stat-num">8+</div><div class="stat-label">Districts</div></div>
+        <div class="stat"><div class="stat-num">{{ community_gems|length + places|length }}</div><div class="stat-label">Total Places</div></div>
         <div class="stat"><div class="stat-num">AI</div><div class="stat-label">Powered</div></div>
     </div>
 </div>
@@ -100,7 +105,10 @@
         <button class="filter-btn" onclick="setFilter('Beach', this)">Beaches</button>
         <button class="filter-btn" onclick="setFilter('Wildlife', this)">Wildlife</button>
         <button class="filter-btn" onclick="setFilter('Hills', this)">Hills</button>
+        <button class="filter-btn" onclick="setFilter('Waterfalls', this)">Waterfalls</button>
+        <button class="filter-btn" onclick="setFilter('Adventure', this)">Adventure</button>
         <button class="filter-btn" onclick="setFilter('Bengaluru Nearby', this)">Near Bengaluru</button>
+        <button class="filter-btn" onclick="setFilter('community', this)">💎 Community</button>
     </div>
 </div>
 <div class="main">
@@ -122,17 +130,15 @@
     <div class="section-title" id="section-title">All Hidden Gems in Karnataka</div>
     <div class="places-grid" id="places-grid">
         {% for place in places %}
-        <div class="place-card" data-tags="{{ place.tags|join(',') }}" data-name="{{ place.name }}" data-district="{{ place.district }}">
-            <div class="place-img-placeholder">
-                {% if place.type == 'Rainforest' %}🌿
-                {% elif place.type == 'Rock Formation' %}🗿
-                {% elif place.type == 'Heritage' %}⛪
-                {% elif place.type == 'Beach' %}🏖️
-                {% elif place.type == 'Trek' %}🏔️
-                {% elif place.type == 'Wildlife' %}🐆
-                {% elif place.type == 'Hills' %}⛰️
-                {% else %}📍{% endif %}
+        <div class="place-card" data-tags="{{ place.tags|join(',') }}" data-name="{{ place.name }}" data-district="{{ place.district }}" data-type="official">
+            {% if place.image %}
+            <img class="place-img" src="{{ place.image }}" alt="{{ place.name }}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="place-img-placeholder" style="display:none;">
+                {% if place.type == 'Rainforest' %}🌿{% elif place.type == 'Rock Formation' %}🗿{% elif place.type == 'Heritage' %}⛪{% elif place.type == 'Beach' %}🏖️{% elif place.type == 'Trek' %}🏔️{% elif place.type == 'Wildlife' %}🐆{% elif place.type == 'Hills' %}⛰️{% elif place.type == 'Waterfalls' %}💧{% elif place.type == 'Adventure' %}🧗{% else %}📍{% endif %}
             </div>
+            {% else %}
+            <div class="place-img-placeholder">📍</div>
+            {% endif %}
             <div class="place-body">
                 <div class="place-top">
                     <div class="place-name">{{ place.name }}</div>
@@ -147,6 +153,32 @@
                         <div class="place-season">Best: {{ place.best_season }}</div>
                     </div>
                     <button class="view-btn" onclick="window.location.href='/place/{{ place.id }}'">View Details</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% for gem in community_gems %}
+        <div class="place-card community-card" data-tags="community" data-name="{{ gem.place_name }}" data-district="{{ gem.district }}" data-type="community">
+            {% if gem.image %}
+            <img class="place-img" src="/static/{{ gem.image }}" alt="{{ gem.place_name }}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="place-img-placeholder" style="display:none;">💎</div>
+            {% else %}
+            <div class="place-img-placeholder">💎</div>
+            {% endif %}
+            <div class="place-body">
+                <div class="place-top">
+                    <div class="place-name">{{ gem.place_name }} <span class="community-badge">COMMUNITY</span></div>
+                </div>
+                <div class="place-district">📍 {{ gem.district }}, Karnataka</div>
+                <div class="community-submitter">Shared by {{ gem.name }} · {{ gem.date }}</div>
+                <div class="place-desc">{{ gem.description }}</div>
+                {% if gem.tip %}
+                <div class="place-tags"><span class="tag community-tag">💡 {{ gem.tip }}</span></div>
+                {% endif %}
+                <div class="place-footer">
+                    <div><div class="place-season">Community Discovery</div></div>
+                    <a href="/community" style="text-decoration:none;"><button class="view-btn" style="background:var(--amber);color:#1a1a1a;">View All</button></a>
                 </div>
             </div>
         </div>
@@ -168,15 +200,21 @@
         let visible = 0;
         cards.forEach(card => {
             const matchSearch = !search || card.dataset.name.toLowerCase().includes(search) || card.dataset.district.toLowerCase().includes(search);
-            const matchTag = !activeTag || card.dataset.tags.includes(activeTag);
+            let matchTag = false;
+            if (!activeTag) matchTag = true;
+            else if (activeTag === 'community') matchTag = card.dataset.type === 'community';
+            else matchTag = card.dataset.tags.includes(activeTag);
             if (matchSearch && matchTag) { card.style.display = 'block'; visible++; }
             else { card.style.display = 'none'; }
         });
         document.getElementById('section-title').textContent = visible + ' Hidden Gem' + (visible !== 1 ? 's' : '') + (activeTag ? ' - ' + activeTag : '') + ' in Karnataka';
     }
     async function getAIRecommendation() {
-        const message = document.getElementById('ai-input').value.trim();
+        const input = document.getElementById('ai-input');
+        const message = input.value.trim();
         if (!message) return;
+        // ✅ Clear input immediately after asking
+        input.value = '';
         document.getElementById('ai-loading').style.display = 'flex';
         document.getElementById('ai-response').style.display = 'none';
         try {
