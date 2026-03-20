@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - GemIndia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --green: #1a6b3c; --green-light: #a8e6c1; --green-dark: #0d4a28; --amber: #f9a825; --bg: #f5f5f0; --white: #fff; --border: #e0e0e0; --muted: #666; }
+        body { font-family: 'Sora', sans-serif; background: var(--bg); min-height: 100vh; }
+        .navbar { background: var(--green); padding: 0 24px; }
+        .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+        .logo { font-size: 20px; font-weight: 700; color: #fff; text-decoration: none; }
+        .logo span { color: var(--green-light); }
+        .nav-link { color: rgba(255,255,255,0.85); font-size: 13px; text-decoration: none; padding: 6px 14px; border-radius: 20px; }
+        .nav-link:hover { background: rgba(255,255,255,0.15); }
+        .main { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+        h1 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+        .subtitle { font-size: 13px; color: var(--muted); margin-bottom: 32px; }
+        .places-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+        .place-item { background: var(--white); border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+        .place-preview { width: 100%; height: 140px; object-fit: cover; display: block; background: #e8f5e9; }
+        .place-preview-placeholder { width: 100%; height: 140px; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); display: flex; align-items: center; justify-content: center; font-size: 40px; }
+        .place-info { padding: 12px 14px 14px; }
+        .place-name { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+        .place-district { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+        .upload-label { display: block; background: var(--green); color: #fff; text-align: center; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .upload-label:hover { background: var(--green-dark); }
+        .upload-input { display: none; }
+        .status { font-size: 11px; margin-top: 8px; text-align: center; min-height: 16px; }
+        .status.success { color: var(--green); }
+        .status.error { color: #e53e3e; }
+        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--green); color: #fff; padding: 12px 24px; border-radius: 12px; font-size: 13px; font-weight: 600; display: none; z-index: 999; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="/" class="logo">Gem<span>India</span> 🌿</a>
+        <a href="/" class="nav-link">← Back to Home</a>
+    </div>
+</nav>
+<div class="main">
+    <h1>🖼️ Admin — Upload Place Images</h1>
+    <p class="subtitle">Upload images for each hidden gem. Images will show on the homepage cards immediately.</p>
+    <div class="places-list">
+        {% for place in places %}
+        <div class="place-item" id="card-{{ place.id }}">
+            {% if place.image and place.image.startswith('/static') %}
+            <img class="place-preview" id="img-{{ place.id }}" src="{{ place.image }}" alt="{{ place.name }}">
+            {% elif place.image %}
+            <img class="place-preview" id="img-{{ place.id }}" src="{{ place.image }}" alt="{{ place.name }}" onerror="this.style.display='none';document.getElementById('ph-{{ place.id }}').style.display='flex'">
+            <div class="place-preview-placeholder" id="ph-{{ place.id }}" style="display:none;">📍</div>
+            {% else %}
+            <div class="place-preview-placeholder" id="ph-{{ place.id }}">📍</div>
+            {% endif %}
+            <div class="place-info">
+                <div class="place-name">{{ place.name }}</div>
+                <div class="place-district">{{ place.district }}</div>
+                <label class="upload-label" for="file-{{ place.id }}">📷 Upload Image</label>
+                <input class="upload-input" type="file" id="file-{{ place.id }}" accept="image/*" onchange="uploadImage({{ place.id }}, this)">
+                <div class="status" id="status-{{ place.id }}"></div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="toast" id="toast">✅ Image uploaded!</div>
+<script>
+async function uploadImage(placeId, input) {
+    const file = input.files[0];
+    if (!file) return;
+    const status = document.getElementById('status-' + placeId);
+    status.textContent = 'Uploading...';
+    status.className = 'status';
+    const formData = new FormData();
+    formData.append('place_id', placeId);
+    formData.append('image', file);
+    try {
+        const res = await fetch('/admin/upload-image', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.success) {
+            status.textContent = '✅ Uploaded!';
+            status.className = 'status success';
+            // Update preview
+            const ph = document.getElementById('ph-' + placeId);
+            let img = document.getElementById('img-' + placeId);
+            if (!img) {
+                img = document.createElement('img');
+                img.className = 'place-preview';
+                img.id = 'img-' + placeId;
+                const card = document.getElementById('card-' + placeId);
+                card.insertBefore(img, card.firstChild);
+                if (ph) ph.style.display = 'none';
+            }
+            img.src = data.image_url + '?t=' + Date.now();
+            img.style.display = 'block';
+            // Show toast
+            const toast = document.getElementById('toast');
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 3000);
+        } else {
+            status.textContent = '❌ ' + (data.error || 'Failed');
+            status.className = 'status error';
+        }
+    } catch(e) {
+        status.textContent = '❌ Upload failed';
+        status.className = 'status error';
+    }
+}
+</script>
+</body>
+</html>

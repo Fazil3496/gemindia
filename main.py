@@ -234,6 +234,28 @@ def submit_gem_post():
 def submit_success():
     return render_template("submit_success.html")
 
+@app.route("/admin")
+def admin():
+    return render_template("admin.html", places=places)
+
+@app.route("/admin/upload-image", methods=["POST"])
+def admin_upload_image():
+    place_id = int(request.form.get("place_id", 0))
+    if 'image' not in request.files:
+        return jsonify({"error": "No image"}), 400
+    file = request.files['image']
+    if file and file.filename and allowed_file(file.filename):
+        filename = f"place_{place_id}_" + secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        image_url = '/static/uploads/' + filename
+        # Update place image in memory
+        for p in places:
+            if p["id"] == place_id:
+                p["image"] = image_url
+                break
+        return jsonify({"success": True, "image_url": image_url, "place_id": place_id})
+    return jsonify({"error": "Invalid file"}), 400
+
 @app.route("/debug-gems")
 def debug_gems():
     try:
