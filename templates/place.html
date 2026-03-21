@@ -168,22 +168,22 @@
             </div>
         </div>
 
-        <!-- ✅ FIXED: Using reliable Wikipedia CDN logo URLs -->
+        <!-- ✅ Pure CSS logos - never break, no external images needed -->
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
             <a href="https://www.makemytrip.com/hotels/hotel-listing/#!city={{ place.district }}&country=IN" target="_blank" class="booking-btn">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/MakeMyTrip_Logo.svg/200px-MakeMyTrip_Logo.svg.png" alt="MakeMyTrip" style="height:24px;object-fit:contain;">
+                <span style="background:#e8175d;color:#fff;font-size:11px;font-weight:800;padding:4px 8px;border-radius:6px;letter-spacing:-0.5px;white-space:nowrap;">make<span style="color:#ffcc00;">my</span>trip</span>
                 <span>MakeMyTrip</span>
             </a>
             <a href="https://www.booking.com/search.html?ss={{ place.district }}+Karnataka+India" target="_blank" class="booking-btn">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Booking.com_logo.svg/200px-Booking.com_logo.svg.png" alt="Booking.com" style="height:24px;object-fit:contain;">
+                <span style="color:#003580;font-size:13px;font-weight:800;letter-spacing:-0.5px;white-space:nowrap;">Booking<span style="color:#e31837;">.com</span></span>
                 <span>Booking.com</span>
             </a>
             <a href="https://www.goibibo.com/hotels/hotels-in-{{ place.district | lower | replace(' ', '-') }}-city/" target="_blank" class="booking-btn">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Goibibo_logo.svg/200px-Goibibo_logo.svg.png" alt="Goibibo" style="height:24px;object-fit:contain;">
+                <span style="background:#ef4e23;color:#fff;font-size:12px;font-weight:800;padding:4px 8px;border-radius:6px;white-space:nowrap;">goibibo</span>
                 <span>Goibibo</span>
             </a>
             <a href="https://www.airbnb.co.in/s/{{ place.district }}--Karnataka--India/homes" target="_blank" class="booking-btn">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/200px-Airbnb_Logo_B%C3%A9lo.svg.png" alt="Airbnb" style="height:24px;object-fit:contain;">
+                <span style="color:#ff385c;font-size:13px;font-weight:800;letter-spacing:-0.5px;white-space:nowrap;">airbnb</span>
                 <span>Airbnb</span>
             </a>
         </div>
