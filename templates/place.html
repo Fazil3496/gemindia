@@ -167,24 +167,27 @@
                 <div style="font-size:12px;color:var(--muted);">Find the best hotels, resorts and homestays</div>
             </div>
         </div>
+
+        <!-- ✅ FIXED: Using reliable Wikipedia CDN logo URLs -->
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
             <a href="https://www.makemytrip.com/hotels/hotel-listing/#!city={{ place.district }}&country=IN" target="_blank" class="booking-btn">
-                <img src="https://imgak.mmtcdn.com/pwa_v3/pwa_hotel_assets/header/mmtLogoWhite.png" onerror="this.style.display='none'" alt="MakeMyTrip">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/MakeMyTrip_Logo.svg/200px-MakeMyTrip_Logo.svg.png" alt="MakeMyTrip" style="height:24px;object-fit:contain;">
                 <span>MakeMyTrip</span>
             </a>
             <a href="https://www.booking.com/search.html?ss={{ place.district }}+Karnataka+India" target="_blank" class="booking-btn">
-                <img src="https://cf.bstatic.com/static/img/booking_logo/booking-logo-square.png" onerror="this.src='https://www.booking.com/favicon.ico'" alt="Booking.com" style="height:24px;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Booking.com_logo.svg/200px-Booking.com_logo.svg.png" alt="Booking.com" style="height:24px;object-fit:contain;">
                 <span>Booking.com</span>
             </a>
             <a href="https://www.goibibo.com/hotels/hotels-in-{{ place.district | lower | replace(' ', '-') }}-city/" target="_blank" class="booking-btn">
-                <img src="https://gos3.ibcdn.com/goibibo-logo-1548746674.png" onerror="this.style.display='none'" alt="Goibibo" style="height:24px;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Goibibo_logo.svg/200px-Goibibo_logo.svg.png" alt="Goibibo" style="height:24px;object-fit:contain;">
                 <span>Goibibo</span>
             </a>
             <a href="https://www.airbnb.co.in/s/{{ place.district }}--Karnataka--India/homes" target="_blank" class="booking-btn">
-                <img src="https://a0.muscache.com/airbnb/static/icons/android-icon-192x192-c0465f9f0380893768972a31a614b670.png" alt="Airbnb">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/200px-Airbnb_Logo_B%C3%A9lo.svg.png" alt="Airbnb" style="height:24px;object-fit:contain;">
                 <span>Airbnb</span>
             </a>
         </div>
+
         <div style="margin-top:16px;padding:12px 16px;background:#e8f5e9;border-radius:10px;font-size:12px;color:#2d6a4f;">
             💡 <strong>Travel Tip:</strong> Book at least 2 weeks in advance for {{ place.best_season }} season to get best prices!
         </div>
