@@ -163,7 +163,38 @@
         {% endfor %}
     </div>
 
-    <!-- MAP SECTION -->
+    <!-- MAP SECTION --><!-- BOOKING SECTION -->
+<div class="section-title">🏨 Book Hotels & Travel</div>
+<div style="background:var(--white);border-radius:16px;padding:24px;margin-bottom:32px;border:1px solid var(--border);">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <div style="width:36px;height:36px;background:#e8f5e9;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">🏨</div>
+        <div>
+            <div style="font-size:15px;font-weight:600;">Book Your Stay Near {{ place.name }}</div>
+            <div style="font-size:12px;color:var(--muted);">Find the best hotels, resorts and homestays</div>
+        </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+        <a href="https://www.makemytrip.com/hotels/hotel-listing/#!city={{ place.district }}&country=IN" target="_blank"
+           style="display:flex;align-items:center;gap:10px;background:#f8f9fa;border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-decoration:none;color:var(--text);transition:all 0.2s;font-weight:600;font-size:13px;">
+            🟠 MakeMyTrip
+        </a>
+        <a href="https://www.booking.com/search.html?ss={{ place.district }}+Karnataka+India" target="_blank"
+           style="display:flex;align-items:center;gap:10px;background:#f8f9fa;border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-decoration:none;color:var(--text);transition:all 0.2s;font-weight:600;font-size:13px;">
+            🔵 Booking.com
+        </a>
+        <a href="https://www.goibibo.com/hotels/hotels-in-{{ place.district | lower | replace(' ', '-') }}-city/" target="_blank"
+           style="display:flex;align-items:center;gap:10px;background:#f8f9fa;border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-decoration:none;color:var(--text);transition:all 0.2s;font-weight:600;font-size:13px;">
+            🟣 Goibibo
+        </a>
+        <a href="https://www.airbnb.co.in/s/{{ place.district }}--Karnataka--India/homes" target="_blank"
+           style="display:flex;align-items:center;gap:10px;background:#f8f9fa;border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-decoration:none;color:var(--text);transition:all 0.2s;font-weight:600;font-size:13px;">
+            🔴 Airbnb
+        </a>
+    </div>
+    <div style="margin-top:16px;padding:12px 16px;background:#e8f5e9;border-radius:10px;font-size:12px;color:#2d6a4f;">
+        💡 <strong>Travel Tip:</strong> Book at least 2 weeks in advance for {{ place.best_season }} season to get best prices!
+    </div>
+</div>
     <div class="section-title">📍 Location on Map</div>
     <div class="map-section">
         <div class="map-header">
