@@ -41,16 +41,12 @@
         .essential-item { background: var(--white); border-radius: 12px; padding: 16px; border: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
         .essential-emoji { font-size: 24px; flex-shrink: 0; }
         .essential-text { font-size: 13px; color: var(--text); font-weight: 500; }
-
-        /* MAP */
         .map-section { background: var(--white); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 32px; }
         .map-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
         .map-header-icon { font-size: 20px; }
         .map-header-title { font-size: 15px; font-weight: 600; }
         .map-header-sub { font-size: 12px; color: var(--muted); margin-left: auto; }
         #map { height: 320px; width: 100%; }
-
-        /* AI TIP */
         .ai-tip-section { background: #e8f5e9; border-radius: 16px; padding: 24px; margin-bottom: 32px; border: 1px solid #c8e6c9; }
         .ai-tip-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
         .ai-tip-icon { width: 36px; height: 36px; background: var(--green); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fff; }
@@ -64,8 +60,6 @@
         .ai-loading span:nth-child(2) { animation-delay: 0.2s; }
         .ai-loading span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes bounce { 0%,80%,100%{transform:translateY(0);opacity:0.4} 40%{transform:translateY(-4px);opacity:1} }
-
-        /* UPLOAD SECTION */
         .upload-section { background: var(--white); border-radius: 16px; padding: 24px; margin-bottom: 32px; border: 1px solid var(--border); }
         .upload-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
         .upload-icon { width: 36px; height: 36px; background: #e8f5e9; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
@@ -78,8 +72,6 @@
         .form-file input { display: none; }
         .submit-btn { background: var(--green); color: #fff; border: none; border-radius: 10px; padding: 12px 24px; font-size: 13px; font-family: 'Sora', sans-serif; font-weight: 600; cursor: pointer; transition: background 0.2s; }
         .submit-btn:hover { background: var(--green-dark); }
-
-        /* EXPERIENCES */
         .experiences-section { margin-bottom: 32px; }
         .experience-card { background: var(--white); border-radius: 14px; padding: 20px; border: 1px solid var(--border); margin-bottom: 16px; }
         .exp-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
@@ -89,7 +81,9 @@
         .exp-story { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 12px; }
         .exp-image { width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; }
         .no-experiences { text-align: center; padding: 32px; color: var(--muted); font-size: 13px; background: var(--white); border-radius: 14px; border: 1px solid var(--border); }
-
+        .booking-btn { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; text-decoration: none; color: var(--text); font-weight: 600; font-size: 13px; transition: all 0.2s; }
+        .booking-btn:hover { border-color: var(--green); box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .booking-btn img { height: 24px; object-fit: contain; }
         .back-home { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; text-decoration: none; border-radius: 10px; padding: 12px 24px; font-size: 13px; font-weight: 500; transition: background 0.2s; margin-bottom: 32px; }
         .back-home:hover { background: var(--green-dark); }
         .footer { background: var(--green-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 24px; font-size: 12px; margin-top: 40px; }
@@ -163,38 +157,40 @@
         {% endfor %}
     </div>
 
-    <!-- MAP SECTION --><!-- BOOKING SECTION -->
-<div class="section-title">🏨 Book Hotels & Travel</div>
-<div style="background:var(--white);border-radius:16px;padding:24px;margin-bottom:32px;border:1px solid var(--border);">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-        <div style="width:36px;height:36px;background:#e8f5e9;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">🏨</div>
-        <div>
-            <div style="font-size:15px;font-weight:600;">Book Your Stay Near {{ place.name }}</div>
-            <div style="font-size:12px;color:var(--muted);">Find the best hotels, resorts and homestays</div>
+    <!-- BOOKING SECTION -->
+    <div class="section-title">🏨 Book Hotels & Travel</div>
+    <div style="background:var(--white);border-radius:16px;padding:24px;margin-bottom:32px;border:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+            <div style="width:36px;height:36px;background:#e8f5e9;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">🏨</div>
+            <div>
+                <div style="font-size:15px;font-weight:600;">Book Your Stay Near {{ place.name }}</div>
+                <div style="font-size:12px;color:var(--muted);">Find the best hotels, resorts and homestays</div>
+            </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+            <a href="https://www.makemytrip.com/hotels/hotel-listing/#!city={{ place.district }}&country=IN" target="_blank" class="booking-btn">
+                <img src="https://imgak.mmtcdn.com/pwa_v3/pwa_hotel_assets/header/mmtLogoWhite.png" onerror="this.style.display='none'" alt="MakeMyTrip">
+                <span>MakeMyTrip</span>
+            </a>
+            <a href="https://www.booking.com/search.html?ss={{ place.district }}+Karnataka+India" target="_blank" class="booking-btn">
+                <img src="https://t-cf.bstatic.com/design-assets/assets/v3.105.0/images/favicon/favicon-180.png" alt="Booking.com">
+                <span>Booking.com</span>
+            </a>
+            <a href="https://www.goibibo.com/hotels/hotels-in-{{ place.district | lower | replace(' ', '-') }}-city/" target="_blank" class="booking-btn">
+                <img src="https://gos3.ibcdn.com/goibibo_logo-1548746674.png" alt="Goibibo">
+                <span>Goibibo</span>
+            </a>
+            <a href="https://www.airbnb.co.in/s/{{ place.district }}--Karnataka--India/homes" target="_blank" class="booking-btn">
+                <img src="https://a0.muscache.com/airbnb/static/icons/android-icon-192x192-c0465f9f0380893768972a31a614b670.png" alt="Airbnb">
+                <span>Airbnb</span>
+            </a>
+        </div>
+        <div style="margin-top:16px;padding:12px 16px;background:#e8f5e9;border-radius:10px;font-size:12px;color:#2d6a4f;">
+            💡 <strong>Travel Tip:</strong> Book at least 2 weeks in advance for {{ place.best_season }} season to get best prices!
         </div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
-        <a href="https://www.makemytrip.com/hotels/hotel-listing/#!city={{ place.district }}&country=IN" target="_blank"
-           style="display:flex;align-items:center;gap:10px;background:#f8f9fa;border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-decoration:none;color:var(--text);transition:all 0.2s;font-weight:600;font-size:13px;">
-            🟠 MakeMyTrip
-        </a>
-        <a href="https://www.booking.com/search.html?ss={{ place.district }}+Karnataka+India" target="_blank"
-           style="display:flex;align-items:center;gap:10px;background:#f8f9fa;border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-decoration:none;color:var(--text);transition:all 0.2s;font-weight:600;font-size:13px;">
-            🔵 Booking.com
-        </a>
-        <a href="https://www.goibibo.com/hotels/hotels-in-{{ place.district | lower | replace(' ', '-') }}-city/" target="_blank"
-           style="display:flex;align-items:center;gap:10px;background:#f8f9fa;border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-decoration:none;color:var(--text);transition:all 0.2s;font-weight:600;font-size:13px;">
-            🟣 Goibibo
-        </a>
-        <a href="https://www.airbnb.co.in/s/{{ place.district }}--Karnataka--India/homes" target="_blank"
-           style="display:flex;align-items:center;gap:10px;background:#f8f9fa;border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-decoration:none;color:var(--text);transition:all 0.2s;font-weight:600;font-size:13px;">
-            🔴 Airbnb
-        </a>
-    </div>
-    <div style="margin-top:16px;padding:12px 16px;background:#e8f5e9;border-radius:10px;font-size:12px;color:#2d6a4f;">
-        💡 <strong>Travel Tip:</strong> Book at least 2 weeks in advance for {{ place.best_season }} season to get best prices!
-    </div>
-</div>
+
+    <!-- MAP SECTION -->
     <div class="section-title">📍 Location on Map</div>
     <div class="map-section">
         <div class="map-header">
@@ -272,7 +268,6 @@
 <div class="footer">Made with love for Karnataka travellers by <span>GemIndia</span> 🌿</div>
 
 <script>
-    // Initialize Leaflet Map
     var map = L.map('map').setView([{{ place.lat }}, {{ place.lng }}], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
@@ -290,14 +285,12 @@
         .bindPopup('<b>{{ place.name }}</b><br>{{ place.district }}, Karnataka<br>⭐ {{ place.rating }}')
         .openPopup();
 
-    // File upload label update
     document.querySelector('input[type="file"]').addEventListener('change', function(e) {
         if (e.target.files[0]) {
             e.target.parentElement.innerHTML = '✅ ' + e.target.files[0].name + ' selected';
         }
     });
 
-    // AI Tips
     async function askAI() {
         document.getElementById('ai-loading').style.display = 'flex';
         document.getElementById('ai-answer').style.display = 'none';
