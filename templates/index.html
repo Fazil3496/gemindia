@@ -78,9 +78,180 @@
         .footer { background: var(--green-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 24px; font-size: 12px; margin-top: 60px; }
         .footer span { color: var(--green-light); font-weight: 600; }
         @media (max-width: 600px) { .hero h1 { font-size: 26px; } .nav-search { display: none; } .places-grid { grid-template-columns: 1fr; } }
+
+        /* Intro animation styles */
+        @keyframes floatIn { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+        @keyframes fadeUp { from{transform:translateY(15px);opacity:0} to{transform:translateY(0);opacity:1} }
+        @keyframes pulse { 0%{transform:scale(1);opacity:0.8} 70%{transform:scale(2.5);opacity:0} 100%{transform:scale(1);opacity:0} }
     </style>
 </head>
 <body>
+
+<!-- ===== 3D FLYING KARNATAKA INTRO ANIMATION ===== -->
+<div id="intro-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0d4a28;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;">
+    <canvas id="intro-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;"></canvas>
+    <div id="intro-content" style="position:relative;z-index:2;text-align:center;padding:0 20px;">
+        <div style="font-size:56px;margin-bottom:12px;animation:floatIn 1s ease forwards;">🌿</div>
+        <div style="font-size:40px;font-weight:800;color:#fff;letter-spacing:-1px;opacity:0;animation:fadeUp 0.8s ease 0.5s forwards;">Gem<span style="color:#a8e6c1;">India</span></div>
+        <div style="font-size:15px;color:rgba(255,255,255,0.7);margin-top:8px;opacity:0;animation:fadeUp 0.8s ease 0.9s forwards;">Hidden Gems of Karnataka 🗺️</div>
+        <div style="margin-top:28px;opacity:0;animation:fadeUp 0.8s ease 1.3s forwards;">
+            <div style="width:220px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;overflow:hidden;margin:0 auto;">
+                <div id="intro-bar" style="height:100%;width:0%;background:#a8e6c1;border-radius:2px;transition:width 2.4s ease;"></div>
+            </div>
+            <div id="intro-label" style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:10px;">Flying over Karnataka...</div>
+        </div>
+        <div style="margin-top:20px;opacity:0;animation:fadeUp 0.8s ease 1.8s forwards;">
+            <button onclick="skipIntro()" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.6);border-radius:20px;padding:6px 18px;font-size:11px;font-family:'Sora',sans-serif;cursor:pointer;">Skip ›</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===== 3D FLYING INTRO =====
+(function() {
+    const canvas = document.getElementById('intro-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Flying stars
+    const stars = Array.from({length: 220}, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        z: Math.random() * canvas.width,
+        color: Math.random() > 0.65 ? '#a8e6c1' : (Math.random() > 0.5 ? '#f9a825' : '#ffffff')
+    }));
+
+    // Karnataka city/gem dots
+    const cities = [
+        {name:'🌿 Bengaluru', px:0.56, py:0.74},
+        {name:'⛪ Mysuru', px:0.46, py:0.82},
+        {name:'🗿 Hampi', px:0.43, py:0.44},
+        {name:'🌧️ Coorg', px:0.38, py:0.79},
+        {name:'🏖️ Gokarna', px:0.24, py:0.54},
+        {name:'🌊 Dandeli', px:0.27, py:0.34},
+        {name:'☕ Chikmagalur', px:0.34, py:0.64},
+        {name:'🏔️ Kodachadri', px:0.30, py:0.60},
+        {name:'💎 Yana Rocks', px:0.26, py:0.46},
+        {name:'🌺 Agumbe', px:0.31, py:0.70},
+    ];
+
+    let frame = 0;
+    let speed = 2;
+    let animId;
+
+    const labels = ['Flying over Karnataka...', 'Discovering hidden gems...', 'Loading your adventure...'];
+    let labelIdx = 0;
+
+    function animate() {
+        ctx.fillStyle = 'rgba(13,74,40,0.22)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+
+        // Flying stars (warp speed effect)
+        stars.forEach(s => {
+            s.z -= speed;
+            if (s.z <= 0) { s.z = canvas.width; s.x = Math.random() * canvas.width; s.y = Math.random() * canvas.height; }
+            const scale = canvas.width / s.z;
+            const sx = (s.x - cx) * scale + cx;
+            const sy = (s.y - cy) * scale + cy;
+            const r = Math.min(scale * 1.2, 5);
+            if (sx > 0 && sx < canvas.width && sy > 0 && sy < canvas.height) {
+                // Draw streak for fast stars
+                if (speed > 8) {
+                    const prevScale = canvas.width / (s.z + speed * 2);
+                    const px2 = (s.x - cx) * prevScale + cx;
+                    const py2 = (s.y - cy) * prevScale + cy;
+                    ctx.beginPath();
+                    ctx.moveTo(px2, py2);
+                    ctx.lineTo(sx, sy);
+                    ctx.strokeStyle = s.color;
+                    ctx.globalAlpha = Math.min(0.8, scale * 0.2);
+                    ctx.lineWidth = r * 0.6;
+                    ctx.stroke();
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(sx, sy, r, 0, Math.PI * 2);
+                    ctx.fillStyle = s.color;
+                    ctx.globalAlpha = Math.min(1, scale * 0.35);
+                    ctx.fill();
+                }
+                ctx.globalAlpha = 1;
+            }
+        });
+
+        // Karnataka city dots
+        cities.forEach((c, i) => {
+            const pulse = Math.sin(frame * 0.04 + i * 0.8) * 0.5 + 0.5;
+            const x = c.px * canvas.width;
+            const y = c.py * canvas.height;
+            // Outer glow ring
+            ctx.beginPath();
+            ctx.arc(x, y, 6 + pulse * 5, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(168,230,193,${0.15 + pulse * 0.2})`;
+            ctx.fill();
+            // Dot
+            ctx.beginPath();
+            ctx.arc(x, y, 3, 0, Math.PI * 2);
+            ctx.fillStyle = '#a8e6c1';
+            ctx.globalAlpha = 0.9;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            // City label (appears after frame 50)
+            if (frame > 50) {
+                ctx.fillStyle = `rgba(255,255,255,${Math.min(0.85, (frame - 50) * 0.015)})`;
+                ctx.font = '11px Sora, sans-serif';
+                ctx.fillText(c.name, x + 10, y + 4);
+            }
+        });
+
+        // Draw Karnataka outline (simplified path)
+        if (frame > 30) {
+            ctx.beginPath();
+            ctx.moveTo(canvas.width*0.28, canvas.height*0.22);
+            ctx.lineTo(canvas.width*0.55, canvas.height*0.18);
+            ctx.lineTo(canvas.width*0.68, canvas.height*0.35);
+            ctx.lineTo(canvas.width*0.65, canvas.height*0.55);
+            ctx.lineTo(canvas.width*0.58, canvas.height*0.90);
+            ctx.lineTo(canvas.width*0.35, canvas.height*0.92);
+            ctx.lineTo(canvas.width*0.20, canvas.height*0.72);
+            ctx.lineTo(canvas.width*0.18, canvas.height*0.48);
+            ctx.lineTo(canvas.width*0.28, canvas.height*0.22);
+            ctx.strokeStyle = `rgba(168,230,193,${Math.min(0.35, (frame-30)*0.008)})`;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+        }
+
+        frame++;
+        if (speed < 20) speed += 0.07;
+
+        // Update label
+        if (frame === 60) { document.getElementById('intro-label').textContent = labels[1]; }
+        if (frame === 120) { document.getElementById('intro-label').textContent = labels[2]; }
+
+        animId = requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Start progress bar
+    setTimeout(() => { document.getElementById('intro-bar').style.width = '100%'; }, 200);
+
+    // Hide intro after 3.5 seconds
+    setTimeout(hideIntro, 3500);
+
+    window.skipIntro = function() { hideIntro(); };
+
+    function hideIntro() {
+        cancelAnimationFrame(animId);
+        const overlay = document.getElementById('intro-overlay');
+        overlay.style.transition = 'opacity 0.7s ease';
+        overlay.style.opacity = '0';
+        setTimeout(() => { overlay.style.display = 'none'; }, 700);
+    }
+})();
+</script>
+<!-- ===== END INTRO ===== -->
 
 <nav class="navbar">
     <div class="nav-inner">
