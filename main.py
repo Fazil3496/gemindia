@@ -135,6 +135,11 @@ places = [
     {"id": 70, "name": "Cotigao Wildlife Sanctuary", "district": "Uttara Kannada", "type": "Wildlife", "description": "Karnataka's quiet wilderness bordering Goa with watchtowers, rare birds and peaceful forest walks away from tourist crowds.", "budget": "1500-2500/day", "stay": "Forest guesthouses 800-1500/night", "food": "Malnad cuisine, local food", "carry": "Binoculars, insect repellent, camera, trekking shoes", "best_season": "October - April", "rating": 4.4, "image": "https://res.cloudinary.com/dmk1cx5y9/image/upload/gemindia/place_70.jpg", "tags": ["Wildlife", "Nature", "Trekking"], "lat": 15.0833, "lng": 74.0833},
 ]
 
+# ✅ PING ROUTE - Keeps Render server alive (ping every 5 mins from UptimeRobot/cron-job.org)
+@app.route("/ping")
+def ping():
+    return "GemIndia is alive! 🌿", 200
+
 @app.route("/")
 def home():
     community_gems = load_gems()
