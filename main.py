@@ -140,11 +140,37 @@ places = [
 def ping():
     return "GemIndia is alive! 🌿", 200
 
+
 @app.route("/")
 def home():
     community_gems = load_gems()
-    return render_template("index.html", places=places, community_gems=community_gems)
 
+    # Convert user gems to match the places format
+    extra_places = []
+    for gem in community_gems:
+        extra_places.append({
+            "id": gem["id"],
+            "name": gem["place_name"],
+            "district": gem["district"],
+            "type": gem.get("type", "Community"),
+            "description": gem["description"],
+            "budget": gem.get("budget", "N/A"),
+            "best_season": gem.get("best_season", "N/A"),
+            "rating": 4.5,
+            "image": gem.get("image", ""),
+            "tags": gem.get("tags", []),
+            "lat": 0,
+            "lng": 0,
+            "stay": "",
+            "food": "",
+            "carry": "",
+            "is_community": True,
+            "submitted_by": gem.get("name", "Anonymous")
+        })
+
+    all_places = places + extra_places  # 70 admin + user gems combined
+
+    return render_template("index.html", places=all_places, community_gems=community_gems)
 @app.route("/place/<int:place_id>")
 def place_detail(place_id):
     place = next((p for p in places if p["id"] == place_id), None)

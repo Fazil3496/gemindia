@@ -54,7 +54,7 @@
         .ai-loading span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes bounce { 0%,80%,100%{transform:translateY(0);opacity:0.4} 40%{transform:translateY(-4px);opacity:1} }
         .section-title { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
-        .community-badge { background: var(--amber); color: #1a1a1a; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 8px; margin-left: 6px; vertical-align: middle; }
+        .community-badge { background: var(--amber); color: #7c3a00; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 8px; margin-left: 6px; vertical-align: middle; }
         .places-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
         .place-card { background: var(--white); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: transform 0.2s; cursor: pointer; }
         .place-card:hover { transform: translateY(-4px); }
@@ -78,16 +78,13 @@
         .footer { background: var(--green-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 24px; font-size: 12px; margin-top: 60px; }
         .footer span { color: var(--green-light); font-weight: 600; }
         @media (max-width: 600px) { .hero h1 { font-size: 26px; } .nav-search { display: none; } .places-grid { grid-template-columns: 1fr; } }
-
-        /* Intro animation styles */
         @keyframes floatIn { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
         @keyframes fadeUp { from{transform:translateY(15px);opacity:0} to{transform:translateY(0);opacity:1} }
-        @keyframes pulse { 0%{transform:scale(1);opacity:0.8} 70%{transform:scale(2.5);opacity:0} 100%{transform:scale(1);opacity:0} }
     </style>
 </head>
 <body>
 
-<!-- ===== 3D FLYING KARNATAKA INTRO ANIMATION ===== -->
+<!-- ===== INTRO ANIMATION ===== -->
 <div id="intro-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0d4a28;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;">
     <canvas id="intro-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;"></canvas>
     <div id="intro-content" style="position:relative;z-index:2;text-align:center;padding:0 20px;">
@@ -107,141 +104,77 @@
 </div>
 
 <script>
-// ===== 3D FLYING INTRO =====
 (function() {
     const canvas = document.getElementById('intro-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
-    // Flying stars
     const stars = Array.from({length: 220}, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        z: Math.random() * canvas.width,
+        x: Math.random() * canvas.width, y: Math.random() * canvas.height, z: Math.random() * canvas.width,
         color: Math.random() > 0.65 ? '#a8e6c1' : (Math.random() > 0.5 ? '#f9a825' : '#ffffff')
     }));
-
-    // Karnataka city/gem dots
     const cities = [
-        {name:'🌿 Bengaluru', px:0.56, py:0.74},
-        {name:'⛪ Mysuru', px:0.46, py:0.82},
-        {name:'🗿 Hampi', px:0.43, py:0.44},
-        {name:'🌧️ Coorg', px:0.38, py:0.79},
-        {name:'🏖️ Gokarna', px:0.24, py:0.54},
-        {name:'🌊 Dandeli', px:0.27, py:0.34},
-        {name:'☕ Chikmagalur', px:0.34, py:0.64},
-        {name:'🏔️ Kodachadri', px:0.30, py:0.60},
-        {name:'💎 Yana Rocks', px:0.26, py:0.46},
-        {name:'🌺 Agumbe', px:0.31, py:0.70},
+        {name:'🌿 Bengaluru', px:0.56, py:0.74},{name:'⛪ Mysuru', px:0.46, py:0.82},
+        {name:'🗿 Hampi', px:0.43, py:0.44},{name:'🌧️ Coorg', px:0.38, py:0.79},
+        {name:'🏖️ Gokarna', px:0.24, py:0.54},{name:'🌊 Dandeli', px:0.27, py:0.34},
+        {name:'☕ Chikmagalur', px:0.34, py:0.64},{name:'🏔️ Kodachadri', px:0.30, py:0.60},
+        {name:'💎 Yana Rocks', px:0.26, py:0.46},{name:'🌺 Agumbe', px:0.31, py:0.70},
     ];
-
-    let frame = 0;
-    let speed = 2;
-    let animId;
-
+    let frame = 0, speed = 2, animId;
     const labels = ['Flying over Karnataka...', 'Discovering hidden gems...', 'Loading your adventure...'];
-    let labelIdx = 0;
-
     function animate() {
         ctx.fillStyle = 'rgba(13,74,40,0.22)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        const cx = canvas.width / 2;
-        const cy = canvas.height / 2;
-
-        // Flying stars (warp speed effect)
+        const cx = canvas.width / 2, cy = canvas.height / 2;
         stars.forEach(s => {
             s.z -= speed;
             if (s.z <= 0) { s.z = canvas.width; s.x = Math.random() * canvas.width; s.y = Math.random() * canvas.height; }
             const scale = canvas.width / s.z;
-            const sx = (s.x - cx) * scale + cx;
-            const sy = (s.y - cy) * scale + cy;
+            const sx = (s.x - cx) * scale + cx, sy = (s.y - cy) * scale + cy;
             const r = Math.min(scale * 1.2, 5);
             if (sx > 0 && sx < canvas.width && sy > 0 && sy < canvas.height) {
-                // Draw streak for fast stars
                 if (speed > 8) {
                     const prevScale = canvas.width / (s.z + speed * 2);
-                    const px2 = (s.x - cx) * prevScale + cx;
-                    const py2 = (s.y - cy) * prevScale + cy;
-                    ctx.beginPath();
-                    ctx.moveTo(px2, py2);
-                    ctx.lineTo(sx, sy);
-                    ctx.strokeStyle = s.color;
-                    ctx.globalAlpha = Math.min(0.8, scale * 0.2);
-                    ctx.lineWidth = r * 0.6;
-                    ctx.stroke();
+                    const px2 = (s.x - cx) * prevScale + cx, py2 = (s.y - cy) * prevScale + cy;
+                    ctx.beginPath(); ctx.moveTo(px2, py2); ctx.lineTo(sx, sy);
+                    ctx.strokeStyle = s.color; ctx.globalAlpha = Math.min(0.8, scale * 0.2); ctx.lineWidth = r * 0.6; ctx.stroke();
                 } else {
-                    ctx.beginPath();
-                    ctx.arc(sx, sy, r, 0, Math.PI * 2);
-                    ctx.fillStyle = s.color;
-                    ctx.globalAlpha = Math.min(1, scale * 0.35);
-                    ctx.fill();
+                    ctx.beginPath(); ctx.arc(sx, sy, r, 0, Math.PI * 2);
+                    ctx.fillStyle = s.color; ctx.globalAlpha = Math.min(1, scale * 0.35); ctx.fill();
                 }
                 ctx.globalAlpha = 1;
             }
         });
-
-        // Karnataka city dots
         cities.forEach((c, i) => {
             const pulse = Math.sin(frame * 0.04 + i * 0.8) * 0.5 + 0.5;
-            const x = c.px * canvas.width;
-            const y = c.py * canvas.height;
-            // Outer glow ring
-            ctx.beginPath();
-            ctx.arc(x, y, 6 + pulse * 5, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(168,230,193,${0.15 + pulse * 0.2})`;
-            ctx.fill();
-            // Dot
-            ctx.beginPath();
-            ctx.arc(x, y, 3, 0, Math.PI * 2);
-            ctx.fillStyle = '#a8e6c1';
-            ctx.globalAlpha = 0.9;
-            ctx.fill();
-            ctx.globalAlpha = 1;
-            // City label (appears after frame 50)
+            const x = c.px * canvas.width, y = c.py * canvas.height;
+            ctx.beginPath(); ctx.arc(x, y, 6 + pulse * 5, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(168,230,193,${0.15 + pulse * 0.2})`; ctx.fill();
+            ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2);
+            ctx.fillStyle = '#a8e6c1'; ctx.globalAlpha = 0.9; ctx.fill(); ctx.globalAlpha = 1;
             if (frame > 50) {
                 ctx.fillStyle = `rgba(255,255,255,${Math.min(0.85, (frame - 50) * 0.015)})`;
-                ctx.font = '11px Sora, sans-serif';
-                ctx.fillText(c.name, x + 10, y + 4);
+                ctx.font = '11px Sora, sans-serif'; ctx.fillText(c.name, x + 10, y + 4);
             }
         });
-
-        // Draw Karnataka outline (simplified path)
         if (frame > 30) {
             ctx.beginPath();
-            ctx.moveTo(canvas.width*0.28, canvas.height*0.22);
-            ctx.lineTo(canvas.width*0.55, canvas.height*0.18);
-            ctx.lineTo(canvas.width*0.68, canvas.height*0.35);
-            ctx.lineTo(canvas.width*0.65, canvas.height*0.55);
-            ctx.lineTo(canvas.width*0.58, canvas.height*0.90);
-            ctx.lineTo(canvas.width*0.35, canvas.height*0.92);
-            ctx.lineTo(canvas.width*0.20, canvas.height*0.72);
-            ctx.lineTo(canvas.width*0.18, canvas.height*0.48);
+            ctx.moveTo(canvas.width*0.28, canvas.height*0.22); ctx.lineTo(canvas.width*0.55, canvas.height*0.18);
+            ctx.lineTo(canvas.width*0.68, canvas.height*0.35); ctx.lineTo(canvas.width*0.65, canvas.height*0.55);
+            ctx.lineTo(canvas.width*0.58, canvas.height*0.90); ctx.lineTo(canvas.width*0.35, canvas.height*0.92);
+            ctx.lineTo(canvas.width*0.20, canvas.height*0.72); ctx.lineTo(canvas.width*0.18, canvas.height*0.48);
             ctx.lineTo(canvas.width*0.28, canvas.height*0.22);
-            ctx.strokeStyle = `rgba(168,230,193,${Math.min(0.35, (frame-30)*0.008)})`;
-            ctx.lineWidth = 1.5;
-            ctx.stroke();
+            ctx.strokeStyle = `rgba(168,230,193,${Math.min(0.35, (frame-30)*0.008)})`; ctx.lineWidth = 1.5; ctx.stroke();
         }
-
-        frame++;
-        if (speed < 20) speed += 0.07;
-
-        // Update label
+        frame++; if (speed < 20) speed += 0.07;
         if (frame === 60) { document.getElementById('intro-label').textContent = labels[1]; }
         if (frame === 120) { document.getElementById('intro-label').textContent = labels[2]; }
-
         animId = requestAnimationFrame(animate);
     }
     animate();
-
-    // Start progress bar
     setTimeout(() => { document.getElementById('intro-bar').style.width = '100%'; }, 200);
-
-    // Hide intro after 3.5 seconds
     setTimeout(hideIntro, 3500);
-
     window.skipIntro = function() { hideIntro(); };
-
     function hideIntro() {
         cancelAnimationFrame(animId);
         const overlay = document.getElementById('intro-overlay');
@@ -271,7 +204,7 @@
     <p>Explore underrated tourist places that most people don't know about. Real experiences, real budgets, real Karnataka.</p>
     <div class="hero-stats">
         <div class="stat"><div class="stat-num">{{ places|length }}</div><div class="stat-label">Hidden Gems</div></div>
-        <div class="stat"><div class="stat-num">{{ community_gems|length + places|length }}</div><div class="stat-label">Total Places</div></div>
+        <div class="stat"><div class="stat-num">70</div><div class="stat-label">Total Places</div></div>
         <div class="stat"><div class="stat-num">AI</div><div class="stat-label">Powered</div></div>
     </div>
     <a href="/submit-gem" class="submit-hero-btn">💎 Submit Your Hidden Gem</a>
@@ -313,55 +246,66 @@
     <div class="places-grid" id="places-grid">
 
         {% for place in places %}
-        <div class="place-card" data-tags="{{ place.tags|join(',') }}" data-name="{{ place.name }}" data-district="{{ place.district }}" data-type="official">
+        <div class="place-card {% if place.is_community %}community-card{% endif %}"
+             data-tags="{% if place.is_community %}community,{{ place.tags|join(',') }}{% else %}{{ place.tags|join(',') }}{% endif %}"
+             data-name="{{ place.name }}"
+             data-district="{{ place.district }}"
+             data-type="{% if place.is_community %}community{% else %}official{% endif %}">
+
             {% if place.image %}
-            <img class="place-img" src="{{ place.image }}" alt="{{ place.name }}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <img class="place-img" src="{{ place.image }}" alt="{{ place.name }}" loading="lazy"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div class="place-img-placeholder" style="display:none;">
-                {% if place.type == 'Rainforest' %}🌿{% elif place.type == 'Rock Formation' %}🗿{% elif place.type == 'Heritage' %}⛪{% elif place.type == 'Beach' %}🏖️{% elif place.type == 'Trek' %}🏔️{% elif place.type == 'Wildlife' %}🐆{% elif place.type == 'Hills' %}⛰️{% elif place.type == 'Waterfalls' %}💧{% elif place.type == 'Adventure' %}🧗{% else %}📍{% endif %}
+                {% if place.is_community %}💎
+                {% elif place.type == 'Rainforest' %}🌿
+                {% elif place.type == 'Rock Formation' %}🗿
+                {% elif place.type == 'Heritage' %}⛪
+                {% elif place.type == 'Beach' %}🏖️
+                {% elif place.type == 'Trek' %}🏔️
+                {% elif place.type == 'Wildlife' %}🐆
+                {% elif place.type == 'Hills' %}⛰️
+                {% elif place.type == 'Waterfalls' %}💧
+                {% elif place.type == 'Adventure' %}🧗
+                {% else %}📍{% endif %}
             </div>
             {% else %}
-            <div class="place-img-placeholder">📍</div>
+            <div class="place-img-placeholder">{% if place.is_community %}💎{% else %}📍{% endif %}</div>
             {% endif %}
+
             <div class="place-body">
                 <div class="place-top">
-                    <div class="place-name">{{ place.name }}</div>
+                    <div class="place-name">
+                        {{ place.name }}
+                        {% if place.is_community %}<span class="community-badge">COMMUNITY</span>{% endif %}
+                    </div>
                     <div class="place-rating">⭐ {{ place.rating }}</div>
                 </div>
                 <div class="place-district">📍 {{ place.district }}, Karnataka</div>
+
+                {% if place.is_community %}
+                <div class="community-submitter">Shared by {{ place.submitted_by }} 🌿</div>
+                {% endif %}
+
                 <div class="place-desc">{{ place.description }}</div>
-                <div class="place-tags">{% for tag in place.tags %}<span class="tag">{{ tag }}</span>{% endfor %}</div>
+
+                <div class="place-tags">
+                    {% for tag in place.tags %}
+                    <span class="tag {% if place.is_community %}community-tag{% endif %}">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+
                 <div class="place-footer">
                     <div>
                         <div class="place-budget">{{ place.budget }}</div>
                         <div class="place-season">Best: {{ place.best_season }}</div>
                     </div>
+                    {% if place.is_community %}
+                    <a href="/community" style="text-decoration:none;">
+                        <button class="view-btn" style="background:var(--amber);color:#1a1a1a;">View All</button>
+                    </a>
+                    {% else %}
                     <button class="view-btn" onclick="window.location.href='/place/{{ place.id }}'">View Details</button>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-
-        {% for gem in community_gems %}
-        <div class="place-card community-card" data-tags="community" data-name="{{ gem.place_name }}" data-district="{{ gem.district }}" data-type="community">
-            {% if gem.image %}
-            <img class="place-img" src="{{ gem.image }}" alt="{{ gem.place_name }}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="place-img-placeholder" style="display:none;">💎</div>
-            {% else %}
-            <div class="place-img-placeholder">💎</div>
-            {% endif %}
-            <div class="place-body">
-                <div class="place-top">
-                    <div class="place-name">{{ gem.place_name }} <span class="community-badge">COMMUNITY</span></div>
-                </div>
-                <div class="place-district">📍 {{ gem.district }}, Karnataka</div>
-                <div class="community-submitter">Shared by {{ gem.name }} · {{ gem.date }}</div>
-                <div class="place-desc">{{ gem.description }}</div>
-                {% if gem.tip %}
-                <div class="place-tags"><span class="tag community-tag">💡 {{ gem.tip }}</span></div>
-                {% endif %}
-                <div class="place-footer">
-                    <div><div class="place-season">Community Discovery</div></div>
-                    <a href="/community" style="text-decoration:none;"><button class="view-btn" style="background:var(--amber);color:#1a1a1a;">View All</button></a>
+                    {% endif %}
                 </div>
             </div>
         </div>
