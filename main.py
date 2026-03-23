@@ -142,7 +142,8 @@ places = [
     {"id": 70, "name": "Cotigao Wildlife Sanctuary", "district": "Uttara Kannada", "type": "Wildlife", "description": "Karnataka's quiet wilderness bordering Goa with watchtowers, rare birds and peaceful forest walks away from tourist crowds.", "budget": "1500-2500/day", "stay": "Forest guesthouses 800-1500/night", "food": "Malnad cuisine, local food", "carry": "Binoculars, insect repellent, camera, trekking shoes", "best_season": "October - April", "rating": 4.4, "image": "https://res.cloudinary.com/dmk1cx5y9/image/upload/gemindia/place_70.jpg", "tags": ["Wildlife", "Nature", "Trekking"], "lat": 15.0833, "lng": 74.0833},
 ]
 
-# ✅ PING ROUTE - Keeps Render server alive
+
+# PING ROUTE - Keeps Render server alive
 @app.route("/ping")
 def ping():
     return "GemIndia is alive! 🌿", 200
@@ -154,15 +155,15 @@ def home():
     extra_places = []
     for gem in community_gems:
         extra_places.append({
-            "id": gem["id"],
-            "name": gem["place_name"],
-            "district": gem["district"],
+            "id": gem.get("id"),
+            "name": gem.get("place_name", "Hidden Gem"),
+            "district": gem.get("district", "Karnataka"),
             "type": gem.get("type", "Community"),
-            "description": gem["description"],
+            "description": gem.get("description", ""),
             "budget": gem.get("budget", "N/A"),
             "best_season": gem.get("best_season", "N/A"),
-            "rating": 4.5,
-            "image": gem.get("image", ""),
+            "rating": None,
+            "image": gem.get("image") or "",
             "tags": gem.get("tags", []),
             "lat": 0,
             "lng": 0,
@@ -170,10 +171,18 @@ def home():
             "food": "",
             "carry": "",
             "is_community": True,
-            "submitted_by": gem.get("name", "Anonymous")
+            "submitted_by": gem.get("name", "Anonymous"),
+            "tip": gem.get("tip", ""),
+            "date": gem.get("date", ""),
         })
     all_places = places + extra_places
-    return render_template("index.html", places=all_places, community_gems=community_gems)
+    total_gems = len(all_places)
+    return render_template(
+        "index.html",
+        places=all_places,
+        community_gems=community_gems,
+        total_gems=total_gems
+    )
 
 
 @app.route("/place/<int:place_id>")
