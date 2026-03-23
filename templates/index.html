@@ -280,29 +280,42 @@
              data-type="{% if place.is_community %}community{% else %}official{% endif %}">
 
             <!-- ✅ FIXED: Wrapper div handles image OR placeholder, never both hidden -->
-            <div class="place-img-wrap">
-                {% if place.image %}
-                    <img class="place-img"
-                         src="{{ place.image }}"
-                         alt="{{ place.name }}"
-                         loading="lazy"
-                         onerror="this.parentElement.innerHTML='<div class=&apos;place-img-placeholder&apos;>'{% if place.is_community %}💎{% elif place.type == \"Rainforest\" %}🌿{% elif place.type == \"Rock Formation\" %}🗿{% elif place.type == \"Heritage\" %}⛪{% elif place.type == \"Beach\" %}🏖️{% elif place.type == \"Trek\" %}🏔️{% elif place.type == \"Wildlife\" %}🐆{% elif place.type == \"Hills\" %}⛰️{% elif place.type == \"Waterfalls\" %}💧{% elif place.type == \"Adventure\" %}🧗{% else %}📍{% endif %}</div>'">
-                {% else %}
-                    <div class="place-img-placeholder">
-                        {% if place.is_community %}💎
-                        {% elif place.type == 'Rainforest' %}🌿
-                        {% elif place.type == 'Rock Formation' %}🗿
-                        {% elif place.type == 'Heritage' %}⛪
-                        {% elif place.type == 'Beach' %}🏖️
-                        {% elif place.type == 'Trek' %}🏔️
-                        {% elif place.type == 'Wildlife' %}🐆
-                        {% elif place.type == 'Hills' %}⛰️
-                        {% elif place.type == 'Waterfalls' %}💧
-                        {% elif place.type == 'Adventure' %}🧗
-                        {% else %}📍{% endif %}
-                    </div>
-                {% endif %}
-            </div>
+          <div class="place-img-wrap">
+    {% if place.image %}
+        <img class="place-img"
+             src="{{ place.image }}"
+             alt="{{ place.name }}"
+             loading="lazy"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="place-img-placeholder" style="display:none">
+            {% if place.is_community %}💎
+            {% elif place.type == 'Rainforest' %}🌿
+            {% elif place.type == 'Rock Formation' %}🗿
+            {% elif place.type == 'Heritage' %}⛪
+            {% elif place.type == 'Beach' %}🏖️
+            {% elif place.type == 'Trek' %}🏔️
+            {% elif place.type == 'Wildlife' %}🐆
+            {% elif place.type == 'Hills' %}⛰️
+            {% elif place.type == 'Waterfalls' %}💧
+            {% elif place.type == 'Adventure' %}🧗
+            {% else %}📍{% endif %}
+        </div>
+    {% else %}
+        <div class="place-img-placeholder">
+            {% if place.is_community %}💎
+            {% elif place.type == 'Rainforest' %}🌿
+            {% elif place.type == 'Rock Formation' %}🗿
+            {% elif place.type == 'Heritage' %}⛪
+            {% elif place.type == 'Beach' %}🏖️
+            {% elif place.type == 'Trek' %}🏔️
+            {% elif place.type == 'Wildlife' %}🐆
+            {% elif place.type == 'Hills' %}⛰️
+            {% elif place.type == 'Waterfalls' %}💧
+            {% elif place.type == 'Adventure' %}🧗
+            {% else %}📍{% endif %}
+        </div>
+    {% endif %}
+</div>
 
             <div class="place-body">
                 <div class="place-top">
