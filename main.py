@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, Response
+from flask import Flask, render_template, request, jsonify, redirect, url_for, Response, send_from_directory
 from groq import Groq
 from dotenv import load_dotenv
 import os
@@ -352,7 +352,9 @@ def debug_gems():
         return jsonify({"status": res.status_code, "data": res.json()})
     except Exception as e:
         return jsonify({"error": str(e)})
-
+@app.route('/googlef6ed7012786480c1.html')
+def google_verify():
+    return send_from_directory('.', 'googlef6ed7012786480c1.html')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
