@@ -3,7 +3,8 @@ from groq import Groq
 from dotenv import load_dotenv
 import os
 import uuid
-import base64
+import cloudinary
+import cloudinary.uploader
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import requests as http_requests
@@ -26,6 +27,12 @@ JSONBIN_URL = f"https://api.jsonbin.io/v3/b/{JSONBIN_BIN_ID}"
 
 GEMS_BIN_ID = os.getenv("GEMS_BIN_ID")
 GEMS_BIN_URL = f"https://api.jsonbin.io/v3/b/{GEMS_BIN_ID}"
+
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET")
+)
 
 def load_experiences():
     try:
@@ -135,7 +142,7 @@ places = [
     {"id": 70, "name": "Cotigao Wildlife Sanctuary", "district": "Uttara Kannada", "type": "Wildlife", "description": "Karnataka's quiet wilderness bordering Goa with watchtowers, rare birds and peaceful forest walks away from tourist crowds.", "budget": "1500-2500/day", "stay": "Forest guesthouses 800-1500/night", "food": "Malnad cuisine, local food", "carry": "Binoculars, insect repellent, camera, trekking shoes", "best_season": "October - April", "rating": 4.4, "image": "https://res.cloudinary.com/dmk1cx5y9/image/upload/gemindia/place_70.jpg", "tags": ["Wildlife", "Nature", "Trekking"], "lat": 15.0833, "lng": 74.0833},
 ]
 
-# ✅ PING ROUTE - Keeps Render server alive (ping every 5 mins from UptimeRobot/cron-job.org)
+# ✅ PING ROUTE - Keeps Render server alive
 @app.route("/ping")
 def ping():
     return "GemIndia is alive! 🌿", 200
@@ -144,8 +151,6 @@ def ping():
 @app.route("/")
 def home():
     community_gems = load_gems()
-
-    # Convert user gems to match the places format
     extra_places = []
     for gem in community_gems:
         extra_places.append({
@@ -167,10 +172,10 @@ def home():
             "is_community": True,
             "submitted_by": gem.get("name", "Anonymous")
         })
-
-    all_places = places + extra_places  # 70 admin + user gems combined
-
+    all_places = places + extra_places
     return render_template("index.html", places=all_places, community_gems=community_gems)
+
+
 @app.route("/place/<int:place_id>")
 def place_detail(place_id):
     place = next((p for p in places if p["id"] == place_id), None)
@@ -178,6 +183,7 @@ def place_detail(place_id):
         return "Place not found", 404
     experiences = [e for e in load_experiences() if e["place_id"] == place_id]
     return render_template("place.html", place=place, experiences=experiences)
+
 
 @app.route("/upload", methods=["POST"])
 def upload():
@@ -200,6 +206,7 @@ def upload():
     save_experiences(experiences)
     return redirect(url_for('place_detail', place_id=place_id))
 
+
 @app.route("/ai-recommend", methods=["POST"])
 def ai_recommend():
     user_input = request.json.get("message", "")
@@ -218,6 +225,7 @@ Be friendly, helpful, use emojis. Keep it short."""},
     )
     return jsonify({"reply": response.choices[0].message.content})
 
+
 @app.route("/search")
 def search():
     query = request.args.get("q", "").lower()
@@ -229,14 +237,17 @@ def search():
         results = [p for p in results if tag in p["tags"]]
     return jsonify(results)
 
+
 @app.route("/community")
 def community():
     gems = load_gems()
     return render_template("community.html", gems=gems)
 
+
 @app.route("/submit-gem", methods=["GET"])
 def submit_gem():
     return render_template("submit_gem.html")
+
 
 @app.route("/submit-gem", methods=["POST"])
 def submit_gem_post():
@@ -254,13 +265,16 @@ def submit_gem_post():
     if 'image' in request.files:
         file = request.files['image']
         if file and file.filename and allowed_file(file.filename):
-            ext = file.filename.rsplit('.', 1)[1].lower()
-            mime = {'jpg': 'image/jpeg', 'jpeg': 'image/jpeg',
-                    'png': 'image/png', 'gif': 'image/gif',
-                    'webp': 'image/webp'}.get(ext, 'image/jpeg')
-            file_bytes = file.read()
-            b64 = base64.b64encode(file_bytes).decode('utf-8')
-            image_data = f"data:{mime};base64,{b64}"
+            try:
+                upload_result = cloudinary.uploader.upload(
+                    file,
+                    folder="gemindia/community",
+                    transformation=[{"width": 800, "crop": "limit"}]
+                )
+                image_data = upload_result["secure_url"]
+            except Exception as e:
+                print(f"Cloudinary upload error: {e}")
+                image_data = None
 
     gem = {
         "id": str(uuid.uuid4()),
@@ -281,13 +295,16 @@ def submit_gem_post():
     save_gems(gems)
     return redirect(url_for('submit_success'))
 
+
 @app.route("/submit-success")
 def submit_success():
     return render_template("submit_success.html")
 
+
 @app.route("/admin")
 def admin():
     return render_template("admin.html", places=places)
+
 
 @app.route("/admin/upload-image", methods=["POST"])
 def admin_upload_image():
@@ -306,6 +323,7 @@ def admin_upload_image():
         return jsonify({"success": True, "image_url": image_url, "place_id": place_id})
     return jsonify({"error": "Invalid file"}), 400
 
+
 @app.route("/sitemap.xml")
 def sitemap():
     urls = ['https://gemindia.onrender.com/']
@@ -317,6 +335,7 @@ def sitemap():
     xml += '</urlset>'
     return Response(xml, mimetype='application/xml')
 
+
 @app.route("/debug-gems")
 def debug_gems():
     try:
@@ -324,6 +343,7 @@ def debug_gems():
         return jsonify({"status": res.status_code, "data": res.json()})
     except Exception as e:
         return jsonify({"error": str(e)})
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
