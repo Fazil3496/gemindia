@@ -165,8 +165,8 @@ def home():
             "rating": None,
             "image": gem.get("image") or "",
             "tags": gem.get("tags", []),
-            "lat": 0,
-            "lng": 0,
+            "lat": gem.get("lat", 0),
+"lng": gem.get("lng", 0),
             "stay": "",
             "food": "",
             "carry": "",
@@ -259,7 +259,55 @@ def submit_gem():
 
 
 @app.route("/submit-gem", methods=["POST"])
-def submit_gem_post():
+def submit_gem_post():def submit_gem_post():
+    submitted_by = request.form.get("submitted_by", "Anonymous")
+    place_name = request.form.get("name", "")
+    district = request.form.get("district", "")
+    place_type = request.form.get("type", "Other")
+    description = request.form.get("description", "")
+    budget = request.form.get("budget", "")
+    best_season = request.form.get("best_season", "")
+    tags_raw = request.form.get("tags", "")
+    tags = [t.strip() for t in tags_raw.split(",") if t.strip()]
+    tip = request.form.get("tip", "")
+    lat = request.form.get("lat", "0")
+    lng = request.form.get("lng", "0")
+
+    image_data = None
+    if 'image' in request.files:
+        file = request.files['image']
+        if file and file.filename and allowed_file(file.filename):
+            try:
+                upload_result = cloudinary.uploader.upload(
+                    file,
+                    folder="gemindia/community",
+                    transformation=[{"width": 800, "crop": "limit"}]
+                )
+                image_data = upload_result["secure_url"]
+            except Exception as e:
+                print(f"Cloudinary upload error: {e}")
+                image_data = None
+
+    gem = {
+        "id": str(uuid.uuid4()),
+        "name": submitted_by,
+        "place_name": place_name,
+        "district": district,
+        "type": place_type,
+        "description": description,
+        "budget": budget,
+        "best_season": best_season,
+        "tags": tags,
+        "tip": tip,
+        "image": image_data,
+        "lat": float(lat) if lat else 0,
+        "lng": float(lng) if lng else 0,
+        "date": datetime.now().strftime("%d %b %Y")
+    }
+    gems = load_gems()
+    gems.append(gem)
+    save_gems(gems)
+    return redirect(url_for('submit_success'))
     name = request.form.get("name", "Anonymous")
     place_name = request.form.get("place_name", "")
     district = request.form.get("district", "")

@@ -153,7 +153,8 @@
             <div class="form-section-title">🗺️ Pin the Location</div>
             <p style="font-size:13px;color:var(--muted);margin-bottom:8px;">Click on the map to mark the exact location of this hidden gem!</p>
             <div id="map-pick"></div>
-            <div class="map-hint">📍 Click anywhere on the map to drop a pin</div>
+            <div class="map-hint">📍 Click anywhere on the map to drop a pin, or use button below</div>
+<button type="button" id="locate-btn" onclick="useMyLocation()" style="margin-top:8px;background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-family:'Sora',sans-serif;cursor:pointer;">📡 Use My Current Location</button>
             <div class="coords-display" id="coords-display">📍 Location selected!</div>
             <input type="hidden" name="lat" id="lat-input" value="15.3173">
             <input type="hidden" name="lng" id="lng-input" value="75.7139">
