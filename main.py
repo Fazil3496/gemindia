@@ -259,7 +259,7 @@ def submit_gem():
 
 
 @app.route("/submit-gem", methods=["POST"])
-def submit_gem_post():def submit_gem_post():
+def submit_gem_post():
     submitted_by = request.form.get("submitted_by", "Anonymous")
     place_name = request.form.get("name", "")
     district = request.form.get("district", "")
