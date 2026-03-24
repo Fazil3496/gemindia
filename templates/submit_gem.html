@@ -154,7 +154,7 @@
             <p style="font-size:13px;color:var(--muted);margin-bottom:8px;">Click on the map to mark the exact location of this hidden gem!</p>
             <div id="map-pick"></div>
             <div class="map-hint">📍 Click anywhere on the map to drop a pin, or use button below</div>
-<button type="button" id="locate-btn" onclick="useMyLocation()" style="margin-top:8px;background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-family:'Sora',sans-serif;cursor:pointer;">📡 Use My Current Location</button>
+            <button type="button" id="locate-btn" onclick="useMyLocation()" style="margin-top:8px;background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-family:'Sora',sans-serif;cursor:pointer;">📡 Use My Current Location</button>
             <div class="coords-display" id="coords-display">📍 Location selected!</div>
             <input type="hidden" name="lat" id="lat-input" value="15.3173">
             <input type="hidden" name="lng" id="lng-input" value="75.7139">
@@ -167,7 +167,6 @@
 <div class="footer">Made with love for Karnataka travellers by <span>GemIndia</span> 🌿</div>
 
 <script>
-    // Map for picking location
     var pickMap = L.map('map-pick').setView([14.5, 75.7], 7);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
@@ -185,7 +184,35 @@
         marker = L.marker([lat, lng]).addTo(pickMap);
     });
 
-    // Tags
+    function useMyLocation() {
+        var btn = document.getElementById('locate-btn');
+        btn.textContent = '⏳ Getting location...';
+        btn.disabled = true;
+        if (!navigator.geolocation) {
+            alert('Geolocation is not supported by your browser.');
+            btn.textContent = '📡 Use My Current Location';
+            btn.disabled = false;
+            return;
+        }
+        navigator.geolocation.getCurrentPosition(function(pos) {
+            var lat = pos.coords.latitude.toFixed(6);
+            var lng = pos.coords.longitude.toFixed(6);
+            document.getElementById('lat-input').value = lat;
+            document.getElementById('lng-input').value = lng;
+            pickMap.setView([lat, lng], 15);
+            if (marker) pickMap.removeLayer(marker);
+            marker = L.marker([lat, lng]).addTo(pickMap);
+            document.getElementById('coords-display').style.display = 'block';
+            document.getElementById('coords-display').textContent = '📍 Your location: ' + lat + ', ' + lng;
+            btn.textContent = '✅ Location Set!';
+            btn.disabled = false;
+        }, function() {
+            alert('Could not get your location. Please click the map manually.');
+            btn.textContent = '📡 Use My Current Location';
+            btn.disabled = false;
+        });
+    }
+
     var selectedTags = [];
     function toggleTag(btn, tag) {
         btn.classList.toggle('selected');
@@ -197,7 +224,6 @@
         document.getElementById('tags-input').value = selectedTags.join(',');
     }
 
-    // File label
     function updateFileLabel(input) {
         if (input.files[0]) {
             document.getElementById('file-label').innerHTML = '<div class="file-upload-icon">✅</div><div class="file-upload-text">' + input.files[0].name + '</div>';
