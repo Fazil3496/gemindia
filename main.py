@@ -8,12 +8,17 @@ import cloudinary.uploader
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import requests as http_requests
+from flask_wtf.csrf import CSRFProtect
+from functools import wraps
 
 load_dotenv()
 
 app = Flask(__name__)
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "dev-key-change-this")
 
+# Enable CSRF protection
+csrf = CSRFProtect(app)
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -69,6 +74,23 @@ def save_gems(gems):
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+# ==================== ADMIN AUTHENTICATION ====================
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "change_me_123")
+
+
+def check_admin_password(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        password = request.args.get('password')
+        if password != ADMIN_PASSWORD:
+            return render_template("admin_login.html")
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
+# ================================================================
 places = [
     {"id": 1, "name": "Agumbe", "district": "Shivamogga", "type": "Rainforest", "description": "Known as the Cherrapunji of the South, Agumbe is a stunning rainforest village with breathtaking sunsets and rich biodiversity.", "budget": "1500-2000/day", "stay": "Forest Homestay 800-1200/night", "food": "Malnad cuisine, fish curry, akki roti", "carry": "Raincoat, trekking shoes, mosquito repellent", "best_season": "October - February", "rating": 4.7, "image": "https://res.cloudinary.com/dmk1cx5y9/image/upload/gemindia/place_1.jpg", "tags": ["Trekking", "Nature", "Waterfalls"], "lat": 13.5024, "lng": 75.0952},
     {"id": 2, "name": "Yana Rocks", "district": "Uttara Kannada", "type": "Rock Formation", "description": "Mysterious black crystalline rock formations rising from the forest floor. A geological wonder and trekking paradise.", "budget": "1000-1500/day", "stay": "Budget hotels 500-800/night", "food": "Local Karnataka thali, coconut based dishes", "carry": "Trekking shoes, water bottle, sunscreen", "best_season": "November - March", "rating": 4.6, "image": "https://res.cloudinary.com/dmk1cx5y9/image/upload/gemindia/place_2.jpg", "tags": ["Trekking", "Heritage", "Nature"], "lat": 14.6269, "lng": 74.5647},
@@ -359,11 +381,13 @@ def submit_success():
 
 
 @app.route("/admin")
+@check_admin_password
 def admin():
     return render_template("admin.html", places=places)
 
 
 @app.route("/admin/upload-image", methods=["POST"])
+@check_admin_password
 def admin_upload_image():
     place_id = int(request.form.get("place_id", 0))
     if 'image' not in request.files:
