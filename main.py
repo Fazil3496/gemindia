@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, R
 from groq import Groq
 from dotenv import load_dotenv
 import os
+from flask import Flask, render_template, request, session, redirect
 import uuid
 import cloudinary
 import cloudinary.uploader
@@ -381,19 +382,20 @@ def submit_success():
 
 
 @app.route("/admin", methods=["GET", "POST"])
+@csrf.exempt
 def admin():
     if request.method == "POST":
         password = request.form.get("password")
-        # Check if the password matches what you have in your .env file
         if password == os.getenv("ADMIN_PASSWORD"):
             session['admin_logged_in'] = True
             return render_template("admin.html", places=places)
         else:
             return render_template("admin_login.html", error="Invalid Password")
 
-    # This part shows the login page if someone just visits the link
     if session.get('admin_logged_in'):
         return render_template("admin.html", places=places)
+
+    return render_template("admin_login.html")
 
     return render_template("admin_login.html")
 @check_admin_password
