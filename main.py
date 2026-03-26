@@ -15,35 +15,18 @@ from werkzeug.utils import secure_filename
 import requests as http_requests
 from flask_wtf.csrf import CSRFProtect
 from functools import wraps
+app = Flask(__name__)
 
-load_dotenv()
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "your-secret-key-here")
+csrf = CSRFProtect(app)
 
-# --- DATABASE & LOGIN CONFIGURATION ---
-# This creates a local file called gemindia.db to store users
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gemindia.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
-login_manager.login_view = 'login' # This tells Flask where to send people if they aren't logged in
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
-# --- USER TABLE MODEL ---
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False) # This will store the hashed (encrypted) password
-    date_joined = db.Column(db.DateTime, default=datetime.utcnow)
-
-# Create the database file instantly
-with app.app_context():
-    db.create_all()
-app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "dev-key-change-this")
+login_manager.login_view = 'login'
 
 # Enable CSRF protection
 csrf = CSRFProtect(app)
