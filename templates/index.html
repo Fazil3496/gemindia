@@ -221,7 +221,16 @@
         <div class="nav-links">
             <a href="/" class="nav-link">Home</a>
             <a href="/community" class="nav-link community-btn">💎 Community Gems</a>
-        </div>
+        <div class="nav-links">
+    <a href="/" class="nav-link">Home</a>
+    <a href="/community" class="nav-link community-btn">💎 Community Gems</a>
+
+    {% if current_user.is_authenticated %}
+        <a href="/user-logout" class="nav-link">Logout ({{ current_user.name }})</a>
+    {% else %}
+        <a href="/login" class="nav-link">Login 🚀</a>
+    {% endif %}
+    </div>
     </div>
 </nav>
 

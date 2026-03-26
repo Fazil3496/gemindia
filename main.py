@@ -1,3 +1,7 @@
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+from flask_bcrypt import Bcrypt
+from datetime import datetime
 from flask import Flask, render_template, request, jsonify, redirect, url_for, Response, send_from_directory
 from groq import Groq
 from dotenv import load_dotenv
@@ -14,7 +18,31 @@ from functools import wraps
 
 load_dotenv()
 
-app = Flask(__name__)
+# --- DATABASE & LOGIN CONFIGURATION ---
+# This creates a local file called gemindia.db to store users
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gemindia.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login' # This tells Flask where to send people if they aren't logged in
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+# --- USER TABLE MODEL ---
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False) # This will store the hashed (encrypted) password
+    date_joined = db.Column(db.DateTime, default=datetime.utcnow)
+
+# Create the database file instantly
+with app.app_context():
+    db.create_all()
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "dev-key-change-this")
 
 # Enable CSRF protection
@@ -435,6 +463,52 @@ def sitemap():
     xml += '</urlset>'
     return Response(xml, mimetype='application/xml')
 
+
+# ==================== USER LOGIN & SIGNUP ====================
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        user_exists = User.query.filter_by(email=email).first()
+        if user_exists:
+            return "Email already registered! Try logging in."
+
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        new_user = User(name=name, email=email, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+
+        login_user(new_user)
+        return redirect(url_for('index'))  # Ensure your home function is named 'index'
+
+    return render_template("signup.html")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+        user = User.query.filter_by(email=email).first()
+
+        if user and bcrypt.check_password_hash(user.password, password):
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            return "Invalid login. Please try again."
+
+    return render_template("login.html")
+
+
+@app.route("/user-logout")
+@login_required
+def user_logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 @app.route("/debug-gems")
 def debug_gems():
