@@ -380,7 +380,7 @@ def submit_success():
     return render_template("submit_success.html")
 
 
-@app.route("/admin")
+@app.route("/admin", methods=["GET", "POST"])
 @check_admin_password
 def admin():
     return render_template("admin.html", places=places)
