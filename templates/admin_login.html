@@ -73,8 +73,9 @@
 <div class="login-box">
     <h1>🔐 Admin Login</h1>
     <p class="subtitle">Enter password to access admin panel</p>
-    <form method="GET" action="/admin">
+    <form method="POST" action="/admin">
         <input type="password" name="password" placeholder="Enter admin password" required autofocus>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button type="submit">Login</button>
     </form>
 </div>

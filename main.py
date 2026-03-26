@@ -388,14 +388,7 @@ def admin():
 
 @app.route("/admin/upload-image", methods=["POST"])
 @check_admin_password
-def check_admin_password(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        password = request.args.get('password', '').strip()
-        if password != ADMIN_PASSWORD:
-            return render_template("admin_login.html")
-        return f(*args, **kwargs)
-    return decorated_function
+def admin_upload_image():
     place_id = int(request.form.get("place_id", 0))
     if 'image' not in request.files:
         return jsonify({"error": "No image"}), 400
