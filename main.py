@@ -1,8 +1,9 @@
-# Force Update 1from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 from datetime import datetime
-from flask import Flask, render_template, request, jsonify, redirect, url_for, Response, send_from_directory
+import os
 from groq import Groq
 from dotenv import load_dotenv
 import os
