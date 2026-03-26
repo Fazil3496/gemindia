@@ -240,6 +240,7 @@ def upload():
 
 
 @app.route("/ai-recommend", methods=["POST"])
+@csrf.exempt
 def ai_recommend():
     user_input = request.json.get("message", "")
     places_summary = "\n".join([f"- {p['name']} ({p['district']}): {p['type']}, Budget {p['budget']}, Best season {p['best_season']}" for p in places])
@@ -282,6 +283,7 @@ def submit_gem():
 
 
 @app.route("/submit-gem", methods=["POST"])
+@csrf.exempt
 def submit_gem_post():
     submitted_by = request.form.get("submitted_by", "Anonymous")
     place_name = request.form.get("name", "")
