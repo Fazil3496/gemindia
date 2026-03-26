@@ -5,6 +5,6 @@ gunicorn
 requests
 cloudinary
 flask-wtf
-flask_sqlalchemy
-flask_login
+flask-sqlalchemy
+flask-login
 bcrypt
