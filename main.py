@@ -446,7 +446,10 @@ def debug_gems():
 @app.route('/googlef6ed7012786480c1.html')
 def google_verify():
     return send_from_directory('.', 'googlef6ed7012786480c1.html')
-
+@app.route("/admin/logout")
+def admin_logout():
+    session.pop('admin_logged_in', None)
+    return redirect(url_for('admin'))
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
