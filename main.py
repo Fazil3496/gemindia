@@ -18,7 +18,7 @@ from flask_wtf.csrf import CSRFProtect
 from functools import wraps
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "your-secret-key-here")
+app.config['SECRET_KEY'] = 'gemindia-secret-rocket-key-2024'
 csrf = CSRFProtect(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gemindia.db'
