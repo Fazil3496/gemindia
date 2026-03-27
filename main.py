@@ -21,7 +21,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'gemindia-secret-rocket-key-2024'
 csrf = CSRFProtect(app)
 
-a# This tells Render to create the database in the current folder correctly
+# This tells Render to create the database in the current folder correctly
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'gemindia.db')
 
