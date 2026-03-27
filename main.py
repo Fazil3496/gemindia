@@ -44,7 +44,12 @@ UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-
+@app.route('/')
+def index():
+    return render_template('index.html')
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    return render_template('admin_login.html')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 JSONBIN_API_KEY = os.getenv("JSONBIN_API_KEY")
