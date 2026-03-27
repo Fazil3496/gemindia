@@ -49,8 +49,19 @@ def index():
     return render_template('index.html')
 @app.route('/login', methods=['GET', 'POST'])
 def user_login():
-    return render_template('admin_login.html')
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = User.query.filter_by(username=username).first()
+
+        if user and bcrypt.check_password_hash(user.password, password):
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            return render_template('login.html', error="Invalid credentials")
+
+    return render_template('login.html')
+
 
 JSONBIN_API_KEY = os.getenv("JSONBIN_API_KEY")
 JSONBIN_BIN_ID = os.getenv("JSONBIN_BIN_ID")
@@ -486,7 +497,6 @@ def signup():
 
 
 @app.route("/login", methods=["GET", "POST"])
-def login():
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
