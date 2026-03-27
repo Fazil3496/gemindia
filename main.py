@@ -44,9 +44,25 @@ UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # This brings back your 70+ places
+    JSONBIN_URL = "https://api.jsonbin.io/v3/b/678ba49ead19ca34f8ed849f"
+
+    try:
+        # We use a simple request to get your data back
+        response = requests.get(JSONBIN_URL)
+        data = response.json()
+        places = data.get('record', {}).get('places', [])
+    except:
+        places = []
+
+    # This brings back your 5 community gems
+    community_gems = CommunityGem.query.all()
+
+    return render_template('index.html', places=places, community_gems=community_gems)
 
 
 @app.route('/login', methods=['GET', 'POST'])
