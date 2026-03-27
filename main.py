@@ -485,57 +485,14 @@ def signup():
 
         user_exists = User.query.filter_by(email=email).first()
         if user_exists:
-            return "Email already registered! Try logging in."
+            @app.route("/user-logout")
+            @login_required
+            def user_logout():
+                logout_user()
+                return redirect(url_for('index'))
 
-        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        new_user = User(name=name, email=email, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-
-        login_user(new_user)
-        return redirect(url_for('index'))  # Ensure your home function is named 'index'
-
-    return render_template("signup.html")
-
-
-@app.route("/login", methods=["GET", "POST"])
-    if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
-        user = User.query.filter_by(email=email).first()
-
-        if user and bcrypt.check_password_hash(user.password, password):
-            login_user(user)
-            return redirect(url_for('index'))
-        else:
-            return "Invalid login. Please try again."
-
-    return render_template("login.html")
-
-
-@app.route("/user-logout")
-@login_required
-def user_logout():
-    logout_user()
-    return redirect(url_for('index'))
-
-@app.route("/debug-gems")
-def debug_gems():
-    try:
-        res = http_requests.get(GEMS_BIN_URL + "/latest", headers={"X-Master-Key": JSONBIN_API_KEY})
-        return jsonify({"status": res.status_code, "data": res.json()})
-    except Exception as e:
-        return jsonify({"error": str(e)})
-@app.route('/googlef6ed7012786480c1.html')
-def google_verify():
-    return send_from_directory('.', 'googlef6ed7012786480c1.html')
-@app.route("/admin/logout")
-def admin_logout():
-    session.pop('admin_logged_in', None)
-    return redirect(url_for('admin'))
-    if __name__ == "__main__":
-        with app.app_context():
-            db.create_all()
-        # This line is special for Render to find the right port
-        port = int(os.environ.get("PORT", 5000))
-        app.run(host="0.0.0.0", port=port)
+            if __name__ == "__main__":
+                with app.app_context():
+                    db.create_all()
+                port = int(os.environ.get("PORT", 5000))
+                app.run(host="0.0.0.0", port=port)
