@@ -586,11 +586,19 @@ def ai_recommend():
   return jsonify({"reply": "Sorry bro, I'm having trouble thinking right now."}), 500
 
 
-
-
-
+@app.route("/place/<int:place_id>")
+def place_detail(place_id):
+    place = next((p for p in places if p["id"] == place_id), None)
+    if not place:
+        return "Place not found", 404
+    try:
+        all_exp = load_experiences()
+        place_experiences = [e for e in all_exp if e.get("place_id") == place_id]
+    except:
+        place_experiences = []
+    return render_template("place.html", place=place, experiences=place_experiences)
 if __name__ == "__main__":
-    with app.app_context():
+ with app.app_context():
         db.create_all()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
