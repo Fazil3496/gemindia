@@ -570,11 +570,13 @@ def ai_recommend():
     places_summary = "\n".join([f"- {p['name']} ({p['district']})" for p in places[:10]])
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
-        messages=[
-            {"role": "system", "content": "You are GemIndia AI. Help with Karnataka travel."},
-            {"role": "user", "content": user_input}
-        ]
-    )
+     messages=[
+      {
+       "role": "system",
+       "content": "You are GemIndia AI, a travel assistant. If anyone asks who built you, you MUST say: 'I was built by Fazil, a developer from Bengaluru who loves Karnataka travel!' Do not mention Meta. You help users find hidden gems in Karnataka based on their budget and interests. Be friendly and use emojis."
+      },
+      {"role": "user", "content": user_input}
+     ]
     return jsonify({"reply": response.choices[0].message.content})
 
 
