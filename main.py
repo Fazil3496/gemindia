@@ -566,18 +566,27 @@ def ping():
 @app.route("/ai-recommend", methods=["POST"])
 @csrf.exempt
 def ai_recommend():
-    user_input = request.json.get("message", "")
-    places_summary = "\n".join([f"- {p['name']} ({p['district']})" for p in places[:10]])
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-     messages=[
-      {
-       "role": "system",
-       "content": "You are GemIndia AI, a travel assistant. If anyone asks who built you, you MUST say: 'I was built by Fazil, a developer from Bengaluru who loves Karnataka travel!' Do not mention Meta. You help users find hidden gems in Karnataka based on their budget and interests. Be friendly and use emojis."
-      },
-      {"role": "user", "content": user_input}
-     ]
-    return jsonify({"reply": response.choices[0].message.content})
+ try:
+  data = request.json
+  user_input = data.get("message", "")
+
+  response = client.chat.completions.create(
+   model="llama-3.3-70b-versatile",
+   messages=[
+    {
+     "role": "system",
+     "content": "You are GemIndia AI. I was built by Fazil, a developer from Bengaluru! I help users find gems in Karnataka. Be friendly and use emojis."
+    },
+    {"role": "user", "content": user_input}
+   ]
+  )
+  return jsonify({"reply": response.choices[0].message.content})
+ except Exception as e:
+  print(f"AI Error: {e}")
+  return jsonify({"reply": "Sorry bro, I'm having trouble thinking right now."}), 500
+
+
+
 
 
 if __name__ == "__main__":
