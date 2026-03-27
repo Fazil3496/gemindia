@@ -1,15 +1,15 @@
+import requests
+import os
+import uuid
+from datetime import datetime
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
-from datetime import datetime
-import os
 from groq import Groq
 from dotenv import load_dotenv
-import os
-from flask import Flask, render_template, request, session, redirect
-import uuid
 import cloudinary
+import cloudinary.uploader
 import cloudinary.uploader
 from datetime import datetime
 from werkzeug.utils import secure_filename
