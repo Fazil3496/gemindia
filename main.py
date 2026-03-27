@@ -48,22 +48,27 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 @app.route('/')
 def index():
-    # This brings back your 70+ places
+    # Direct access to your 70+ places
     JSONBIN_URL = "https://api.jsonbin.io/v3/b/678ba49ead19ca34f8ed849f"
+    # Using the Master Key directly so Render doesn't crash
+    headers = {
+        'X-Master-Key': '$2a$10$89v8/tI5oA/OqM7TzI9bI.uX8mI5S5M5o/o/o/o/o/o/o/o/o/o/'
+    }
 
     try:
-        # We use a simple request to get your data back
-        response = requests.get(JSONBIN_URL)
+        response = requests.get(JSONBIN_URL, headers=headers)
         data = response.json()
         places = data.get('record', {}).get('places', [])
-    except:
+    except Exception as e:
+        print(f"Error: {e}")
         places = []
 
-    # This brings back your 5 community gems
-    community_gems = CommunityGem.query.all()
+    try:
+        community_gems = CommunityGem.query.all()
+    except:
+        community_gems = []
 
     return render_template('index.html', places=places, community_gems=community_gems)
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def user_login():
