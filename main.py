@@ -47,6 +47,8 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def user_login():
     if request.method == 'POST':
