@@ -29,7 +29,14 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
-
+@login_manager.user_loader
+def load_user(user_id):
+    try:
+        # This tells Flask-Login how to find the user in the database
+        return User.query.get(int(user_id))
+    except:
+        # If anything goes wrong, return None instead of crashing
+        return None
 # Enable CSRF protection
 csrf = CSRFProtect(app)
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
