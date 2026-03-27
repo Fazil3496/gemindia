@@ -387,7 +387,7 @@
 
 <!-- ✅ Community gems data passed from Flask for modal use -->
 <script>
-const communityGems = {{ community_gems | tojson }};
+const communityGems = {{ community_gems | default([]) | tojson }};
 </script>
 
 <script>
