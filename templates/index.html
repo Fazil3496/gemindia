@@ -216,9 +216,9 @@
         </div>
         <div class="nav-links">
             <a href="/" class="nav-link">Home</a>
-            <a href="/community" class="nav-link community-btn">💎 Community Gems</a>
+            <a href="{{ url_for('submit_gem') }}" class="nav-link community-btn">💎 Community Gems</a>
     {% if current_user.is_authenticated %}
-        <a href="/user-logout" class="nav-link">Logout ({{ current_user.name }})</a>
+        <a href="/user-logout" class="nav-link">Logout</a>
     {% else %}
         <a href="/login" class="nav-link">Login 🚀</a>
     {% endif %}
@@ -230,11 +230,11 @@
     <h1>Discover <span>Hidden Gems</span> of Karnataka</h1>
     <p>Explore underrated tourist places that most people don't know about. Real experiences, real budgets, real Karnataka.</p>
     <div class="hero-stats">
-        <div class="stat"><div class="stat-num">{{ total_gems }}</div><div class="stat-label">Hidden Gems</div></div>
+        <div class="stat"><div class="stat-num">70+</div><div class="stat-label">Hidden Gems</div></div>
         <div class="stat"><div class="stat-num">{{ community_gems|length }}</div><div class="stat-label">Community Finds</div></div>
         <div class="stat"><div class="stat-num">AI</div><div class="stat-label">Powered</div></div>
     </div>
-    <a href="/submit-gem" class="submit-hero-btn">💎 Submit Your Hidden Gem</a>
+    <a href="{{ url_for('submit_gem') }}" class="submit-hero-btn">💎 Submit Your Hidden Gem</a>
 </div>
 
 <div class="filters-wrap">
@@ -270,50 +270,74 @@
     </div>
 
     <div class="section-title" id="section-title">All Hidden Gems in Karnataka</div>
-    <div class="places-grid" id="places-grid">
-        {% for place in places %}
-        <div class="place-card {% if place.is_community %}community-card{% endif %}"
-             data-tags="{% if place.is_community %}community,{{ place.tags|join(',') }}{% else %}{{ place.tags|join(',') }}{% endif %}"
-             data-name="{{ place.name }}"
-             data-district="{{ place.district }}"
-             data-type="{% if place.is_community %}community{% else %}official{% endif %}">
-          <div class="place-img-wrap">
-    {% if place.image %}
-        <img class="place-img"
-             src="{{ place.image }}"
-             alt="{{ place.name }}"
-             loading="lazy"
-             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-        <div class="place-img-placeholder" style="display:none">
-            {% if place.is_community %}💎{% else %}📍{% endif %}
+<div class="places-grid" id="places-grid">
+    {% for gem in community_gems %}
+    <div class="place-card community-card">
+        <div class="place-img-wrap">
+            <img src="{{ gem.image_url }}" class="place-img" alt="{{ gem.place_name }}">
         </div>
-    {% else %}
-        <div class="place-img-placeholder">
-            {% if place.is_community %}💎{% else %}📍{% endif %}
+        <div class="place-body">
+            <div class="place-top">
+                <div class="place-name">{{ gem.place_name }}</div>
+                <div class="place-rating">⭐ New</div>
+            </div>
+            <div class="place-district">📍 {{ gem.district }}</div>
+            <div class="community-submitter">By: {{ gem.submitted_by }} <span class="community-badge">GUEST</span></div>
+            <p class="place-desc">{{ gem.description }}</p>
+            <div class="place-tags">
+                <span class="tag community-tag">Community Find</span>
+            </div>
+            <div class="place-footer">
+                <div class="place-budget">Verified by GemIndia</div>
+                <button class="view-btn community-view">Community Gem</button>
+            </div>
         </div>
-    {% endif %}
+    </div>
+    {% endfor %}
+
+    {% for place in places %}
+    <div class="place-card" onclick="openModal('{{ loop.index0 }}')">
+        <div class="place-img-wrap">
+            <img src="{{ place.image_url }}" class="place-img" alt="{{ place.name }}">
+        </div>
+        <div class="place-body">
+            <div class="place-top">
+                <div class="place-name">{{ place.name }}</div>
+                <div class="place-rating">⭐ {{ place.rating }}</div>
+            </div>
+            <div class="place-district">📍 {{ place.district }}</div>
+            <p class="place-desc">{{ place.description }}</p>
+            <div class="place-tags">
+                {% for tag in place.tags %}
+                <span class="tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+            <div class="place-footer">
+                <div class="place-budget">₹{{ place.budget }}</div>
+                <button class="view-btn">View Details</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
             <div class="place-body">
                 <div class="place-top">
-                    <div class="place-name">{{ place.name }}{% if place.is_community %}<span class="community-badge">COMMUNITY</span>{% endif %}</div>
-                    <div class="place-rating">⭐ {{ place.rating if place.rating else '★ New' }}</div>
+                    <div class="place-name">{{ place.name }}</div>
+                    <div class="place-rating">⭐ {{ place.rating }}</div>
                 </div>
-                <div class="place-district">📍 {{ place.district }}, Karnataka</div>
-                {% if place.is_community %}<div class="community-submitter">Shared by {{ place.submitted_by }} 🌿</div>{% endif %}
-                <div class="place-desc">{{ place.description }}</div>
+                <div class="place-district">📍 {{ place.district }}</div>
+                {% if place.submitted_by %}
+                    <div class="community-submitter">By: {{ place.submitted_by }} <span class="community-badge">GUEST</span></div>
+                {% endif %}
+                <p class="place-desc">{{ place.description }}</p>
                 <div class="place-tags">
-                    {% for tag in place.tags %}<span class="tag {% if place.is_community %}community-tag{% endif %}">{{ tag }}</span>{% endfor %}
+                    {% for tag in place.tags %}
+                        <span class="tag {% if place.is_community %}community-tag{% endif %}">{{ tag }}</span>
+                    {% endfor %}
                 </div>
                 <div class="place-footer">
-                    <div>
-                        <div class="place-budget">{{ place.budget if place.budget else 'Ask locals' }}</div>
-                        <div class="place-season">Best: {{ place.best_season if place.best_season else 'Year round' }}</div>
-                    </div>
-                    {% if place.is_community %}
-                    <button class="view-btn community-view" onclick="openGemModal({{ loop.index0 }})">View Details</button>
-                    {% else %}
-                    <button class="view-btn" onclick="window.location.href='/place/{{ place.id }}'">View Details</button>
-                    {% endif %}
+                    <div class="place-budget">₹{{ place.budget }} approx.</div>
+                    <div class="place-season">{{ place.best_time }}</div>
                 </div>
             </div>
         </div>
@@ -321,88 +345,112 @@
     </div>
 </div>
 
-<div class="modal-overlay" id="gem-modal" onclick="closeModal(event)">
-    <div class="modal" id="modal-inner">
-        <button class="modal-close" onclick="closeModalDirect()">✕</button>
-        <div class="modal-img-wrap" id="modal-img-wrap"></div>
-        <div class="modal-body">
-            <div class="modal-name" id="modal-name"></div>
-            <div class="modal-district" id="modal-district"></div>
-            <div class="modal-submitter" id="modal-submitter"></div>
-            <div class="modal-desc" id="modal-desc"></div>
-            <div class="modal-row" id="modal-pills"></div>
-            <div class="modal-tags" id="modal-tags"></div>
-            <div id="modal-tip"></div>
-        </div>
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div id="modal-content">
+            </div>
     </div>
 </div>
 
-<div class="footer">Made with love for Karnataka travellers by <span>GemIndia</span> 🌿</div>
+<footer class="footer">
+    <p>© 2026 <span>GemIndia</span>. Built for the explorers of Karnataka. 🌿</p>
+</footer>
 
 <script>
-const communityGems = {{ community_gems | default([]) | tojson }};
-let activeTag = '';
+    // Data passed from Flask to JS
+    const allPlaces = {{ places|tojson }};
+    let activeFilter = '';
 
-function setFilter(tag, btn) {
-    activeTag = tag;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    filterPlaces();
-}
-
-function filterPlaces() {
-    const search = document.getElementById('nav-search').value.toLowerCase();
-    const cards = document.querySelectorAll('.place-card');
-    let visible = 0;
-    cards.forEach(card => {
-        const matchSearch = !search || card.dataset.name.toLowerCase().includes(search) || card.dataset.district.toLowerCase().includes(search);
-        let matchTag = !activeTag || (activeTag === 'community' ? card.dataset.type === 'community' : card.dataset.tags.includes(activeTag));
-        if (matchSearch && matchTag) { card.style.display = 'block'; visible++; }
-        else { card.style.display = 'none'; }
-    });
-    document.getElementById('section-title').textContent = visible + ' Hidden Gem' + (visible !== 1 ? 's' : '') + (activeTag ? ' - ' + activeTag : '') + ' in Karnataka';
-}
-
-async function getAIRecommendation() {
-    const input = document.getElementById('ai-input');
-    const message = input.value.trim();
-    if (!message) return;
-    input.value = '';
-    document.getElementById('ai-loading').style.display = 'flex';
-    document.getElementById('ai-response').style.display = 'none';
-    try {
-        const res = await fetch('/ai-recommend', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message }) });
-        const data = await res.json();
-        document.getElementById('ai-response').textContent = data.reply;
-        document.getElementById('ai-response').style.display = 'block';
-    } catch(e) {
-        document.getElementById('ai-response').textContent = 'Sorry, something went wrong. Please try again.';
-        document.getElementById('ai-response').style.display = 'block';
+    // --- Search & Filter Logic ---
+    function setFilter(category, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = category.toLowerCase();
+        filterPlaces();
     }
-    document.getElementById('ai-loading').style.display = 'none';
-}
 
-function openGemModal(cardIndex) {
-    const communityCardsList = Array.from(document.querySelectorAll('.place-card[data-type="community"]'));
-    const clickedCard = communityCardsList.indexOf(document.querySelectorAll('.place-card')[cardIndex]);
-    const gem = communityGems[clickedCard < 0 ? 0 : clickedCard];
-    if (!gem) return;
-    const imgWrap = document.getElementById('modal-img-wrap');
-    imgWrap.innerHTML = gem.image ? `<img class="modal-img" src="${gem.image}" alt="${gem.place_name || gem.name}" onerror="this.parentElement.innerHTML='<div class=\'modal-img-placeholder\'>💎</div>'">` : `<div class="modal-img-placeholder">💎</div>`;
-    document.getElementById('modal-name').textContent = gem.place_name || gem.name || 'Hidden Gem';
-    document.getElementById('modal-district').textContent = '📍 ' + (gem.district || '') + ', Karnataka';
-    document.getElementById('modal-submitter').textContent = '🌿 Shared by ' + (gem.name || 'Anonymous') + ' · ' + (gem.date || '');
-    document.getElementById('modal-desc').textContent = gem.description || '';
-    document.getElementById('modal-pills').innerHTML = (gem.budget ? `<span class="modal-pill">💰 ${gem.budget}</span>` : '') + (gem.best_season ? `<span class="modal-pill amber">📅 ${gem.best_season}</span>` : '') + (gem.type ? `<span class="modal-pill">${gem.type}</span>` : '');
-    document.getElementById('modal-tags').innerHTML = (gem.tags || []).map(t => `<span class="tag community-tag">${t}</span>`).join('');
-    document.getElementById('modal-tip').innerHTML = gem.tip ? `<div class="modal-tip"><strong>💡 Local Tip:</strong> ${gem.tip}</div>` : '';
-    document.getElementById('gem-modal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-}
+    function filterPlaces() {
+        const query = document.getElementById('nav-search').value.toLowerCase();
+        const grid = document.getElementById('places-grid');
+        const cards = grid.getElementsByClassName('place-card');
 
-function closeModalDirect() { document.getElementById('gem-modal').classList.remove('open'); document.body.style.overflow = ''; }
-function closeModal(e) { if (e.target === document.getElementById('gem-modal')) closeModalDirect(); }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+        allPlaces.forEach((place, index) => {
+            const matchesSearch = place.name.toLowerCase().includes(query) ||
+                                 place.district.toLowerCase().includes(query);
+
+            const matchesFilter = activeFilter === '' ||
+                                 (activeFilter === 'community' && place.is_community) ||
+                                 place.tags.some(t => t.toLowerCase() === activeFilter);
+
+            cards[index].style.display = (matchesSearch && matchesFilter) ? 'block' : 'none';
+        });
+    }
+
+    // --- Modal Logic ---
+    function openModal(index) {
+        const place = allPlaces[index];
+        const modalContent = document.getElementById('modal-content');
+        const overlay = document.getElementById('modal-overlay');
+
+        modalContent.innerHTML = `
+            <div class="modal-img-wrap">
+                ${place.image_url ? `<img src="${place.image_url}" class="modal-img">` : `<div class="modal-img-placeholder">🏞️</div>`}
+            </div>
+            <div class="modal-body">
+                <div class="modal-name">${place.name}</div>
+                <div class="modal-district">📍 ${place.district}, Karnataka</div>
+                ${place.submitted_by ? `<div class="modal-submitter">Shared by ${place.submitted_by}</div>` : ''}
+                <div class="modal-row">
+                    <span class="modal-pill">💰 Budget: ₹${place.budget}</span>
+                    <span class="modal-pill amber">📅 Best Time: ${place.best_time}</span>
+                </div>
+                <p class="modal-desc">${place.description}</p>
+                <div class="modal-tip">
+                    <strong>💡 Pro Tip:</strong> ${place.pro_tip || 'Carry enough water and respect the local culture.'}
+                </div>
+                <div class="modal-tags">
+                    ${place.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                </div>
+            </div>
+        `;
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('modal-overlay').classList.remove('open');
+        document.body.style.overflow = 'auto';
+    }
+
+    // --- AI Recommendation Logic ---
+    async function getAIRecommendation() {
+        const input = document.getElementById('ai-input').value;
+        const responseDiv = document.getElementById('ai-response');
+        const loading = document.getElementById('ai-loading');
+
+        if (!input) return;
+
+        loading.style.display = 'flex';
+        responseDiv.style.display = 'none';
+
+        try {
+            const response = await fetch('/get-ai-recommendation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: input })
+            });
+            const data = await response.json();
+
+            responseDiv.textContent = data.recommendation;
+            responseDiv.style.display = 'block';
+        } catch (error) {
+            responseDiv.textContent = "Oops! My compass is spinning. Try again later.";
+            responseDiv.style.display = 'block';
+        } finally {
+            loading.style.display = 'none';
+        }
+    }
 </script>
 </body>
 </html>

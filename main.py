@@ -503,26 +503,29 @@ places = [
      "tags": ["Wildlife", "Nature", "Trekking"], "lat": 15.0833, "lng": 74.0833},
 ]
 
-
 @app.route('/')
 def index():
-    JSONBIN_URL = "https://api.jsonbin.io/v3/b/678ba49ead19ca34f8ed849f"
-    headers = {'X-Master-Key': '$2a$10$89v8/tI5oA/OqM7TzI9bI.uX8mI5S5M5o/o/o/o/o/o/o/o/o/o/'}
+    # 1. Format the 70 places to work with your new HTML
+    formatted_places = []
+    for p in places:
+        place_copy = p.copy()
+        place_copy['image_url'] = p.get('image')
+        place_copy['is_community'] = False
+        place_copy['pro_tip'] = "Great spot for photography and nature lovers!"
+        place_copy['budget'] = p.get('budget', '1000-2000')
+        place_copy['best_time'] = p.get('best_season', 'Oct - Mar')
+        formatted_places.append(place_copy)
 
-    try:
-        resp = requests.get(JSONBIN_URL, headers=headers)
-        online_data = resp.json().get('record', {}).get('places', [])
-    except:
-        online_data = []
-
+    # 2. Load any community-submitted gems
     try:
         community_gems = CommunityGem.query.all()
-    except:
+    except Exception as e:
+        print(f"Database Error: {e}")
         community_gems = []
 
-    # Filter out empty gems and combine everything
-    all_places = places + online_data
-    return render_template('index.html', places=all_places, community_gems=community_gems)
+    return render_template('index.html',
+                           places=formatted_places,
+                           community_gems=community_gems)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -563,7 +566,7 @@ def ping():
     return "GemIndia is alive! 🌿", 200
 
 
-@app.route("/ai-recommend", methods=["POST"])
+@app.route("/get-ai-recommendation", methods=["POST"])
 @csrf.exempt
 def ai_recommend():
  try:
@@ -580,7 +583,7 @@ def ai_recommend():
     {"role": "user", "content": user_input}
    ]
   )
-  return jsonify({"reply": response.choices[0].message.content})
+  return jsonify({"recommendation": response.choices[0].message.content})
  except Exception as e:
   print(f"AI Error: {e}")
   return jsonify({"reply": "Sorry bro, I'm having trouble thinking right now."}), 500
@@ -597,8 +600,31 @@ def place_detail(place_id):
     except:
         place_experiences = []
     return render_template("place.html", place=place, experiences=place_experiences)
+@app.route('/submit-gem', methods=['GET', 'POST'])
+@login_required
+def submit_gem():
+    if request.method == 'POST':
+        place_name = request.form.get('place_name')
+        district = request.form.get('district')
+        description = request.form.get('description')
+
+        new_gem = CommunityGem(
+         place_name=place_name,
+         district=district,
+         description=description,
+         submitted_by=current_user.username,
+         image_url="https://res.cloudinary.com/dmk1cx5y9/image/upload/v1/gemindia/community_placeholder"
+         # Add a default link here
+        )
+
+        db.session.add(new_gem)
+        db.session.commit()
+
+        flash("Gem submitted successfully! 💎", "success")
+        return redirect(url_for('index'))
+    return render_template('submit_gem.html')
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+     with app.app_context():
+      db.create_all()
+     port = int(os.environ.get("PORT", 5000))
+     app.run(host="0.0.0.0", port=port)
