@@ -631,8 +631,11 @@ def submit_gem():
         flash("Gem submitted successfully! 💎", "success")
         return redirect(url_for('index'))
     return render_template('submit_gem.html')
+
+
+with app.app_context():
+ db.create_all()
+
 if __name__ == "__main__":
-     with app.app_context():
-      db.create_all()
-     port = int(os.environ.get("PORT", 5000))
-     app.run(host="0.0.0.0", port=port)
+ port = int(os.environ.get("PORT", 5000))
+ app.run(host="0.0.0.0", port=port)
