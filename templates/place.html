@@ -89,6 +89,34 @@
         .footer { background: var(--green-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 24px; font-size: 12px; margin-top: 40px; }
         .footer span { color: var(--green-light); font-weight: 600; }
         @media (max-width: 600px) { .place-hero-name { font-size: 28px; } .info-grid { grid-template-columns: 1fr 1fr; } }
+
+        /* ===== INTRO OVERLAY CLEAN FIX ===== */
+        #intro-overlay {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        #intro-canvas {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            display: block;
+        }
+        #intro-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+            -webkit-appearance: none;
+        }
+        @keyframes floatIn { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+        @keyframes fadeUp { from{transform:translateY(15px);opacity:0} to{transform:translateY(0);opacity:1} }
     </style>
 </head>
 <body>
@@ -99,42 +127,20 @@
     <div id="intro-content">
         <div style="font-size:48px;margin-bottom:12px;animation:floatIn 1s ease forwards;">🌿</div>
         <div style="font-size:36px;font-weight:800;color:#fff;letter-spacing:-1px;opacity:0;animation:fadeUp 0.8s ease 0.5s forwards;">Gem<span style="color:#a8e6c1;">India</span></div>
-        <div style="font-size:14px;color:rgba(255,255,255,0.7);margin-top:8px;opacity:0;animation:fadeUp 0.8s ease 0.9s forwards;">Hidden Gems of Karnataka</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.7);margin-top:8px;opacity:0;animation:fadeUp 0.8s ease 0.9s forwards;">Hidden Gems of Karnataka 🗺️</div>
         <div style="margin-top:24px;opacity:0;animation:fadeUp 0.8s ease 1.3s forwards;">
             <div style="width:200px;height:3px;background:rgba(255,255,255,0.2);border-radius:2px;overflow:hidden;margin:0 auto;">
                 <div id="intro-bar" style="height:100%;width:0%;background:#a8e6c1;border-radius:2px;transition:width 2s ease;"></div>
             </div>
             <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:8px;">Flying over Karnataka...</div>
+            <div style="margin-top:12px;">
+                <button onclick="document.getElementById('intro-overlay').style.display='none'" style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);border:none;border-radius:20px;padding:6px 16px;font-size:11px;font-family:'Sora',sans-serif;cursor:pointer;">Skip ›</button>
+            </div>
         </div>
     </div>
 </div>
 
-<style>
-    @keyframes floatIn { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
-    @keyframes fadeUp { from{transform:translateY(15px);opacity:0} to{transform:translateY(0);opacity:1} }
-
-    /* Mobile Fix for the Intro Line */
-    #intro-content {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-    padding: 20px;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    background: transparent !important;
-}
-    #intro-overlay, #intro-canvas {
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-}
-</style>
-
 <script>
-// 3D Flying stars/particles over Karnataka
 (function() {
     const canvas = document.getElementById('intro-canvas');
     const ctx = canvas.getContext('2d');
@@ -146,7 +152,6 @@
     window.addEventListener('resize', resize);
     resize();
 
-    // Stars (representing Karnataka's hidden gems flying by)
     const stars = Array.from({length: 180}, () => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -155,7 +160,6 @@
         color: Math.random() > 0.7 ? '#a8e6c1' : '#ffffff'
     }));
 
-    // Karnataka map dots (major cities flying by as glowing dots)
     const cities = [
         {name:'Bengaluru', px:0.55, py:0.75},
         {name:'Mysuru', px:0.45, py:0.82},
@@ -164,22 +168,33 @@
         {name:'Gokarna', px:0.25, py:0.55},
         {name:'Dandeli', px:0.28, py:0.35},
         {name:'Chikmagalur', px:0.35, py:0.65},
+        {name:'Kodachadri', px:0.30, py:0.60},
+        {name:'Agumbe', px:0.32, py:0.68},
+        {name:'Kabini', px:0.48, py:0.85},
     ];
 
     let frame = 0;
     let speed = 3;
 
+    // Fill canvas with solid bg first to kill any white line artifacts
+    ctx.fillStyle = '#0d4a28';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
     function animate() {
-        ctx.fillStyle = 'rgba(13,74,40,0.25)';
+        // Higher opacity fill = smoother trail, no visible outlines
+        ctx.fillStyle = 'rgba(13,74,40,0.5)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         const cx = canvas.width / 2;
         const cy = canvas.height / 2;
 
-        // Flying stars
         stars.forEach(s => {
             s.z -= speed;
-            if (s.z <= 0) { s.z = canvas.width; s.x = Math.random() * canvas.width; s.y = Math.random() * canvas.height; }
+            if (s.z <= 0) {
+                s.z = canvas.width;
+                s.x = Math.random() * canvas.width;
+                s.y = Math.random() * canvas.height;
+            }
             const scale = canvas.width / s.z;
             const sx = (s.x - cx) * scale + cx;
             const sy = (s.y - cy) * scale + cy;
@@ -188,13 +203,12 @@
                 ctx.beginPath();
                 ctx.arc(sx, sy, Math.min(r, 4), 0, Math.PI * 2);
                 ctx.fillStyle = s.color;
-                ctx.globalAlpha = Math.min(1, scale * 0.3);
+                ctx.globalAlpha = Math.min(1, scale * 0.25);
                 ctx.fill();
                 ctx.globalAlpha = 1;
             }
         });
 
-        // Glowing city dots flying in from edges
         cities.forEach((c, i) => {
             const pulse = Math.sin(frame * 0.05 + i) * 0.5 + 0.5;
             const x = c.px * canvas.width;
@@ -215,15 +229,13 @@
         });
 
         frame++;
-        if (speed < 18) speed += 0.08; // accelerate like flying
+        if (speed < 18) speed += 0.08;
         requestAnimationFrame(animate);
     }
     animate();
 
-    // Start progress bar
     setTimeout(() => { document.getElementById('intro-bar').style.width = '100%'; }, 100);
 
-    // Hide intro after 3.2 seconds
     setTimeout(() => {
         const overlay = document.getElementById('intro-overlay');
         overlay.style.transition = 'opacity 0.6s ease';
@@ -307,8 +319,6 @@
                 <div style="font-size:12px;color:var(--muted);">Find the best hotels, resorts and homestays</div>
             </div>
         </div>
-
-        <!-- ✅ Pure CSS logos - never break, no external images needed -->
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
             <a href="https://www.makemytrip.com/hotels/hotel-listing/#!city={{ place.district }}&country=IN" target="_blank" class="booking-btn">
                 <span style="background:#e8175d;color:#fff;font-size:11px;font-weight:800;padding:4px 8px;border-radius:6px;letter-spacing:-0.5px;white-space:nowrap;">make<span style="color:#ffcc00;">my</span>trip</span>
@@ -327,7 +337,6 @@
                 <span>Airbnb</span>
             </a>
         </div>
-
         <div style="margin-top:16px;padding:12px 16px;background:#e8f5e9;border-radius:10px;font-size:12px;color:#2d6a4f;">
             💡 <strong>Travel Tip:</strong> Book at least 2 weeks in advance for {{ place.best_season }} season to get best prices!
         </div>
@@ -417,10 +426,8 @@
 <div class="footer">Made with love for Karnataka travellers by <span>GemIndia</span> 🌿</div>
 
 <script>
-    // Start from Karnataka overview then fly to exact location
     var map = L.map('map', { zoomControl: true, scrollWheelZoom: true });
 
-    // Tile layers
     var streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         maxZoom: 19
@@ -437,7 +444,6 @@
     var currentLayer = streetLayer;
     streetLayer.addTo(map);
 
-    // Style switcher
     function setMapStyle(style) {
         map.removeLayer(currentLayer);
         document.querySelectorAll('[id^="btn-"]').forEach(b => {
@@ -449,7 +455,6 @@
         currentLayer.addTo(map);
     }
 
-    // Beautiful pulsing marker
     var greenIcon = L.divIcon({
         html: `<div style="position:relative;">
             <div style="width:20px;height:20px;background:#1a6b3c;border-radius:50%;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.4);position:relative;z-index:2;"></div>
@@ -460,13 +465,11 @@
         className: ''
     });
 
-    // Add pulse animation
     var styleEl = document.createElement('style');
     styleEl.innerHTML = '@keyframes pulse{0%{transform:scale(1);opacity:0.8}70%{transform:scale(2.5);opacity:0}100%{transform:scale(1);opacity:0}}';
     document.head.appendChild(styleEl);
 
-    // Fly from Karnataka overview → exact place (cinematic effect)
-    map.setView([15.3173, 75.7139], 7); // Start: Karnataka overview
+    map.setView([15.3173, 75.7139], 7);
     setTimeout(function() {
         map.flyTo([{{ place.lat }}, {{ place.lng }}], 14, { duration: 2.5, easeLinearity: 0.25 });
         setTimeout(function() {
@@ -487,13 +490,13 @@
         document.getElementById('ai-loading').style.display = 'flex';
         document.getElementById('ai-answer').style.display = 'none';
         try {
-            const res = await fetch('/ai-recommend', {
+            const res = await fetch('/get-ai-recommendation', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: 'Give me detailed travel tips for visiting {{ place.name }} in {{ place.district }}, Karnataka. Include best routes, nearby attractions, and local tips.' })
             });
             const data = await res.json();
-            document.getElementById('ai-answer').textContent = data.reply;
+            document.getElementById('ai-answer').textContent = data.recommendation;
             document.getElementById('ai-answer').style.display = 'block';
         } catch(e) {
             document.getElementById('ai-answer').textContent = 'Sorry, something went wrong. Please try again.';
