@@ -548,13 +548,18 @@ def user_login():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        username = request.form.get('username')
-        email = request.form.get('email')
-        password = bcrypt.generate_password_hash(request.form.get('password')).decode('utf-8')
-        new_user = User(username=username, email=email, password=password)
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('user_login'))
+        try:
+            username = request.form.get('username')
+            email = request.form.get('email')
+            password = bcrypt.generate_password_hash(request.form.get('password')).decode('utf-8')
+            new_user = User(username=username, email=email, password=password)
+            db.session.add(new_user)
+            db.session.commit()
+            flash("Account created! Please login. 🌿", "success")
+            return redirect(url_for('user_login'))
+        except Exception as e:
+            db.session.rollback()
+            flash("Username or email already exists. Try another.", "danger")
     return render_template('signup.html')
 
 

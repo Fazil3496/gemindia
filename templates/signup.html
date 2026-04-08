@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - GemIndia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: #0d4a28;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bg-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .signup-wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        .logo-area {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .logo-icon {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 8px;
+            animation: float 3s ease-in-out infinite;
+        }
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -1px;
+        }
+        .logo-text span { color: #a8e6c1; }
+        .logo-sub {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 4px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .signup-card {
+            background: rgba(255,255,255,0.07);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(168,230,193,0.2);
+            border-radius: 24px;
+            padding: 36px 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .card-sub {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .input-wrap {
+            position: relative;
+        }
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            pointer-events: none;
+        }
+        .form-group input {
+            width: 100%;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(168,230,193,0.2);
+            border-radius: 12px;
+            padding: 13px 16px 13px 42px;
+            font-size: 14px;
+            font-family: 'Sora', sans-serif;
+            color: #fff;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .form-group input::placeholder { color: rgba(255,255,255,0.3); }
+        .form-group input:focus {
+            border-color: #a8e6c1;
+            background: rgba(168,230,193,0.08);
+            box-shadow: 0 0 0 3px rgba(168,230,193,0.1);
+        }
+
+        .flash-error {
+            background: rgba(255,100,100,0.15);
+            border: 1px solid rgba(255,100,100,0.3);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: #ffaaaa;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .flash-success {
+            background: rgba(168,230,193,0.15);
+            border: 1px solid rgba(168,230,193,0.3);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: #a8e6c1;
+            margin-bottom: 18px;
+        }
+
+        .signup-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #1a6b3c, #2d9e5f);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 15px;
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 20px rgba(26,107,60,0.4);
+        }
+        .signup-btn:hover {
+            background: linear-gradient(135deg, #2d9e5f, #1a6b3c);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(26,107,60,0.5);
+        }
+        .signup-btn:active { transform: translateY(0); }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 22px 0;
+        }
+        .divider-line { flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
+        .divider-text { font-size: 11px; color: rgba(255,255,255,0.3); }
+
+        .login-link {
+            text-align: center;
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+        }
+        .login-link a {
+            color: #a8e6c1;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .login-link a:hover { color: #fff; }
+
+        .back-home {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 20px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .back-home:hover { color: rgba(255,255,255,0.8); }
+
+        @media (max-width: 480px) {
+            .signup-card { padding: 28px 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas class="bg-canvas" id="bg"></canvas>
+
+<div class="signup-wrapper">
+
+    <div class="logo-area">
+        <span class="logo-icon">🌿</span>
+        <div class="logo-text">Gem<span>India</span></div>
+        <div class="logo-sub">Hidden Gems of Karnataka</div>
+    </div>
+
+    <div class="signup-card">
+        <div class="card-title">Create account 🚀</div>
+        <div class="card-sub">Join GemIndia and start exploring Karnataka</div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                {% if category == 'danger' %}
+                <div class="flash-error">⚠️ {{ message }}</div>
+                {% else %}
+                <div class="flash-success">✅ {{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+            <div class="form-group">
+                <label>Username</label>
+                <div class="input-wrap">
+                    <span class="input-icon">👤</span>
+                    <input type="text" name="username" required placeholder="Choose a username" autocomplete="username">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <div class="input-wrap">
+                    <span class="input-icon">📧</span>
+                    <input type="email" name="email" required placeholder="Enter your email" autocomplete="email">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <div class="input-wrap">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" name="password" required placeholder="Create a password" autocomplete="new-password">
+                </div>
+            </div>
+
+            <button type="submit" class="signup-btn">Create My Account 🌿</button>
+        </form>
+
+        <div class="divider">
+            <div class="divider-line"></div>
+            <div class="divider-text">ALREADY HAVE AN ACCOUNT?</div>
+            <div class="divider-line"></div>
+        </div>
+
+        <div class="login-link">
+            Already registered? <a href="/login">Login here</a>
+        </div>
+    </div>
+
+    <a href="/" class="back-home">← Back to GemIndia Home</a>
+
+</div>
+
+<script>
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+const particles = Array.from({length: 60}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 2 + 0.5,
+    dx: (Math.random() - 0.5) * 0.4,
+    dy: (Math.random() - 0.5) * 0.4,
+    color: Math.random() > 0.6 ? '#a8e6c1' : '#ffffff'
+}));
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = 0.4;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+    });
+    requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
