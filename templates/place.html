@@ -152,13 +152,105 @@
     window.addEventListener('resize', resize);
     resize();
 
-    const stars = Array.from({length: 180}, () => ({
+    <script>
+(function() {
+    const canvas = document.getElementById('intro-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Simple random floating particles - NO perspective tunnel = NO hexagon outline
+    const particles = Array.from({length: 120}, () => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        z: Math.random() * canvas.width,
-        size: Math.random() * 2 + 0.5,
-        color: Math.random() > 0.7 ? '#a8e6c1' : '#ffffff'
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: (Math.random() - 0.5) * 1.2,
+        size: Math.random() * 2.5 + 0.5,
+        color: Math.random() > 0.6 ? '#a8e6c1' : '#ffffff',
+        alpha: Math.random() * 0.6 + 0.2
     }));
+
+    const cities = [
+        {name:'Bengaluru', px:0.55, py:0.75},
+        {name:'Mysuru', px:0.45, py:0.82},
+        {name:'Hampi', px:0.42, py:0.45},
+        {name:'Coorg', px:0.38, py:0.78},
+        {name:'Gokarna', px:0.25, py:0.55},
+        {name:'Dandeli', px:0.28, py:0.35},
+        {name:'Chikmagalur', px:0.35, py:0.65},
+        {name:'Kodachadri', px:0.30, py:0.60},
+        {name:'Agumbe', px:0.32, py:0.68},
+        {name:'Kabini', px:0.48, py:0.85},
+    ];
+
+    let frame = 0;
+
+    // Fill solid first
+    ctx.fillStyle = '#0d4a28';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    function animate() {
+        // Solid fill every frame - no trails, no outlines
+        ctx.fillStyle = '#0d4a28';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Floating particles
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0) p.x = canvas.width;
+            if (p.x > canvas.width) p.x = 0;
+            if (p.y < 0) p.y = canvas.height;
+            if (p.y > canvas.height) p.y = 0;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.alpha;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+        });
+
+        // Glowing city dots
+        cities.forEach((c, i) => {
+            const pulse = Math.sin(frame * 0.05 + i) * 0.5 + 0.5;
+            const x = c.px * canvas.width;
+            const y = c.py * canvas.height;
+            ctx.beginPath();
+            ctx.arc(x, y, 4 + pulse * 3, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(168,230,193,${0.3 + pulse * 0.4})`;
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(x, y, 2, 0, Math.PI * 2);
+            ctx.fillStyle = '#a8e6c1';
+            ctx.fill();
+            if (frame > 40) {
+                ctx.fillStyle = `rgba(255,255,255,${0.5 + pulse * 0.3})`;
+                ctx.font = '11px Sora, sans-serif';
+                ctx.fillText(c.name, x + 8, y + 4);
+            }
+        });
+
+        frame++;
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    setTimeout(() => { document.getElementById('intro-bar').style.width = '100%'; }, 100);
+
+    setTimeout(() => {
+        const overlay = document.getElementById('intro-overlay');
+        overlay.style.transition = 'opacity 0.6s ease';
+        overlay.style.opacity = '0';
+        setTimeout(() => { overlay.style.display = 'none'; }, 600);
+    }, 3200);
+})();
+</script>
 
     const cities = [
         {name:'Bengaluru', px:0.55, py:0.75},
