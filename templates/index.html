@@ -295,7 +295,7 @@
                 </div>
                 <div class="place-footer">
                     <div class="place-budget">Verified by GemIndia</div>
-                    <button class="view-btn community-view">Community Gem</button>
+                    <a href="#" class="view-btn community-view" onclick="openCommunityModal('{{ gem.place_name }}', '{{ gem.district }}', '{{ gem.description }}', '{{ gem.image_url }}', '{{ gem.submitted_by }}')">View Details</a>
                 </div>
             </div>
         </div>
@@ -430,7 +430,27 @@
         document.body.style.overflow = 'hidden';
     }
 
-    function closeModal() {
+    function openCommunityModal(name, district, desc, image, by) {
+    const modalContent = document.getElementById('modal-content');
+    modalContent.innerHTML = `
+        <div class="modal-img-wrap">
+            <img src="${image}" class="modal-img" onerror="this.src='https://via.placeholder.com/580x260?text=No+Image'">
+        </div>
+        <div class="modal-body">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                    <div style="font-size:22px;font-weight:700">${name}</div>
+                    <div style="font-size:13px;color:#666;margin-top:4px">📍 ${district}, Karnataka</div>
+                </div>
+                <span style="background:#fff8e1;color:#b8860b;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;">COMMUNITY GEM</span>
+            </div>
+            <p style="margin-top:16px;font-size:13px;line-height:1.7;color:#444">${desc}</p>
+            <div style="margin-top:16px;font-size:12px;color:#888">Submitted by: <strong>${by}</strong></div>
+        </div>
+    `;
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+} closeModal() {
         document.getElementById('modal-overlay').classList.remove('open');
         document.body.style.overflow = 'auto';
     }

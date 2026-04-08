@@ -617,6 +617,36 @@ def place_detail(place_id):
 @login_required
 def submit_gem():
     if request.method == 'POST':
+        try:
+            place_name = request.form.get('place_name') or request.form.get('name')
+            district = request.form.get('district')
+            description = request.form.get('description')
+
+            # Handle image upload to Cloudinary
+            image_url = "https://res.cloudinary.com/dmk1cx5y9/image/upload/v1/gemindia/community_placeholder"
+            if 'image' in request.files:
+                file = request.files['image']
+                if file and file.filename != '':
+                    upload_result = cloudinary.uploader.upload(file)
+                    image_url = upload_result['secure_url']
+
+            new_gem = CommunityGem(
+                place_name=place_name,
+                district=district,
+                description=description,
+                submitted_by=current_user.username,
+                image_url=image_url
+            )
+            db.session.add(new_gem)
+            db.session.commit()
+            flash("Gem submitted successfully! 💎", "success")
+            return redirect(url_for('index'))
+        except Exception as e:
+            db.session.rollback()
+            print(f"Submit gem error: {e}")
+            flash("Something went wrong. Please try again.", "danger")
+    return render_template('submit_gem.html')
+    if request.method == 'POST':
         place_name = request.form.get('place_name')
         district = request.form.get('district')
         description = request.form.get('description')
