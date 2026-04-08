@@ -185,15 +185,7 @@
                 ctx.font = '11px Sora, sans-serif'; ctx.fillText(c.name, x + 10, y + 4);
             }
         });
-        if (frame > 30) {
-            ctx.beginPath();
-            ctx.moveTo(canvas.width*0.28, canvas.height*0.22); ctx.lineTo(canvas.width*0.55, canvas.height*0.18);
-            ctx.lineTo(canvas.width*0.68, canvas.height*0.35); ctx.lineTo(canvas.width*0.65, canvas.height*0.55);
-            ctx.lineTo(canvas.width*0.58, canvas.height*0.90); ctx.lineTo(canvas.width*0.35, canvas.height*0.92);
-            ctx.lineTo(canvas.width*0.20, canvas.height*0.72); ctx.lineTo(canvas.width*0.18, canvas.height*0.48);
-            ctx.lineTo(canvas.width*0.28, canvas.height*0.22);
-            ctx.strokeStyle = `rgba(168,230,193,${Math.min(0.35, (frame-30)*0.008)})`; ctx.lineWidth = 1.5; ctx.stroke();
-        }
+
         frame++; if (speed < 20) speed += 0.07;
         if (frame === 60) { document.getElementById('intro-label').textContent = labels[1]; }
         if (frame === 120) { document.getElementById('intro-label').textContent = labels[2]; }
