@@ -82,7 +82,16 @@
         .community-submitter { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
         .footer { background: var(--green-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 24px; font-size: 12px; margin-top: 60px; }
         .footer span { color: var(--green-light); font-weight: 600; }
-        @media (max-width: 600px) { .hero h1 { font-size: 26px; } .nav-search { display: none; } .places-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) {
+    .hero h1 { font-size: 26px; }
+    .nav-search { display: none; }
+    .places-grid { grid-template-columns: 1fr; }
+    .nav-inner { flex-wrap: wrap; height: auto; padding: 10px 0; gap: 8px; }
+    .nav-links { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; width: 100%; }
+    .nav-link { font-size: 11px; padding: 5px 10px; }
+    .nav-link.community-btn { font-size: 11px; padding: 5px 10px; }
+    .logo { font-size: 16px; }
+}
         @keyframes floatIn { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
         @keyframes fadeUp { from{transform:translateY(15px);opacity:0} to{transform:translateY(0);opacity:1} }
 
