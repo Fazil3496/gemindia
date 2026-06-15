@@ -512,7 +512,13 @@ places = [
      "image": "https://res.cloudinary.com/dmk1cx5y9/image/upload/gemindia/place_70.jpg",
      "tags": ["Wildlife", "Nature", "Trekking"], "lat": 15.0833, "lng": 74.0833},
 ]
-
+@app.route('/place/<int:place_id>')
+def place_details(place_id):
+    # This searches your 'places' list for the ID that was clicked
+    place = next((p for p in places if p['id'] == place_id), None)
+    if place:
+        return render_template('details.html', place=place)
+    return "Place not found", 404
 @app.route('/')
 def index():
     # Format the 70 places to include all details for the modal

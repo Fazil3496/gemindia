@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ place.name }} - GemIndia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body { font-family: 'Sora', sans-serif; padding: 40px; background: #f5f5f0; max-width: 800px; margin: auto; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        img { width: 100%; border-radius: 15px; }
+        h1 { color: #1a6b3c; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <a href="/">← Back Home</a>
+        <h1>{{ place.name }}</h1>
+        <img src="{{ place.image }}" alt="{{ place.name }}">
+        <p><strong>District:</strong> {{ place.district }}</p>
+        <p>{{ place.description }}</p>
+        <p><strong>Budget:</strong> ₹{{ place.budget }}</p>
+        <p><strong>Best Season:</strong> {{ place.best_season }}</p>
+    </div>
+</body>
+</html>

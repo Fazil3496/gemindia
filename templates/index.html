@@ -293,9 +293,10 @@
                 <div class="place-tags">
                     <span class="tag community-tag">Community Find</span>
                 </div>
-                <div class="place-footer">
-                    <div class="place-budget">Verified by GemIndia</div>
-                    <a href="#" class="view-btn community-view" onclick="openCommunityModal('{{ gem.place_name }}', '{{ gem.district }}', '{{ gem.description }}', '{{ gem.image_url }}', '{{ gem.submitted_by }}')">View Details</a>
+               <div class="place-footer">
+    <div class="place-budget">₹{{ place.budget }}</div>
+    <a href="{{ url_for('place_details', place_id=place.id) }}" class="view-btn">View Details</a>
+</div>
                 </div>
             </div>
         </div>
