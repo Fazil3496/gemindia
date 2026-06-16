@@ -694,7 +694,8 @@ def place_detail(place_id):
   return "Place not found", 404
 
  return render_template('place_detail.html', place=selected_place)
-@@app.route('/ask-ai', methods=['POST'])
+# --- AI Suggestor Route ---
+@app.route('/ask-ai', methods=['POST'])
 def ask_ai():
     data = request.json
     user_query = data.get('query')
