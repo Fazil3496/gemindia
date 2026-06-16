@@ -303,6 +303,13 @@
         {% endfor %}
 
         {% for place in places %}
+    <div class="card">
+        <h3>{{ place.name }}</h3>
+        <p>{{ place.description }}</p>
+
+        <a href="{{ url_for('place_detail', place_id=place.id) }}">View More</a>
+        </div>
+{% endfor %}
         <div class="place-card" onclick="openModal('{{ loop.index0 }}')">
             <div class="place-img-wrap">
                 <img src="{{ place.image_url }}" class="place-img" alt="{{ place.name }}">
@@ -354,7 +361,55 @@
 
     function filterPlaces() {
         const query = document.getElementById('nav-search').value.toLowerCase();
-        const grid = document.getElementById('places-grid');
+        const grid = document.getElementById('<div class="places-grid" id="places-grid">
+
+    {% for gem in community_gems %}
+    <div class="place-card community-card" onclick="openCommunityModal('{{ gem.place_name }}', '{{ gem.district }}', '{{ gem.description|replace('\n', ' ') }}', '{{ gem.image_url }}', '{{ gem.submitted_by }}')">
+        <div class="place-img-wrap">
+            <img src="{{ gem.image_url }}" class="place-img" alt="{{ gem.place_name }}">
+        </div>
+        <div class="place-body">
+            <div class="place-top">
+                <div class="place-name">{{ gem.place_name }}</div>
+                <div class="place-rating">⭐ New</div>
+            </div>
+            <div class="place-district">📍 {{ gem.district }}</div>
+            <div class="community-submitter">By: {{ gem.submitted_by }} <span class="community-badge">GUEST</span></div>
+            <p class="place-desc">{{ gem.description }}</p>
+            <div class="place-footer">
+                <div class="place-budget">Community</div>
+                <button class="view-btn community-view">View Details</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% for place in places %}
+    <div class="place-card" onclick="openModal('{{ loop.index0 }}')">
+        <div class="place-img-wrap">
+            <img src="{{ place.image_url }}" class="place-img" alt="{{ place.name }}">
+        </div>
+        <div class="place-body">
+            <div class="place-top">
+                <div class="place-name">{{ place.name }}</div>
+                <div class="place-rating">⭐ {{ place.rating }}</div>
+            </div>
+            <div class="place-district">📍 {{ place.district }}</div>
+            <p class="place-desc">{{ place.description }}</p>
+            <div class="place-tags">
+                {% for tag in place.tags %}
+                <span class="tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+            <div class="place-footer">
+                <div class="place-budget">₹{{ place.budget }}</div>
+                <button class="view-btn">View Details</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
         const cards = grid.getElementsByClassName('place-card');
 
         let visibleIndex = 0;
@@ -484,3 +539,19 @@
 </script>
 </body>
 </html>
+<input type="text" id="ai-input" placeholder="e.g. peaceful trek...">
+<button onclick="askAI()">Ask AI</button>
+<div id="ai-output"></div>
+
+<script>
+async function askAI() {
+    const query = document.getElementById('ai-input').value;
+    const response = await fetch('/ask-ai', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token() }}'},
+        body: JSON.stringify({query: query})
+    });
+    const data = await response.json();
+    document.getElementById('ai-output').innerText = data.response;
+}
+</script>
