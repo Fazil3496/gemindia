@@ -15,22 +15,25 @@ from flask_wtf.csrf import CSRFProtect
 from functools import wraps
  
 load_dotenv()
- 
- app = Flask(__name__)
- app.config['SECRET_KEY'] = 'gemindia-secret-rocket-key-2024'
- csrf = CSRFProtect(app)
- 
- basedir = os.path.abspath(os.path.dirname(__file__))
- app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'gemindia.db')
- app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
- 
- db = SQLAlchemy(app)
- bcrypt = Bcrypt(app)
- login_manager = LoginManager(app)
- login_manager.login_view = 'user_login'
- 
- # ✅ FIX 1: Configure Cloudinary using environment variables
- cloudinary.config(
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'gemindia-secret-rocket-key-2024'
+csrf = CSRFProtect(app)
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'gemindia.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'user_login'
+
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME", "dmk1cx5y9"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET")
+)
      cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME", "dmk1cx5y9"),
      api_key=os.getenv("CLOUDINARY_API_KEY"),
      api_secret=os.getenv("CLOUDINARY_API_SECRET")
