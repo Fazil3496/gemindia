@@ -694,15 +694,29 @@ def place_detail(place_id):
   return "Place not found", 404
 
  return render_template('place_detail.html', place=selected_place)
-@app.route('/ask-ai', methods=['POST'])
+@@app.route('/ask-ai', methods=['POST'])
 def ask_ai():
-    user_query = request.json.get('query')
-    # This sends your question to the Groq AI
+    data = request.json
+    user_query = data.get('query')
     chat_completion = client.chat.completions.create(
         messages=[{"role": "user", "content": f"Suggest places in Karnataka: {user_query}"}],
         model="llama3-8b-8192",
     )
     return jsonify({"response": chat_completion.choices[0].message.content})
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+
+# --- View More Detail Route ---
+@app.route('/place/<int:place_id>')
+def place_details(place_id):
+    # This finds the specific place in your 'places' list
+    place = next((p for p in places if p['id'] == place_id), None)
+    if place:
+        return render_template('details.html', place=place)
+    return "Place not found", 404
+
+# --- Home Route ---
+@app.route('/')
+def index():
+    return render_template('index.html', places=places)
+
+if __name__ == '__main__':
+    app.run(debug=True)
