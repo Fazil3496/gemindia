@@ -528,7 +528,7 @@ def place_details(place_id):
     place = next((p for p in places if p['id'] == place_id), None)
     if place:
         return render_template('details.html', place=place)
-    return "Place not found", 404 ]
+    return "Place not found", 404
     for p in places:
         place_copy = p.copy()
         place_copy['image_url'] = p.get('image')
