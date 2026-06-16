@@ -522,7 +522,7 @@ def place_details(place_id):
 @app.route('/')
 def index():
     # Format the 70 places to include all details for the modal
-    formatted_places = [@app.route('/place/<int:place_id>')
+
 def place_details(place_id):
     # This finds the specific place in your list
     place = next((p for p in places if p['id'] == place_id), None)
