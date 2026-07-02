@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -121,226 +121,11 @@
 </head>
 <body>
 
-<!-- 3D FLYING INTRO ANIMATION -->
-<div id="intro-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0d4a28;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;">
-    <canvas id="intro-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;"></canvas>
-    <div id="intro-content">
-        <div style="font-size:48px;margin-bottom:12px;animation:floatIn 1s ease forwards;">🌿</div>
-        <div style="font-size:36px;font-weight:800;color:#fff;letter-spacing:-1px;opacity:0;animation:fadeUp 0.8s ease 0.5s forwards;">Gem<span style="color:#a8e6c1;">India</span></div>
-        <div style="font-size:14px;color:rgba(255,255,255,0.7);margin-top:8px;opacity:0;animation:fadeUp 0.8s ease 0.9s forwards;">Hidden Gems of Karnataka 🗺️</div>
-        <div style="margin-top:24px;opacity:0;animation:fadeUp 0.8s ease 1.3s forwards;">
-            <div style="width:200px;height:3px;background:rgba(255,255,255,0.2);border-radius:2px;overflow:hidden;margin:0 auto;">
-                <div id="intro-bar" style="height:100%;width:0%;background:#a8e6c1;border-radius:2px;transition:width 2s ease;"></div>
-            </div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:8px;">Flying over Karnataka...</div>
-            <div style="margin-top:12px;">
-                <button onclick="document.getElementById('intro-overlay').style.display='none'" style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);border:none;border-radius:20px;padding:6px 16px;font-size:11px;font-family:'Sora',sans-serif;cursor:pointer;">Skip ›</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-(function() {
-    const canvas = document.getElementById('intro-canvas');
-    const ctx = canvas.getContext('2d');
-
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    <script>
-(function() {
-    const canvas = document.getElementById('intro-canvas');
-    const ctx = canvas.getContext('2d');
-
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    // Simple random floating particles - NO perspective tunnel = NO hexagon outline
-    const particles = Array.from({length: 120}, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 1.2,
-        vy: (Math.random() - 0.5) * 1.2,
-        size: Math.random() * 2.5 + 0.5,
-        color: Math.random() > 0.6 ? '#a8e6c1' : '#ffffff',
-        alpha: Math.random() * 0.6 + 0.2
-    }));
-
-    const cities = [
-        {name:'Bengaluru', px:0.55, py:0.75},
-        {name:'Mysuru', px:0.45, py:0.82},
-        {name:'Hampi', px:0.42, py:0.45},
-        {name:'Coorg', px:0.38, py:0.78},
-        {name:'Gokarna', px:0.25, py:0.55},
-        {name:'Dandeli', px:0.28, py:0.35},
-        {name:'Chikmagalur', px:0.35, py:0.65},
-        {name:'Kodachadri', px:0.30, py:0.60},
-        {name:'Agumbe', px:0.32, py:0.68},
-        {name:'Kabini', px:0.48, py:0.85},
-    ];
-
-    let frame = 0;
-
-    // Fill solid first
-    ctx.fillStyle = '#0d4a28';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    function animate() {
-        // Solid fill every frame - no trails, no outlines
-        ctx.fillStyle = '#0d4a28';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Floating particles
-        particles.forEach(p => {
-            p.x += p.vx;
-            p.y += p.vy;
-            if (p.x < 0) p.x = canvas.width;
-            if (p.x > canvas.width) p.x = 0;
-            if (p.y < 0) p.y = canvas.height;
-            if (p.y > canvas.height) p.y = 0;
-
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fillStyle = p.color;
-            ctx.globalAlpha = p.alpha;
-            ctx.fill();
-            ctx.globalAlpha = 1;
-        });
-
-        // Glowing city dots
-        cities.forEach((c, i) => {
-            const pulse = Math.sin(frame * 0.05 + i) * 0.5 + 0.5;
-            const x = c.px * canvas.width;
-            const y = c.py * canvas.height;
-            ctx.beginPath();
-            ctx.arc(x, y, 4 + pulse * 3, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(168,230,193,${0.3 + pulse * 0.4})`;
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(x, y, 2, 0, Math.PI * 2);
-            ctx.fillStyle = '#a8e6c1';
-            ctx.fill();
-            if (frame > 40) {
-                ctx.fillStyle = `rgba(255,255,255,${0.5 + pulse * 0.3})`;
-                ctx.font = '11px Sora, sans-serif';
-                ctx.fillText(c.name, x + 8, y + 4);
-            }
-        });
-
-        frame++;
-        requestAnimationFrame(animate);
-    }
-    animate();
-
-    setTimeout(() => { document.getElementById('intro-bar').style.width = '100%'; }, 100);
-
-    setTimeout(() => {
-        const overlay = document.getElementById('intro-overlay');
-        overlay.style.transition = 'opacity 0.6s ease';
-        overlay.style.opacity = '0';
-        setTimeout(() => { overlay.style.display = 'none'; }, 600);
-    }, 3200);
-})();
-</script>
-
-    const cities = [
-        {name:'Bengaluru', px:0.55, py:0.75},
-        {name:'Mysuru', px:0.45, py:0.82},
-        {name:'Hampi', px:0.42, py:0.45},
-        {name:'Coorg', px:0.38, py:0.78},
-        {name:'Gokarna', px:0.25, py:0.55},
-        {name:'Dandeli', px:0.28, py:0.35},
-        {name:'Chikmagalur', px:0.35, py:0.65},
-        {name:'Kodachadri', px:0.30, py:0.60},
-        {name:'Agumbe', px:0.32, py:0.68},
-        {name:'Kabini', px:0.48, py:0.85},
-    ];
-
-    let frame = 0;
-    let speed = 3;
-
-    // Fill canvas with solid bg first to kill any white line artifacts
-    ctx.fillStyle = '#0d4a28';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    function animate() {
-        // Higher opacity fill = smoother trail, no visible outlines
-        ctx.fillStyle = 'rgba(13,74,40,0.5)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        const cx = canvas.width / 2;
-        const cy = canvas.height / 2;
-
-        stars.forEach(s => {
-            s.z -= speed;
-            if (s.z <= 0) {
-                s.z = canvas.width;
-                s.x = Math.random() * canvas.width;
-                s.y = Math.random() * canvas.height;
-            }
-            const scale = canvas.width / s.z;
-            const sx = (s.x - cx) * scale + cx;
-            const sy = (s.y - cy) * scale + cy;
-            const r = s.size * scale;
-            if (sx > 0 && sx < canvas.width && sy > 0 && sy < canvas.height) {
-                ctx.beginPath();
-                ctx.arc(sx, sy, Math.min(r, 4), 0, Math.PI * 2);
-                ctx.fillStyle = s.color;
-                ctx.globalAlpha = Math.min(1, scale * 0.25);
-                ctx.fill();
-                ctx.globalAlpha = 1;
-            }
-        });
-
-        cities.forEach((c, i) => {
-            const pulse = Math.sin(frame * 0.05 + i) * 0.5 + 0.5;
-            const x = c.px * canvas.width;
-            const y = c.py * canvas.height;
-            ctx.beginPath();
-            ctx.arc(x, y, 4 + pulse * 3, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(168,230,193,${0.3 + pulse * 0.4})`;
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(x, y, 2, 0, Math.PI * 2);
-            ctx.fillStyle = '#a8e6c1';
-            ctx.fill();
-            if (frame > 40) {
-                ctx.fillStyle = `rgba(255,255,255,${0.5 + pulse * 0.3})`;
-                ctx.font = '10px Sora, sans-serif';
-                ctx.fillText(c.name, x + 8, y + 4);
-            }
-        });
-
-        frame++;
-        if (speed < 18) speed += 0.08;
-        requestAnimationFrame(animate);
-    }
-    animate();
-
-    setTimeout(() => { document.getElementById('intro-bar').style.width = '100%'; }, 100);
-
-    setTimeout(() => {
-        const overlay = document.getElementById('intro-overlay');
-        overlay.style.transition = 'opacity 0.6s ease';
-        overlay.style.opacity = '0';
-        setTimeout(() => { overlay.style.display = 'none'; }, 600);
-    }, 3200);
-})();
-</script>
 
 <nav class="navbar">
     <div class="nav-inner">
-        <a href="/" class="back-btn">← Back to all places</a>
-        <div class="logo">Gem<span>India</span> 🌿</div>
+        <a href="/" class="back-btn">â† Back to all places</a>
+        <div class="logo">Gem<span>India</span> ðŸŒ¿</div>
     </div>
 </nav>
 
@@ -348,12 +133,12 @@
     <div class="hero-inner">
         <div class="place-type-badge">{{ place.type }}</div>
         <div class="place-hero-name">{{ place.name }}</div>
-        <div class="place-hero-district">📍 {{ place.district }}, Karnataka</div>
+        <div class="place-hero-district">ðŸ“ {{ place.district }}, Karnataka</div>
         <div class="place-hero-desc">{{ place.description }}</div>
         <div class="place-hero-bottom">
             <div class="rating-big">
                 <div>
-                    <div class="rating-num">⭐ {{ place.rating }}</div>
+                    <div class="rating-num">â­ {{ place.rating }}</div>
                     <div class="rating-label">Rating</div>
                 </div>
             </div>
@@ -370,22 +155,22 @@
 
     <div class="info-grid">
         <div class="info-card">
-            <div class="info-card-icon">💰</div>
+            <div class="info-card-icon">ðŸ’°</div>
             <div class="info-card-title">Budget per day</div>
             <div class="info-card-value green">{{ place.budget }}</div>
         </div>
         <div class="info-card">
-            <div class="info-card-icon">🏨</div>
+            <div class="info-card-icon">ðŸ¨</div>
             <div class="info-card-title">Where to stay</div>
             <div class="info-card-value">{{ place.stay }}</div>
         </div>
         <div class="info-card">
-            <div class="info-card-icon">🍛</div>
+            <div class="info-card-icon">ðŸ›</div>
             <div class="info-card-title">Local food</div>
             <div class="info-card-value">{{ place.food }}</div>
         </div>
         <div class="info-card">
-            <div class="info-card-icon">📅</div>
+            <div class="info-card-icon">ðŸ“…</div>
             <div class="info-card-title">Best season to visit</div>
             <div class="info-card-value">{{ place.best_season }}</div>
         </div>
@@ -395,17 +180,17 @@
     <div class="essential-grid">
         {% for item in place.carry.split(',') %}
         <div class="essential-item">
-            <div class="essential-emoji">🎒</div>
+            <div class="essential-emoji">ðŸŽ’</div>
             <div class="essential-text">{{ item.strip() }}</div>
         </div>
         {% endfor %}
     </div>
 
     <!-- BOOKING SECTION -->
-    <div class="section-title">🏨 Book Hotels & Travel</div>
+    <div class="section-title">ðŸ¨ Book Hotels & Travel</div>
     <div style="background:var(--white);border-radius:16px;padding:24px;margin-bottom:32px;border:1px solid var(--border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-            <div style="width:36px;height:36px;background:#e8f5e9;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">🏨</div>
+            <div style="width:36px;height:36px;background:#e8f5e9;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">ðŸ¨</div>
             <div>
                 <div style="font-size:15px;font-weight:600;">Book Your Stay Near {{ place.name }}</div>
                 <div style="font-size:12px;color:var(--muted);">Find the best hotels, resorts and homestays</div>
@@ -430,23 +215,23 @@
             </a>
         </div>
         <div style="margin-top:16px;padding:12px 16px;background:#e8f5e9;border-radius:10px;font-size:12px;color:#2d6a4f;">
-            💡 <strong>Travel Tip:</strong> Book at least 2 weeks in advance for {{ place.best_season }} season to get best prices!
+            ðŸ’¡ <strong>Travel Tip:</strong> Book at least 2 weeks in advance for {{ place.best_season }} season to get best prices!
         </div>
     </div>
 
     <!-- MAP SECTION -->
-    <div class="section-title">📍 Location on Map</div>
+    <div class="section-title">ðŸ“ Location on Map</div>
     <div class="map-section">
         <div class="map-header">
-            <span class="map-header-icon">🗺️</span>
+            <span class="map-header-icon">ðŸ—ºï¸</span>
             <span class="map-header-title">{{ place.name }}, {{ place.district }}</span>
             <span class="map-header-sub">Karnataka, India</span>
         </div>
         <div style="display:flex;gap:8px;padding:10px 16px;background:#f9f9f9;border-bottom:1px solid var(--border);flex-wrap:wrap;">
-            <button onclick="setMapStyle('street')" id="btn-street" style="background:var(--green);color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-family:'Sora',sans-serif;cursor:pointer;font-weight:600;">🗺️ Street</button>
-            <button onclick="setMapStyle('satellite')" id="btn-satellite" style="background:#fff;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:12px;font-family:'Sora',sans-serif;cursor:pointer;">🛰️ Satellite</button>
-            <button onclick="setMapStyle('terrain')" id="btn-terrain" style="background:#fff;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:12px;font-family:'Sora',sans-serif;cursor:pointer;">🏔️ Terrain</button>
-            <a href="https://www.openstreetmap.org/?mlat={{ place.lat }}&mlon={{ place.lng }}&zoom=15" target="_blank" style="margin-left:auto;background:#e8f5e9;color:var(--green);border-radius:8px;padding:6px 14px;font-size:12px;font-family:'Sora',sans-serif;text-decoration:none;font-weight:600;">↗️ Open Full Map</a>
+            <button onclick="setMapStyle('street')" id="btn-street" style="background:var(--green);color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-family:'Sora',sans-serif;cursor:pointer;font-weight:600;">ðŸ—ºï¸ Street</button>
+            <button onclick="setMapStyle('satellite')" id="btn-satellite" style="background:#fff;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:12px;font-family:'Sora',sans-serif;cursor:pointer;">ðŸ›°ï¸ Satellite</button>
+            <button onclick="setMapStyle('terrain')" id="btn-terrain" style="background:#fff;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:12px;font-family:'Sora',sans-serif;cursor:pointer;">ðŸ”ï¸ Terrain</button>
+            <a href="https://www.openstreetmap.org/?mlat={{ place.lat }}&mlon={{ place.lng }}&zoom=15" target="_blank" style="margin-left:auto;background:#e8f5e9;color:var(--green);border-radius:8px;padding:6px 14px;font-size:12px;font-family:'Sora',sans-serif;text-decoration:none;font-weight:600;">â†—ï¸ Open Full Map</a>
         </div>
         <div id="map" style="height:420px;"></div>
     </div>
@@ -454,7 +239,7 @@
     <!-- AI TIP SECTION -->
     <div class="ai-tip-section">
         <div class="ai-tip-header">
-            <div class="ai-tip-icon">✦</div>
+            <div class="ai-tip-icon">âœ¦</div>
             <div class="ai-tip-title">Ask AI about {{ place.name }}</div>
         </div>
         <div class="ai-tip-text">Want to know more? Ask our AI for personalized tips, best routes, nearby places and more!</div>
@@ -464,10 +249,10 @@
     </div>
 
     <!-- UPLOAD EXPERIENCE SECTION -->
-    <div class="section-title">📸 Share Your Experience</div>
+    <div class="section-title">ðŸ“¸ Share Your Experience</div>
     <div class="upload-section">
         <div class="upload-header">
-            <div class="upload-icon">📸</div>
+            <div class="upload-icon">ðŸ“¸</div>
             <div>
                 <div class="upload-title">Been to {{ place.name }}?</div>
                 <div class="upload-sub">Share your story and photos with fellow travellers!</div>
@@ -478,16 +263,16 @@
             <input class="form-input" type="text" name="name" placeholder="Your name (e.g. Rahul from Bengaluru)" required>
             <textarea class="form-textarea" name="story" placeholder="Share your experience... What did you love? Any tips for fellow travellers?" required></textarea>
             <label class="form-file">
-                📷 Click to upload your photo (optional)
+                ðŸ“· Click to upload your photo (optional)
                 <input type="file" name="image" accept="image/*">
             </label>
-            <button type="submit" class="submit-btn">Share My Experience 🌿</button>
+            <button type="submit" class="submit-btn">Share My Experience ðŸŒ¿</button>
         </form>
     </div>
 
     <!-- EXPERIENCES FROM OTHERS -->
     {% if experiences %}
-    <div class="section-title">🌟 Traveller Experiences</div>
+    <div class="section-title">ðŸŒŸ Traveller Experiences</div>
     <div class="experiences-section">
         {% for exp in experiences %}
         <div class="experience-card">
@@ -506,30 +291,30 @@
         {% endfor %}
     </div>
     {% else %}
-    <div class="section-title">🌟 Traveller Experiences</div>
-    <div class="no-experiences">No experiences shared yet. Be the first to share! 🌿</div>
+    <div class="section-title">ðŸŒŸ Traveller Experiences</div>
+    <div class="no-experiences">No experiences shared yet. Be the first to share! ðŸŒ¿</div>
     {% endif %}
 
     <br>
-    <a href="/" class="back-home">← Explore more hidden gems</a>
+    <a href="/" class="back-home">â† Explore more hidden gems</a>
 
 </div>
 
-<div class="footer">Made with love for Karnataka travellers by <span>GemIndia</span> 🌿</div>
+<div class="footer">Made with love for Karnataka travellers by <span>GemIndia</span> ðŸŒ¿</div>
 
 <script>
     var map = L.map('map', { zoomControl: true, scrollWheelZoom: true });
 
     var streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+        attribution: 'Â© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         maxZoom: 19
     });
     var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: '© Esri World Imagery',
+        attribution: 'Â© Esri World Imagery',
         maxZoom: 19
     });
     var terrainLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenTopoMap',
+        attribution: 'Â© OpenTopoMap',
         maxZoom: 17
     });
 
@@ -567,14 +352,14 @@
         setTimeout(function() {
             L.marker([{{ place.lat }}, {{ place.lng }}], {icon: greenIcon})
                 .addTo(map)
-                .bindPopup('<b>{{ place.name }}</b><br>📍 {{ place.district }}, Karnataka<br>⭐ {{ place.rating }}<br><a href="https://www.openstreetmap.org/?mlat={{ place.lat }}&mlon={{ place.lng }}&zoom=15" target="_blank" style="color:#1a6b3c;font-size:11px;">↗️ Open in Maps</a>')
+                .bindPopup('<b>{{ place.name }}</b><br>ðŸ“ {{ place.district }}, Karnataka<br>â­ {{ place.rating }}<br><a href="https://www.openstreetmap.org/?mlat={{ place.lat }}&mlon={{ place.lng }}&zoom=15" target="_blank" style="color:#1a6b3c;font-size:11px;">â†—ï¸ Open in Maps</a>')
                 .openPopup();
         }, 2600);
     }, 600);
 
     document.querySelector('input[type="file"]').addEventListener('change', function(e) {
         if (e.target.files[0]) {
-            e.target.parentElement.innerHTML = '✅ ' + e.target.files[0].name + ' selected';
+            e.target.parentElement.innerHTML = 'âœ… ' + e.target.files[0].name + ' selected';
         }
     });
 
