@@ -694,4 +694,5 @@ with app.app_context():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(degit commit -m "Fix GemIndia routes and place detail page"
+bug=True)
