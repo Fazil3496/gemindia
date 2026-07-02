@@ -30,30 +30,26 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'user_login'
 
 cloudinary.config(
-    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME", "dmk1cx5y9"),
-    api_key=os.getenv("CLOUDINARY_API_KEY"),
-    api_secret=os.getenv("CLOUDINARY_API_SECRET")
-)
      cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME", "dmk1cx5y9"),
      api_key=os.getenv("CLOUDINARY_API_KEY"),
      api_secret=os.getenv("CLOUDINARY_API_SECRET")
  )
- 
- 
- class User(db.Model, UserMixin):
-     id = db.Column(db.Integer, primary_key=True)
-     username = db.Column(db.String(150), unique=True, nullable=False)
-     email = db.Column(db.String(150), unique=True, nullable=False)
-     password = db.Column(db.String(150), nullable=False)
- 
- 
- class CommunityGem(db.Model):
-     id = db.Column(db.Integer, primary_key=True)
-     place_name = db.Column(db.String(100))
-     district = db.Column(db.String(100))
-     description = db.Column(db.Text)
-     submitted_by = db.Column(db.String(100))
-     image_url = db.Column(db.String(500))
+
+
+class User(db.Model, UserMixin):
+ id = db.Column(db.Integer, primary_key=True)
+ username = db.Column(db.String(150), unique=True, nullable=False)
+ email = db.Column(db.String(150), unique=True, nullable=False)
+ password = db.Column(db.String(150), nullable=False)
+
+
+class CommunityGem(db.Model):
+ id = db.Column(db.Integer, primary_key=True)
+ place_name = db.Column(db.String(100))
+ district = db.Column(db.String(100))
+ description = db.Column(db.Text)
+ submitted_by = db.Column(db.String(100))
+ image_url = db.Column(db.String(500))
  
  
  @login_manager.user_loader
@@ -64,7 +60,7 @@ cloudinary.config(
  client = Groq(api_key=os.getenv("GROQ_API_KEY"))
  
  # --- KEEPING YOUR 70 PLACES DATA ---
- places = [
+places = [
      {"id": 1, "name": "Agumbe", "district": "Shivamogga", "type": "Rainforest",
       "description": "Known as the Cherrapunji of the South, Agumbe is a stunning rainforest village with breathtaking sunsets and rich biodiversity.",
       "budget": "1500-2000/day", "stay": "Forest Homestay 800-1200/night",
@@ -516,210 +512,189 @@ cloudinary.config(
       "tags": ["Wildlife", "Nature", "Trekking"], "lat": 15.0833, "lng": 74.0833},
  ]
 
- def place_details(place_id):
-     # This searches your 'places' list for the ID that was clicked
-     place = next((p for p in places if p['id'] == place_id), None)
-     if place:
-         return render_template('details.html', place=place)
-     return "Place not found", 404
- @app.route('/')
- def index():
-     # Format the 70 places to include all details for the modal
- 
- def place_details(place_id):
-     # This finds the specific place in your list
-     place = next((p for p in places if p['id'] == place_id), None)
-     if place:
-         return render_template('details.html', place=place)
-     return "Place not found", 404
-     for p in places:
-         place_copy = p.copy()
-         place_copy['image_url'] = p.get('image')
-         place_copy['is_community'] = False
-         place_copy['pro_tip'] = p.get('pro_tip', "Great spot for photography and nature lovers!")
-         place_copy['budget'] = p.get('budget', '1000-2000')
-         # Ensure these fields exist so the frontend doesn't crash
-         place_copy['stay'] = p.get('stay', 'Local homestays available')
-         place_copy['food'] = p.get('food', 'Local cuisine')
-         place_copy['carry'] = p.get('carry', 'Essentials')
-         place_copy['best_time'] = p.get('best_season', 'Oct - Mar')
-         formatted_places.append(place_copy)
- 
-     try:
-         community_gems = CommunityGem.query.all()
-     except Exception as e:
-         print(f"Database Error: {e}")
-         community_gems = []
- 
-     return render_template('index.html',
-                            places=formatted_places,
-                            community_gems=community_gems)
- 
- 
- @app.route('/login', methods=['GET', 'POST'])
- def user_login():
-     if request.method == 'POST':
-         username = request.form.get('username')
-         password = request.form.get('password')
-         user = User.query.filter_by(username=username).first()
-         if user and bcrypt.check_password_hash(user.password, password):
-             login_user(user)
-             return redirect(url_for('index'))
-         flash("Invalid Credentials", "danger")
-     return render_template('login.html')
- 
- 
- @app.route('/signup', methods=['GET', 'POST'])
- def signup():
-     if request.method == 'POST':
-         try:
-             username = request.form.get('username')
-             email = request.form.get('email')
-             password = bcrypt.generate_password_hash(request.form.get('password')).decode('utf-8')
-             new_user = User(username=username, email=email, password=password)
-             db.session.add(new_user)
-             db.session.commit()
-             flash("Account created! Please login. 🌿", "success")
-             return redirect(url_for('user_login'))
-         except Exception as e:
-             db.session.rollback()
-             flash("Username or email already exists. Try another.", "danger")
-     return render_template('signup.html')
- 
- 
- @app.route("/user-logout")
- @login_required
- def user_logout():
-     logout_user()
-     return redirect(url_for('index'))
- 
- 
- @app.route("/ping")
- def ping():
-     return "GemIndia is alive! 🌿", 200
- 
- 
- @app.route("/get-ai-recommendation", methods=["POST"])
- @csrf.exempt
- def ai_recommend():
-     try:
-         data = request.json
-         # Accept 'prompt' or 'message'
-         user_input = data.get("prompt") or data.get("message") or ""
- 
-         if not user_input:
-             return jsonify({"recommendation": "Please tell me what you are looking for!"})
- 
-         response = client.chat.completions.create(
-             model="llama-3.3-70b-versatile",
-             messages=[
-                 {
-                     "role": "system",
-                     "content": "You are GemIndia AI. I was built by Fazil, a developer from Bengaluru! I help users find gems in Karnataka. Be friendly and use emojis."
-                 },
-                 {"role": "user", "content": user_input}
-             ]
-         )
-         return jsonify({"recommendation": response.choices[0].message.content})
-     except Exception as e:
-         print(f"AI Error: {e}")
-         return jsonify({"recommendation": "Oops! My compass is spinning. Try again later."}), 500
- 
- 
- # ✅ FIX 2: Added load_experiences() helper function so place_detail route works
- def load_experiences():
-     return []
- 
- 
+ def prepare_place(place):
+  place_copy = place.copy()
+  place_copy["image_url"] = place.get("image")
+  place_copy["best_time"] = place.get("best_season", "October - March")
+  place_copy["pro_tip"] = place.get("pro_tip", "Go early, carry water, and keep the place clean.")
+  place_copy["is_community"] = False
+  return place_copy
 
- def place_detail(place_id):
-     place = next((p for p in places if p["id"] == place_id), None)
-     if not place:
-         return "Place not found", 404
-     try:
-         all_exp = load_experiences()
-         place_experiences = [e for e in all_exp if e.get("place_id") == place_id]
-     except:
-         place_experiences = []
-     return render_template("place.html", place=place, experiences=place_experiences)
- 
- 
- # ✅ FIX 3: Removed @login_required from submit_gem so users can access the page
- # ✅ FIX 4: Removed the dead duplicate code block that was unreachable after the return statement
- @app.route('/submit-gem', methods=['GET', 'POST'])
- def submit_gem():
-     if request.method == 'POST':
-         # Require login only on POST (actual submission), not on GET (viewing the form)
-         if not current_user.is_authenticated:
-             flash("Please login to submit a gem! 🌿", "warning")
-             return redirect(url_for('user_login'))
-         try:
-             place_name = request.form.get('place_name') or request.form.get('name')
-             district = request.form.get('district')
-             description = request.form.get('description')
- 
-             # Handle image upload to Cloudinary
-             image_url = "https://res.cloudinary.com/dmk1cx5y9/image/upload/v1/gemindia/community_placeholder"
-             if 'image' in request.files:
-                 file = request.files['image']
-                 if file and file.filename != '':
-                     upload_result = cloudinary.uploader.upload(file)
-                     image_url = upload_result['secure_url']
- 
-             new_gem = CommunityGem(
-                 place_name=place_name,
-                 district=district,
-                 description=description,
-                 submitted_by=current_user.username,
-                 image_url=image_url
-             )
-             db.session.add(new_gem)
-             db.session.commit()
-             flash("Gem submitted successfully! 💎", "success")
-             return redirect(url_for('index'))
-         except Exception as e:
-             db.session.rollback()
-             print(f"Submit gem error: {e}")
-             flash("Something went wrong. Please try again.", "danger")
-     return render_template('submit_gem.html')
- 
- 
- with app.app_context():
-     db.create_all()
- 
- 
 
- def place_detail(place_id):
-  # This looks for the place that matches the ID you clicked
-  selected_place = next((p for p in places if p["id"] == place_id), None)
- 
-  if selected_place is None:
-   return "Place not found", 404
- 
-  return render_template('place_detail.html', place=selected_place)
- 
- @app.route('/ask-ai', methods=['POST'])
- def ask_ai():
-     data = request.json
-     user_query = data.get('query')
-     chat_completion = client.chat.completions.create(
-         messages=[{"role": "user", "content": f"Suggest places in Karnataka: {user_query}"}],
-         model="llama3-8b-8192",
-     )
-     return jsonify({"response": chat_completion.choices[0].message.content})
- 
- # --- View More Detail Route ---
- @app.route('/place/<int:place_id>')
- def place_details(place_id):
-     place = next((p for p in places if p['id'] == place_id), None)
-     if place:
-         return render_template('details.html', place=place)
-     return "Place not found", 404
- 
- # --- Home Route ---
- @app.route('/')
- def index():
-     return render_template('index.html', places=places)
- 
- if __name__ == '__main__':
-     app.run(debug=True)
+def get_place_or_404(place_id):
+ return next((place for place in places if place["id"] == place_id), None)
+
+
+def load_experiences():
+ return []
+
+
+@login_manager.user_loader
+def load_user(user_id):
+ return User.query.get(int(user_id))
+
+
+@app.route("/")
+def index():
+ prepared_places = [prepare_place(place) for place in places]
+
+ try:
+  community_gems = CommunityGem.query.order_by(CommunityGem.id.desc()).all()
+ except Exception as error:
+  print(f"Database Error: {error}")
+  community_gems = []
+
+ return render_template(
+  "index.html",
+  places=prepared_places,
+  community_gems=community_gems,
+ )
+
+
+@app.route("/place/<int:place_id>")
+def place_detail(place_id):
+ place = get_place_or_404(place_id)
+ if not place:
+  return "Place not found", 404
+
+ experiences = [
+  experience for experience in load_experiences()
+  if experience.get("place_id") == place_id
+ ]
+
+ return render_template("place.html", place=prepare_place(place), experiences=experiences)
+
+
+@app.route("/login", methods=["GET", "POST"])
+def user_login():
+ if request.method == "POST":
+  username = request.form.get("username")
+  password = request.form.get("password")
+  user = User.query.filter_by(username=username).first()
+
+  if user and bcrypt.check_password_hash(user.password, password):
+   login_user(user)
+   return redirect(url_for("index"))
+
+  flash("Invalid credentials", "danger")
+
+ return render_template("login.html")
+
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+ if request.method == "POST":
+  try:
+   username = request.form.get("username")
+   email = request.form.get("email")
+   password = bcrypt.generate_password_hash(
+    request.form.get("password")
+   ).decode("utf-8")
+
+   new_user = User(username=username, email=email, password=password)
+   db.session.add(new_user)
+   db.session.commit()
+
+   flash("Account created. Please login.", "success")
+   return redirect(url_for("user_login"))
+  except Exception:
+   db.session.rollback()
+   flash("Username or email already exists. Try another.", "danger")
+
+ return render_template("signup.html")
+
+
+@app.route("/user-logout")
+@login_required
+def user_logout():
+ logout_user()
+ return redirect(url_for("index"))
+
+
+@app.route("/submit-gem", methods=["GET", "POST"])
+def submit_gem():
+ if request.method == "POST":
+  if not current_user.is_authenticated:
+   flash("Please login to submit a gem.", "warning")
+   return redirect(url_for("user_login"))
+
+  try:
+   place_name = request.form.get("place_name") or request.form.get("name")
+   district = request.form.get("district")
+   description = request.form.get("description")
+   image_url = "https://res.cloudinary.com/dmk1cx5y9/image/upload/v1/gemindia/community_placeholder"
+
+   file = request.files.get("image")
+   if file and file.filename:
+    upload_result = cloudinary.uploader.upload(file)
+    image_url = upload_result["secure_url"]
+
+   new_gem = CommunityGem(
+    place_name=place_name,
+    district=district,
+    description=description,
+    submitted_by=current_user.username,
+    image_url=image_url,
+   )
+
+   db.session.add(new_gem)
+   db.session.commit()
+
+   flash("Gem submitted successfully.", "success")
+   return redirect(url_for("index"))
+  except Exception as error:
+   db.session.rollback()
+   print(f"Submit gem error: {error}")
+   flash("Something went wrong. Please try again.", "danger")
+
+ return render_template("submit_gem.html")
+
+
+@app.route("/ping")
+def ping():
+ return "GemIndia is alive!", 200
+
+
+@app.route("/get-ai-recommendation", methods=["POST"])
+@csrf.exempt
+def ai_recommend():
+ try:
+  data = request.get_json(silent=True) or {}
+  user_input = data.get("prompt") or data.get("message") or data.get("query") or ""
+
+  if not user_input:
+   return jsonify({"recommendation": "Please tell me what kind of trip you want."})
+
+  if client is None:
+   return jsonify({
+    "recommendation": "AI is not configured yet. Add GROQ_API_KEY to enable recommendations."
+   })
+
+  response = client.chat.completions.create(
+   model="llama-3.3-70b-versatile",
+   messages=[
+    {
+     "role": "system",
+     "content": "You are GemIndia AI. Help travellers discover hidden places in Karnataka with practical tips.",
+    },
+    {"role": "user", "content": user_input},
+   ],
+  )
+
+  return jsonify({"recommendation": response.choices[0].message.content})
+ except Exception as error:
+  print(f"AI Error: {error}")
+  return jsonify({"recommendation": "AI is not available right now. Try again later."}), 500
+
+
+@app.route("/ask-ai", methods=["POST"])
+@csrf.exempt
+def ask_ai():
+ return ai_recommend()
+
+
+with app.app_context():
+ db.create_all()
+
+if __name__ == "__main__":
+ app.run(debug=True)

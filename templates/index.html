@@ -3,555 +3,775 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GemIndia - Hidden Gems of Karnataka</title>
-    <meta name="description" content="Discover hidden gems of Karnataka — underrated trekking, beaches, heritage and wildlife destinations. Real budgets, real experiences.">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://gemindia.onrender.com/" />
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>GemIndia - Hidden Places in Karnataka</title>
+    <meta name="description" content="Discover hidden places in Karnataka with real budgets, stays, food tips, and travel details.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        :root { --green: #1a6b3c; --green-light: #a8e6c1; --green-dark: #0d4a28; --amber: #f9a825; --bg: #f5f5f0; --white: #ffffff; --text: #1a1a1a; --muted: #666; --border: #e0e0e0; }
-        body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-        .navbar { background: var(--green); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
-        .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
-        .logo { font-size: 20px; font-weight: 700; color: #fff; }
-        .logo span { color: var(--green-light); }
-        .nav-search { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 8px 16px; width: 280px; }
-        .nav-search input { background: transparent; border: none; outline: none; color: #fff; font-size: 13px; font-family: 'Sora', sans-serif; width: 100%; }
-        .nav-search input::placeholder { color: rgba(255,255,255,0.6); }
-        .nav-links { display: flex; align-items: center; gap: 8px; }
-        .nav-link { color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 500; text-decoration: none; padding: 6px 14px; border-radius: 20px; transition: all 0.2s; }
-        .nav-link:hover { background: rgba(255,255,255,0.15); color: #fff; }
-        .nav-link.community-btn { background: var(--amber); color: #1a1a1a; font-weight: 600; }
-        .nav-link.community-btn:hover { background: #fbb72c; }
-        .hero { background: var(--green); padding: 48px 24px 60px; text-align: center; }
-        .hero h1 { font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 12px; }
-        .hero h1 span { color: var(--green-light); }
-        .hero p { font-size: 15px; color: rgba(255,255,255,0.75); max-width: 500px; margin: 0 auto 28px; line-height: 1.7; }
-        .hero-stats { display: flex; justify-content: center; gap: 40px; }
-        .stat { text-align: center; }
-        .stat-num { font-size: 24px; font-weight: 700; color: var(--green-light); }
-        .stat-label { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
-        .submit-hero-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--amber); color: #1a1a1a; border-radius: 12px; padding: 14px 28px; font-size: 14px; font-family: 'Sora', sans-serif; font-weight: 700; text-decoration: none; margin-top: 28px; transition: opacity 0.2s; }
-        .submit-hero-btn:hover { opacity: 0.9; }
-        .filters-wrap { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 24px; position: sticky; top: 60px; z-index: 90; }
-        .filters { max-width: 1100px; margin: 0 auto; display: flex; gap: 8px; padding: 12px 0; overflow-x: auto; }
-        .filters::-webkit-scrollbar { display: none; }
-        .filter-btn { background: transparent; border: 1px solid var(--border); border-radius: 20px; padding: 6px 16px; font-size: 12px; font-family: 'Sora', sans-serif; color: var(--muted); cursor: pointer; white-space: nowrap; transition: all 0.2s; }
-        .filter-btn.active { background: var(--green); border-color: var(--green); color: #fff; }
-        .main { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
-        .ai-section { background: var(--white); border-radius: 16px; padding: 24px; margin-bottom: 32px; border: 1px solid var(--border); }
-        .ai-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-        .ai-icon { width: 40px; height: 40px; background: #e8f5e9; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-        .ai-title { font-size: 16px; font-weight: 600; }
-        .ai-sub { font-size: 12px; color: var(--muted); }
-        .ai-input-row { display: flex; gap: 10px; }
-        .ai-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; font-size: 13px; font-family: 'Sora', sans-serif; outline: none; }
-        .ai-btn { background: var(--green); border: none; border-radius: 10px; padding: 12px 20px; color: #fff; font-size: 13px; font-family: 'Sora', sans-serif; font-weight: 500; cursor: pointer; white-space: nowrap; }
-        .ai-response { margin-top: 14px; background: #e8f5e9; border-radius: 10px; padding: 14px 16px; font-size: 13px; line-height: 1.7; display: none; white-space: pre-wrap; }
-        .ai-loading { display: none; align-items: center; gap: 8px; margin-top: 14px; font-size: 13px; color: var(--muted); }
-        .ai-loading span { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: bounce 1.2s infinite; }
-        .ai-loading span:nth-child(2) { animation-delay: 0.2s; }
-        .ai-loading span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes bounce { 0%,80%,100%{transform:translateY(0);opacity:0.4} 40%{transform:translateY(-4px);opacity:1} }
-        .section-title { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
-        .community-badge { background: var(--amber); color: #7c3a00; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 8px; margin-left: 6px; vertical-align: middle; }
-        .places-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .place-card { background: var(--white); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: transform 0.2s; cursor: pointer; }
-        .place-card:hover { transform: translateY(-4px); }
-        .place-card.community-card { border: 2px solid var(--amber); }
+        :root {
+            --bg: #f6f3ea;
+            --card: #ffffff;
+            --ink: #172019;
+            --muted: #69746d;
+            --green: #166534;
+            --green-dark: #0b3d22;
+            --green-soft: #e6f5ec;
+            --gold: #f2b705;
+            --border: rgba(23, 32, 25, 0.12);
+            --shadow: 0 18px 48px rgba(11, 61, 34, 0.12);
+        }
 
-        .place-img-wrap { width: 100%; height: 180px; overflow: hidden; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); position: relative; }
-        .place-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .place-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 56px; }
+        * {
+            box-sizing: border-box;
+        }
 
-        .place-body { padding: 16px; }
-        .place-top { display: flex; justify-content: space-between; margin-bottom: 6px; align-items: flex-start; }
-        .place-name { font-size: 16px; font-weight: 600; }
-        .place-rating { font-size: 13px; font-weight: 600; color: var(--amber); white-space: nowrap; }
-        .place-district { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
-        .place-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .place-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-        .tag { background: #e8f5e9; color: #1a6b3c; font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 10px; }
-        .tag.community-tag { background: #fff8e1; color: #b8860b; }
-        .place-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border); }
-        .place-budget { font-size: 12px; font-weight: 600; color: var(--green); }
-        .place-season { font-size: 11px; color: var(--muted); }
-        .view-btn { background: var(--green); color: #fff; border: none; border-radius: 8px; padding: 6px 14px; font-size: 12px; font-family: 'Sora', sans-serif; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; }
-        .view-btn.community-view { background: var(--amber); color: #1a1a1a; }
-        .community-submitter { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
-        .footer { background: var(--green-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 24px; font-size: 12px; margin-top: 60px; }
-        .footer span { color: var(--green-light); font-weight: 600; }
-        @media (max-width: 600px) {
-    .hero h1 { font-size: 26px; }
-    .nav-search { display: none; }
-    .places-grid { grid-template-columns: 1fr; }
-    .nav-inner { flex-wrap: wrap; height: auto; padding: 10px 0; gap: 8px; }
-    .nav-links { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; width: 100%; }
-    .nav-link { font-size: 11px; padding: 5px 10px; }
-    .nav-link.community-btn { font-size: 11px; padding: 5px 10px; }
-    .logo { font-size: 16px; }
-}
-        @keyframes floatIn { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
-        @keyframes fadeUp { from{transform:translateY(15px);opacity:0} to{transform:translateY(0);opacity:1} }
+        html {
+            scroll-behavior: smooth;
+        }
 
-        /* --- UPDATED MODAL STYLES BY GEMINDIA --- */
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-overlay.open { display: flex; }
-        .modal { background: var(--white); border-radius: 20px; max-width: 580px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; animation: fadeUp 0.3s ease; }
-        .modal-img-wrap { width: 100%; height: 260px; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); overflow: hidden; }
-        .modal-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .modal-body { padding: 28px; }
-        .modal-close { position: absolute; top: 15px; right: 15px; background: white; color: #333; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 10; }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: "Sora", Arial, sans-serif;
+        }
 
-        .action-bar { display: flex; gap: 10px; margin: 20px 0; }
-        .btn-action { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 600; text-decoration: none; border: 1px solid #ddd; background: #fff; color: #333; transition: 0.2s; cursor: pointer; font-family: 'Sora', sans-serif; }
-        .btn-action:hover { background: #f8f8f8; }
-        .btn-map { background: #e8f5e9; color: var(--green); border-color: var(--green); }
+        a {
+            color: inherit;
+        }
 
-        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; }
-        .detail-box { font-size: 13px; line-height: 1.6; color: #444; }
-        .detail-box b { display: block; color: var(--green); font-size: 11px; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: rgba(246, 243, 234, 0.9);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(14px);
+        }
 
-        .booking-section { margin-top: 30px; background: #fffcf0; padding: 18px; border-radius: 16px; border: 1px dashed var(--amber); }
-        .booking-logos { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
-        .booking-link { font-size: 11px; font-weight: 700; color: #008cff; text-decoration: none; border: 1px solid #008cff; padding: 7px 14px; border-radius: 8px; background: #fff; transition: 0.2s; }
-        .booking-link:hover { background: #008cff; color: #fff; }
+        .nav-inner {
+            max-width: 1180px;
+            margin: 0 auto;
+            min-height: 76px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: var(--green);
+            color: white;
+            font-weight: 800;
+            box-shadow: var(--shadow);
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-sub {
+            margin-top: 2px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .nav-link {
+            border-radius: 999px;
+            padding: 10px 14px;
+            text-decoration: none;
+            color: var(--muted);
+        }
+
+        .nav-link:hover {
+            background: white;
+            color: var(--green);
+        }
+
+        .nav-link.primary {
+            background: var(--green);
+            color: white;
+        }
+
+        .hero {
+            background:
+                linear-gradient(135deg, rgba(11, 61, 34, 0.92), rgba(22, 101, 52, 0.8)),
+                url("https://images.unsplash.com/photo-1518002054494-3a6f94352e9d?auto=format&fit=crop&w=1800&q=80");
+            background-position: center;
+            background-size: cover;
+            color: white;
+        }
+
+        .hero-inner {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 78px 20px 86px;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 34px;
+            align-items: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 999px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.12);
+            color: #d8f9e3;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .hero h1 {
+            margin: 22px 0 16px;
+            max-width: 720px;
+            font-size: clamp(42px, 6vw, 76px);
+            line-height: 0.98;
+            letter-spacing: -0.05em;
+        }
+
+        .hero p {
+            max-width: 620px;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        .hero-actions {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            border: 0;
+            border-radius: 14px;
+            padding: 0 20px;
+            font: inherit;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .btn.primary {
+            background: var(--gold);
+            color: #241800;
+            box-shadow: 0 14px 34px rgba(242, 183, 5, 0.26);
+        }
+
+        .btn.light {
+            background: rgba(255, 255, 255, 0.14);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+        }
+
+        .trip-card {
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 28px;
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+        }
+
+        .trip-card h2 {
+            margin: 0 0 16px;
+            font-size: 22px;
+        }
+
+        .trip-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .trip-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            border-radius: 18px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.12);
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+        .trip-row strong {
+            color: white;
+        }
+
+        .main {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 34px 20px 70px;
+        }
+
+        .toolbar {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 14px;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .search {
+            width: 100%;
+            min-height: 52px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0 16px;
+            background: white;
+            color: var(--ink);
+            font: inherit;
+            outline: none;
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 4px 0 18px;
+        }
+
+        .filters::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-btn {
+            flex: 0 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: white;
+            color: var(--muted);
+            padding: 10px 14px;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .filter-btn.active {
+            background: var(--green);
+            border-color: var(--green);
+            color: white;
+        }
+
+        .ai-box {
+            margin: 14px 0 30px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: white;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .ai-box h2 {
+            margin: 0 0 8px;
+            font-size: 22px;
+        }
+
+        .ai-box p {
+            margin: 0 0 16px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .ai-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+        }
+
+        .ai-input {
+            min-height: 50px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 0 14px;
+            font: inherit;
+            outline: none;
+        }
+
+        .ai-response {
+            display: none;
+            margin-top: 14px;
+            border-radius: 16px;
+            padding: 16px;
+            background: var(--green-soft);
+            color: var(--green-dark);
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 16px;
+            margin: 22px 0 16px;
+        }
+
+        .section-head h2 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: -0.03em;
+        }
+
+        .section-head p {
+            margin: 6px 0 0;
+            color: var(--muted);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: white;
+            box-shadow: 0 12px 34px rgba(23, 32, 25, 0.06);
+        }
+
+        .card-image {
+            position: relative;
+            height: 210px;
+            overflow: hidden;
+            background: var(--green-soft);
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            transition: transform 280ms ease;
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.04);
+        }
+
+        .rating {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            border-radius: 999px;
+            padding: 7px 10px;
+            background: rgba(0, 0, 0, 0.66);
+            color: white;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .card-body {
+            padding: 18px;
+        }
+
+        .district {
+            color: var(--green);
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .card h3 {
+            margin: 8px 0 10px;
+            font-size: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .card-desc {
+            min-height: 66px;
+            margin: 0 0 14px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 16px;
+        }
+
+        .tag {
+            border-radius: 999px;
+            padding: 6px 9px;
+            background: var(--green-soft);
+            color: var(--green);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border-top: 1px solid var(--border);
+            padding-top: 14px;
+        }
+
+        .budget {
+            color: var(--green-dark);
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .view-link {
+            flex: 0 0 auto;
+            border-radius: 12px;
+            padding: 10px 13px;
+            background: var(--green);
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .community-card {
+            border-color: rgba(242, 183, 5, 0.56);
+        }
+
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 24px 20px;
+            color: var(--muted);
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 920px) {
+            .hero-inner {
+                grid-template-columns: 1fr;
+                padding-top: 52px;
+            }
+
+            .trip-card {
+                max-width: 560px;
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .nav-inner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .nav-links {
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 2px;
+            }
+
+            .hero-inner {
+                padding: 38px 18px 50px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            .hero-actions,
+            .toolbar,
+            .ai-row {
+                grid-template-columns: 1fr;
+            }
+
+            .btn,
+            .ai-row .btn,
+            .hero-actions .btn {
+                width: 100%;
+            }
+
+            .main {
+                padding: 24px 14px 48px;
+            }
+
+            .section-head {
+                display: block;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-image {
+                height: 220px;
+            }
+        }
     </style>
 </head>
-<body style="margin: 0; padding: 0; overflow-x: hidden;">
+<body>
+    <nav class="nav">
+        <div class="nav-inner">
+            <a class="brand" href="{{ url_for('index') }}">
+                <div class="brand-mark">G</div>
+                <div>
+                    <div class="brand-name">GemIndia</div>
+                    <div class="brand-sub">Hidden Karnataka</div>
+                </div>
+            </a>
 
-<div id="intro-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0d4a28;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;">
-    <canvas id="intro-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;"></canvas>
-    <div id="intro-content" style="position:relative;z-index:2;text-align:center;padding:0 20px;">
-        <div style="font-size:56px;margin-bottom:12px;animation:floatIn 1s ease forwards;">🌿</div>
-        <div style="font-size:40px;font-weight:800;color:#fff;letter-spacing:-1px;opacity:0;animation:fadeUp 0.8s ease 0.5s forwards;">Gem<span style="color:#a8e6c1;">India</span></div>
-        <div style="font-size:15px;color:rgba(255,255,255,0.7);margin-top:8px;opacity:0;animation:fadeUp 0.8s ease 0.9s forwards;">Hidden Gems of Karnataka 🗺️</div>
-        <div style="margin-top:28px;opacity:0;animation:fadeUp 0.8s ease 1.3s forwards;">
-            <div style="width:220px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;overflow:hidden;margin:0 auto;">
-                <div id="intro-bar" style="height:100%;width:0%;background:#a8e6c1;border-radius:2px;transition:width 2.4s ease;"></div>
+            <div class="nav-links">
+                <a class="nav-link" href="#places">Places</a>
+                <a class="nav-link" href="#ai">AI Guide</a>
+                <a class="nav-link" href="{{ url_for('submit_gem') }}">Submit Gem</a>
+                <a class="nav-link" href="{{ url_for('user_login') }}">Login</a>
+                <a class="nav-link primary" href="{{ url_for('signup') }}">Sign Up</a>
             </div>
-            <div id="intro-label" style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:10px;">Flying over Karnataka...</div>
         </div>
-        <div style="margin-top:20px;opacity:0;animation:fadeUp 0.8s ease 1.8s forwards;">
-            <button onclick="skipIntro()" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.6);border-radius:20px;padding:6px 18px;font-size:11px;font-family:'Sora',sans-serif;cursor:pointer;">Skip ›</button>
-        </div>
-    </div>
-</div>
+    </nav>
 
-<script>
-/* [KEEPING YOUR ENTIRE INTRO SCRIPT] */
-(function() {
-    const canvas = document.getElementById('intro-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const stars = Array.from({length: 220}, () => ({
-        x: Math.random() * canvas.width, y: Math.random() * canvas.height, z: Math.random() * canvas.width,
-        color: Math.random() > 0.65 ? '#a8e6c1' : (Math.random() > 0.5 ? '#f9a825' : '#ffffff')
-    }));
-    const cities = [
-        {name:'🌿 Bengaluru', px:0.56, py:0.74},{name:'⛪ Mysuru', px:0.46, py:0.82},
-        {name:'🗿 Hampi', px:0.43, py:0.44},{name:'🌧️ Coorg', px:0.38, py:0.79},
-        {name:'🏖️ Gokarna', px:0.24, py:0.54},{name:'🌊 Dandeli', px:0.27, py:0.34},
-        {name:'☕ Chikmagalur', px:0.34, py:0.64},{name:'🏔️ Kodachadri', px:0.30, py:0.60},
-        {name:'💎 Yana Rocks', px:0.26, py:0.46},{name:'🌺 Agumbe', px:0.31, py:0.70},
-    ];
-    let frame = 0, speed = 2, animId;
-    const labels = ['Flying over Karnataka...', 'Discovering hidden gems...', 'Loading your adventure...'];
-    function animate() {
-        ctx.fillStyle = 'rgba(13,74,40,0.22)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        const cx = canvas.width / 2, cy = canvas.height / 2;
-        stars.forEach(s => {
-            s.z -= speed;
-            if (s.z <= 0) { s.z = canvas.width; s.x = Math.random() * canvas.width; s.y = Math.random() * canvas.height; }
-            const scale = canvas.width / s.z;
-            const sx = (s.x - cx) * scale + cx, sy = (s.y - cy) * scale + cy;
-            const r = Math.min(scale * 1.2, 5);
-            if (sx > 0 && sx < canvas.width && sy > 0 && sy < canvas.height) {
-                if (speed > 8) {
-                    const prevScale = canvas.width / (s.z + speed * 2);
-                    const px2 = (s.x - cx) * prevScale + cx, py2 = (s.y - cy) * prevScale + cy;
-                    ctx.beginPath(); ctx.moveTo(px2, py2); ctx.lineTo(sx, sy);
-                    ctx.strokeStyle = s.color; ctx.globalAlpha = Math.min(0.8, scale * 0.2); ctx.lineWidth = r * 0.6; ctx.stroke();
-                } else {
-                    ctx.beginPath(); ctx.arc(sx, sy, r, 0, Math.PI * 2);
-                    ctx.fillStyle = s.color; ctx.globalAlpha = Math.min(1, scale * 0.35); ctx.fill();
-                }
-                ctx.globalAlpha = 1;
-            }
-        });
-        cities.forEach((c, i) => {
-            const pulse = Math.sin(frame * 0.04 + i * 0.8) * 0.5 + 0.5;
-            const x = c.px * canvas.width, y = c.py * canvas.height;
-            ctx.beginPath(); ctx.arc(x, y, 6 + pulse * 5, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(168,230,193,${0.15 + pulse * 0.2})`; ctx.fill();
-            ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2);
-            ctx.fillStyle = '#a8e6c1'; ctx.globalAlpha = 0.9; ctx.fill(); ctx.globalAlpha = 1;
-            if (frame > 50) {
-                ctx.fillStyle = `rgba(255,255,255,${Math.min(0.85, (frame - 50) * 0.015)})`;
-                ctx.font = '11px Sora, sans-serif'; ctx.fillText(c.name, x + 10, y + 4);
-            }
-        });
-
-        frame++; if (speed < 20) speed += 0.07;
-        if (frame === 60) { document.getElementById('intro-label').textContent = labels[1]; }
-        if (frame === 120) { document.getElementById('intro-label').textContent = labels[2]; }
-        animId = requestAnimationFrame(animate);
-    }
-    animate();
-    setTimeout(() => { document.getElementById('intro-bar').style.width = '100%'; }, 200);
-    setTimeout(hideIntro, 3500);
-    window.skipIntro = function() { hideIntro(); };
-    function hideIntro() {
-        cancelAnimationFrame(animId);
-        const overlay = document.getElementById('intro-overlay');
-        overlay.style.transition = 'opacity 0.7s ease';
-        overlay.style.opacity = '0';
-        setTimeout(() => { overlay.style.display = 'none'; }, 700);
-    }
-})();
-</script>
-
-<nav class="navbar">
-    <div class="nav-inner">
-        <div class="logo">Gem<span>India</span> 🌿</div>
-        <div class="nav-search">
-            <input type="text" id="nav-search" placeholder="Search places, districts..." oninput="filterPlaces()">
-        </div>
-        <div class="nav-links">
-            <a href="/" class="nav-link">Home</a>
-            <a href="{{ url_for('submit_gem') }}" class="nav-link community-btn">💎 Community Gems</a>
-    {% if current_user.is_authenticated %}
-        <a href="/user-logout" class="nav-link">Logout</a>
-    {% else %}
-        <a href="/login" class="nav-link">Login 🚀</a>
-    {% endif %}
-    </div>
-    </div>
-</nav>
-
-<div class="hero">
-    <h1>Discover <span>Hidden Gems</span> of Karnataka</h1>
-    <p>Explore underrated tourist places that most people don't know about. Real experiences, real budgets, real Karnataka.</p>
-    <div class="hero-stats">
-        <div class="stat"><div class="stat-num">70+</div><div class="stat-label">Hidden Gems</div></div>
-        <div class="stat"><div class="stat-num">{{ community_gems|length }}</div><div class="stat-label">Community Finds</div></div>
-        <div class="stat"><div class="stat-num">AI</div><div class="stat-label">Powered</div></div>
-    </div>
-    <a href="{{ url_for('submit_gem') }}" class="submit-hero-btn">💎 Submit Your Hidden Gem</a>
-</div>
-
-<div class="filters-wrap">
-    <div class="filters">
-        <button class="filter-btn active" onclick="setFilter('', this)">All Places</button>
-        <button class="filter-btn" onclick="setFilter('Trekking', this)">Trekking</button>
-        <button class="filter-btn" onclick="setFilter('Heritage', this)">Heritage</button>
-        <button class="filter-btn" onclick="setFilter('Beach', this)">Beaches</button>
-        <button class="filter-btn" onclick="setFilter('Wildlife', this)">Wildlife</button>
-        <button class="filter-btn" onclick="setFilter('Hills', this)">Hills</button>
-        <button class="filter-btn" onclick="setFilter('Waterfalls', this)">Waterfalls</button>
-        <button class="filter-btn" onclick="setFilter('Adventure', this)">Adventure</button>
-        <button class="filter-btn" onclick="setFilter('Bengaluru Nearby', this)">Near Bengaluru</button>
-        <button class="filter-btn" onclick="setFilter('community', this)">💎 Community</button>
-    </div>
-</div>
-
-<div class="main">
-    <div class="ai-section">
-        <div class="ai-header">
-            <div class="ai-icon">✦</div>
+    <header class="hero">
+        <div class="hero-inner">
             <div>
-                <div class="ai-title">AI Travel Recommendations</div>
-                <div class="ai-sub">Tell me your preferences and I will find the perfect hidden gem for you!</div>
-            </div>
-        </div>
-        <div class="ai-input-row">
-            <input class="ai-input" id="ai-input" placeholder="e.g. I want a peaceful trek with waterfalls under 2000..." />
-            <button class="ai-btn" onclick="getAIRecommendation()">Ask AI</button>
-        </div>
-        <div class="ai-loading" id="ai-loading"><span></span><span></span><span></span> Finding the best hidden gems for you...</div>
-        <div class="ai-response" id="ai-response"></div>
-    </div>
+                <div class="eyebrow">Premium Karnataka travel guide</div>
+                <h1>Discover hidden places before they go viral.</h1>
+                <p>
+                    GemIndia helps travellers find underrated treks, beaches, temples, waterfalls,
+                    heritage spots, food trails, and peaceful stays across Karnataka.
+                </p>
 
-    <div class="section-title" id="section-title">All Hidden Gems in Karnataka</div>
-    <div class="places-grid" id="places-grid">
-        {% for gem in community_gems %}
-        <div class="place-card community-card">
-            <div class="place-img-wrap">
-                <img src="{{ gem.image_url }}" class="place-img" alt="{{ gem.place_name }}">
-            </div>
-            <div class="place-body">
-                <div class="place-top">
-                    <div class="place-name">{{ gem.place_name }}</div>
-                    <div class="place-rating">⭐ New</div>
-                </div>
-                <div class="place-district">📍 {{ gem.district }}</div>
-                <div class="community-submitter">By: {{ gem.submitted_by }} <span class="community-badge">GUEST</span></div>
-                <p class="place-desc">{{ gem.description }}</p>
-                <div class="place-tags">
-                    <span class="tag community-tag">Community Find</span>
-                </div>
-               <div class="place-footer">
-    <div class="place-budget">₹{{ place.budget }}</div>
-    <a href="{{ url_for('place_details', place_id=place.id) }}" class="view-btn">View Details</a>
-</div>
+                <div class="hero-actions">
+                    <a class="btn primary" href="#places">Explore Places</a>
+                    <a class="btn light" href="{{ url_for('submit_gem') }}">Submit Your Gem</a>
                 </div>
             </div>
-        </div>
-        {% endfor %}
 
-        {% for place in places %}
-    <div class="card">
-        <h3>{{ place.name }}</h3>
-        <p>{{ place.description }}</p>
-
-        <a href="{{ url_for('place_detail', place_id=place.id) }}">View More</a>
-        </div>
-{% endfor %}
-        <div class="place-card" onclick="openModal('{{ loop.index0 }}')">
-            <div class="place-img-wrap">
-                <img src="{{ place.image_url }}" class="place-img" alt="{{ place.name }}">
-            </div>
-            <div class="place-body">
-                <div class="place-top">
-                    <div class="place-name">{{ place.name }}</div>
-                    <div class="place-rating">⭐ {{ place.rating }}</div>
+            <aside class="trip-card">
+                <h2>Plan smarter</h2>
+                <div class="trip-list">
+                    <div class="trip-row">
+                        <span>Places listed</span>
+                        <strong>{{ places|length }}+</strong>
+                    </div>
+                    <div class="trip-row">
+                        <span>Best for</span>
+                        <strong>Treks, nature, heritage</strong>
+                    </div>
+                    <div class="trip-row">
+                        <span>Includes</span>
+                        <strong>Budget, stay, food</strong>
+                    </div>
                 </div>
-                <div class="place-district">📍 {{ place.district }}</div>
-                <p class="place-desc">{{ place.description }}</p>
-                <div class="place-tags">
-                    {% for tag in place.tags %}
-                    <span class="tag">{{ tag }}</span>
-                    {% endfor %}
+            </aside>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="toolbar" id="places">
+            <input id="searchInput" class="search" type="search" placeholder="Search by place, district, beach, trek, waterfall...">
+            <a class="btn primary" href="{{ url_for('submit_gem') }}">Add Place</a>
+        </section>
+
+        <section class="filters" aria-label="Place filters">
+            <button class="filter-btn active" type="button" data-filter="all">All</button>
+            <button class="filter-btn" type="button" data-filter="trekking">Trekking</button>
+            <button class="filter-btn" type="button" data-filter="waterfall">Waterfall</button>
+            <button class="filter-btn" type="button" data-filter="beach">Beach</button>
+            <button class="filter-btn" type="button" data-filter="heritage">Heritage</button>
+            <button class="filter-btn" type="button" data-filter="wildlife">Wildlife</button>
+            <button class="filter-btn" type="button" data-filter="unique">Unique</button>
+        </section>
+
+        <section class="ai-box" id="ai">
+            <h2>Ask GemIndia AI</h2>
+            <p>Tell it your budget, mood, time, and travel style. Example: peaceful waterfall trip near Bengaluru under 2000.</p>
+            <div class="ai-row">
+                <input id="aiInput" class="ai-input" type="text" placeholder="I want a peaceful weekend trip...">
+                <button class="btn primary" type="button" onclick="askAI()">Ask AI</button>
+            </div>
+            <div id="aiResponse" class="ai-response"></div>
+        </section>
+
+        <section>
+            <div class="section-head">
+                <div>
+                    <h2>Hidden gems of Karnataka</h2>
+                    <p>Click View More to open the full travel details page.</p>
                 </div>
-                <div class="place-footer">
-                    <div class="place-budget">₹{{ place.budget }}</div>
-                    <button class="view-btn">View Details</button>
-                </div>
             </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
 
-<div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
-    <div class="modal" onclick="event.stopPropagation()">
-        <button class="modal-close" onclick="closeModal()">×</button>
-        <div id="modal-content">
-            </div>
-    </div>
-</div>
+            <div class="grid" id="placesGrid">
+                {% for gem in community_gems %}
+                    <article
+                        class="card community-card"
+                        data-name="{{ gem.place_name|lower }}"
+                        data-district="{{ gem.district|lower }}"
+                        data-tags="community"
+                    >
+                        <div class="card-image">
+                            <img src="{{ gem.image_url }}" alt="{{ gem.place_name }}" loading="lazy">
+                            <div class="rating">New</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="district">{{ gem.district }}</div>
+                            <h3>{{ gem.place_name }}</h3>
+                            <p class="card-desc">{{ gem.description }}</p>
+                            <div class="tags">
+                                <span class="tag">Community</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="budget">Submitted by {{ gem.submitted_by }}</div>
+                                <a class="view-link" href="{{ url_for('submit_gem') }}">Submit Gem</a>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
 
-<footer class="footer">
-    <p>© 2026 <span>GemIndia</span>. Built for the explorers of Karnataka. 🌿</p>
-</footer>
-
-<script>
-    const allPlaces = {{ places|tojson }};
-    let activeFilter = '';
-
-    function setFilter(category, btn) {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeFilter = category.toLowerCase();
-        filterPlaces();
-    }
-
-    function filterPlaces() {
-        const query = document.getElementById('nav-search').value.toLowerCase();
-        const grid = document.getElementById('<div class="places-grid" id="places-grid">
-
-    {% for gem in community_gems %}
-    <div class="place-card community-card" onclick="openCommunityModal('{{ gem.place_name }}', '{{ gem.district }}', '{{ gem.description|replace('\n', ' ') }}', '{{ gem.image_url }}', '{{ gem.submitted_by }}')">
-        <div class="place-img-wrap">
-            <img src="{{ gem.image_url }}" class="place-img" alt="{{ gem.place_name }}">
-        </div>
-        <div class="place-body">
-            <div class="place-top">
-                <div class="place-name">{{ gem.place_name }}</div>
-                <div class="place-rating">⭐ New</div>
-            </div>
-            <div class="place-district">📍 {{ gem.district }}</div>
-            <div class="community-submitter">By: {{ gem.submitted_by }} <span class="community-badge">GUEST</span></div>
-            <p class="place-desc">{{ gem.description }}</p>
-            <div class="place-footer">
-                <div class="place-budget">Community</div>
-                <button class="view-btn community-view">View Details</button>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-
-    {% for place in places %}
-    <div class="place-card" onclick="openModal('{{ loop.index0 }}')">
-        <div class="place-img-wrap">
-            <img src="{{ place.image_url }}" class="place-img" alt="{{ place.name }}">
-        </div>
-        <div class="place-body">
-            <div class="place-top">
-                <div class="place-name">{{ place.name }}</div>
-                <div class="place-rating">⭐ {{ place.rating }}</div>
-            </div>
-            <div class="place-district">📍 {{ place.district }}</div>
-            <p class="place-desc">{{ place.description }}</p>
-            <div class="place-tags">
-                {% for tag in place.tags %}
-                <span class="tag">{{ tag }}</span>
+                {% for place in places %}
+                    <article
+                        class="card place-card"
+                        data-name="{{ place.name|lower }}"
+                        data-district="{{ place.district|lower }}"
+                        data-tags="{{ place.tags|join(' ')|lower }}"
+                    >
+                        <div class="card-image">
+                            <img src="{{ place.image_url }}" alt="{{ place.name }}" loading="lazy">
+                            <div class="rating">{{ place.rating }}/5</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="district">{{ place.district }}</div>
+                            <h3>{{ place.name }}</h3>
+                            <p class="card-desc">{{ place.description }}</p>
+                            <div class="tags">
+                                {% for tag in place.tags %}
+                                    <span class="tag">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="card-footer">
+                                <div class="budget">INR {{ place.budget }}</div>
+                                <a class="view-link" href="{{ url_for('place_detail', place_id=place.id) }}">View More</a>
+                            </div>
+                        </div>
+                    </article>
                 {% endfor %}
             </div>
-            <div class="place-footer">
-                <div class="place-budget">₹{{ place.budget }}</div>
-                <button class="view-btn">View Details</button>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
+        </section>
+    </main>
 
-</div>
-        const cards = grid.getElementsByClassName('place-card');
+    <footer class="footer">
+        GemIndia 2026. Built for travellers who respect local places.
+    </footer>
 
-        let visibleIndex = 0;
-        allPlaces.forEach((place, index) => {
-            const matchesSearch = place.name.toLowerCase().includes(query) ||
-                                 place.district.toLowerCase().includes(query);
+    <script>
+        const searchInput = document.getElementById("searchInput");
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const cards = document.querySelectorAll(".card");
+        let activeFilter = "all";
 
-            const matchesFilter = activeFilter === '' ||
-                                 (activeFilter === 'community' && place.is_community) ||
-                                 place.tags.some(t => t.toLowerCase() === activeFilter);
+        function filterCards() {
+            const query = searchInput.value.trim().toLowerCase();
 
-            // Important: we start from community gems first, so index might be offset if not careful
-            // For now, this logic applies to the 'places' list specifically
-            const card = document.querySelectorAll('.place-card:not(.community-card)')[index];
-            if(card) card.style.display = (matchesSearch && matchesFilter) ? 'block' : 'none';
-        });
-    }
+            cards.forEach((card) => {
+                const name = card.dataset.name || "";
+                const district = card.dataset.district || "";
+                const tags = card.dataset.tags || "";
+                const matchesSearch = !query || name.includes(query) || district.includes(query) || tags.includes(query);
+                const matchesFilter = activeFilter === "all" || tags.includes(activeFilter);
 
-    function openModal(index) {
-        const place = allPlaces[index];
-        const modalContent = document.getElementById('modal-content');
-        const overlay = document.getElementById('modal-overlay');
-
-        // Construct search links
-        const mapSearch = `https://www.google.com/maps/search/${encodeURIComponent(place.name + ' ' + place.district)}`;
-        const mmtSearch = `https://www.makemytrip.com/hotels/hotels-list.htm?city=${place.district}&searchText=${place.name}`;
-        const bookingSearch = `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(place.name)}`;
-
-        modalContent.innerHTML = `
-            <div class="modal-img-wrap">
-                ${place.image_url ? `<img src="${place.image_url}" class="modal-img">` : `<div class="modal-img-placeholder">🏞️</div>`}
-            </div>
-            <div class="modal-body">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start">
-                    <div>
-                        <div class="modal-name">${place.name}</div>
-                        <div class="modal-district">📍 ${place.district}, Karnataka</div>
-                    </div>
-                    <div style="text-align:right">
-                        <div style="font-weight:700; color:var(--amber); font-size:18px">⭐ ${place.rating}</div>
-                        <div style="font-size:12px; color:var(--muted)">Budget: ₹${place.budget}</div>
-                    </div>
-                </div>
-
-                <div class="action-bar">
-                    <a href="${mapSearch}" target="_blank" class="btn-action btn-map">🗺️ View on Maps</a>
-                    <button class="btn-action" onclick="window.open('${mapSearch}')">🚀 Get Distance</button>
-                </div>
-
-                <p class="modal-desc">${place.description}</p>
-
-                <div class="details-grid">
-                    <div class="detail-box"><b>🏨 Where to Stay</b>${place.stay || 'Local homestays and budget hotels available.'}</div>
-                    <div class="detail-box"><b>🍛 What to Eat</b>${place.food || 'Authentic local Karnataka cuisine.'}</div>
-                    <div class="detail-box"><b>🎒 What to Carry</b>${place.carry || 'Water, camera, and comfortable shoes.'}</div>
-                    <div class="detail-box"><b>✨ Best Time</b>${place.best_time}</div>
-                </div>
-
-                <div class="modal-tip">
-                    <strong>💡 Pro Tip:</strong> ${place.pro_tip || 'Carry enough cash as network and ATMs can be sparse.'}
-                </div>
-
-                <div class="booking-section">
-                    <p style="margin:0; font-size:11px; font-weight:bold; color:#666">PLAN YOUR TRIP:</p>
-                    <div class="booking-logos">
-                        <a href="${mmtSearch}" target="_blank" class="booking-link">MakeMyTrip</a>
-                        <a href="${bookingSearch}" target="_blank" class="booking-link">Booking.com</a>
-                        <a href="https://www.redbus.in/" target="_blank" class="booking-link">RedBus</a>
-                    </div>
-                </div>
-            </div>
-        `;
-        overlay.classList.add('open');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function openCommunityModal(name, district, desc, image, by) {
-    const modalContent = document.getElementById('modal-content');
-    modalContent.innerHTML = `
-        <div class="modal-img-wrap">
-            <img src="${image}" class="modal-img" onerror="this.src='https://via.placeholder.com/580x260?text=No+Image'">
-        </div>
-        <div class="modal-body">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start">
-                <div>
-                    <div style="font-size:22px;font-weight:700">${name}</div>
-                    <div style="font-size:13px;color:#666;margin-top:4px">📍 ${district}, Karnataka</div>
-                </div>
-                <span style="background:#fff8e1;color:#b8860b;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;">COMMUNITY GEM</span>
-            </div>
-            <p style="margin-top:16px;font-size:13px;line-height:1.7;color:#444">${desc}</p>
-            <div style="margin-top:16px;font-size:12px;color:#888">Submitted by: <strong>${by}</strong></div>
-        </div>
-    `;
-    document.getElementById('modal-overlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-} closeModal() {
-        document.getElementById('modal-overlay').classList.remove('open');
-        document.body.style.overflow = 'auto';
-    }
-
-    async function getAIRecommendation() {
-        const input = document.getElementById('ai-input').value;
-        const responseDiv = document.getElementById('ai-response');
-        const loading = document.getElementById('ai-loading');
-
-        if (!input) return;
-        loading.style.display = 'flex';
-        responseDiv.style.display = 'none';
-
-        try {
-            const response = await fetch('/get-ai-recommendation', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: input })
+                card.style.display = matchesSearch && matchesFilter ? "" : "none";
             });
-            const data = await response.json();
-            responseDiv.textContent = data.recommendation;
-            responseDiv.style.display = 'block';
-        } catch (error) {
-            responseDiv.textContent = "Oops! My compass is spinning. Try again later.";
-            responseDiv.style.display = 'block';
-        } finally {
-            loading.style.display = 'none';
         }
-    }
-</script>
+
+        searchInput.addEventListener("input", filterCards);
+
+        filterButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                filterButtons.forEach((item) => item.classList.remove("active"));
+                button.classList.add("active");
+                activeFilter = button.dataset.filter;
+                filterCards();
+            });
+        });
+
+        async function askAI() {
+            const input = document.getElementById("aiInput");
+            const responseBox = document.getElementById("aiResponse");
+            const prompt = input.value.trim();
+
+            if (!prompt) {
+                responseBox.textContent = "Type what kind of trip you want first.";
+                responseBox.style.display = "block";
+                return;
+            }
+
+            responseBox.textContent = "Finding a good travel idea...";
+            responseBox.style.display = "block";
+
+            try {
+                const response = await fetch("{{ url_for('ai_recommend') }}", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt })
+                });
+                const data = await response.json();
+                responseBox.textContent = data.recommendation || "No recommendation found.";
+            } catch (error) {
+                responseBox.textContent = "AI is not available right now. Try again later.";
+            }
+        }
+    </script>
 </body>
 </html>
-<input type="text" id="ai-input" placeholder="e.g. peaceful trek...">
-<button onclick="askAI()">Ask AI</button>
-<div id="ai-output"></div>
-
-<script>
-async function askAI() {
-    const query = document.getElementById('ai-input').value;
-    const response = await fetch('/ask-ai', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token() }}'},
-        body: JSON.stringify({query: query})
-    });
-    const data = await response.json();
-    document.getElementById('ai-output').innerText = data.response;
-}
-</script>
